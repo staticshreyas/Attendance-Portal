@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 
 
-  res.render('main/index');
+  res.redirect('user/login');
 
 });
 
