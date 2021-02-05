@@ -7,13 +7,12 @@ var logger = require('morgan');
 var expressHbs = require('express-handlebars');
 var mongoose = require('mongoose');
 var session = require('express-session');
-var passport = require('passport');
+var passport = require('passport'); 
 var flash = require('connect-flash');
 const validator= require('express-validator');
 var MongoStore= require('connect-mongo')(session);
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
-
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');

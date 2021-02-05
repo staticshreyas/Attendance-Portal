@@ -23,7 +23,9 @@ passport.use('local-register', new LocalStrategy({
 },
     function (req,email,password,done) {
     var name= req.body.name;
-
+    var classs=req.body.class
+    var rollnumber=req.body.rollnumber
+    var photo=req.body.photo
 
     req.checkBody('email','Invalid email').notEmpty().isEmail();
     req.checkBody('password','Invalid password').notEmpty().isLength({min:4});
@@ -48,6 +50,9 @@ passport.use('local-register', new LocalStrategy({
             newUser.name =name;
             newUser.email = email;
             newUser.password = newUser.encryptPassword(password);
+            newUser.class=classs
+            newUser.rollnumber=rollnumber
+            newUser.photo=photo
 
             newUser.save(function (err, result) {
                 if (err) {
