@@ -27,10 +27,10 @@ router.get('/upload',isLoggedIn, (req, res) => {
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, __dirname+'/uploads')
+      cb(null, __dirname+'../../public/assets/uploads')
   },
   filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now())
+      cb(null, file.originalname)
   }
 });
 
@@ -41,7 +41,7 @@ router.post('/upload', upload.single('photo'), (req, res, next) => {
   var obj = {
     user: req.user,
       img: {
-          data: fs.readFileSync(path.join(__dirname+'/uploads/' + req.file.filename)),
+          data: fs.readFileSync(path.join(__dirname+'../../public/assets/uploads/' + req.file.filename)),
           contentType: 'image/png'
       }
   }
