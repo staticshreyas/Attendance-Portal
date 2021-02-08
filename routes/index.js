@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 
 
-  res.redirect('user/dashboard');
+  res.render('main/index');
 
 });
 

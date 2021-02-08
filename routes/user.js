@@ -2,9 +2,14 @@ var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
+var multer = require('multer');
+var imgModel = require('../models/image');
+ 
+var fs = require('fs');
+var path = require('path');
 
 var csrfProtection = csrf();
-router.use(csrfProtection);
+//router.use(csrfProtection);
 
 /*Get profile*/
 router.get('/dashboard',isLoggedIn,function (req,res,next) {
@@ -12,6 +17,45 @@ router.get('/dashboard',isLoggedIn,function (req,res,next) {
           user: req.user,
       });
 });
+
+router.get('/upload',isLoggedIn, (req, res) => {
+  var messages= req.flash('error');
+  res.render('user/upload',{messages: messages, hasErrors: messages.length >0});
+
+
+});
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, __dirname+'/uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+var upload = multer({ storage: storage });  
+
+router.post('/upload', upload.single('photo'), (req, res, next) => {
+ 
+  var obj = {
+    user: req.user,
+      img: {
+          data: fs.readFileSync(path.join(__dirname+'/uploads/' + req.file.filename)),
+          contentType: 'image/png'
+      }
+  }
+  imgModel.create(obj, (err, item) => {
+      if (err) {
+          console.log(err);
+      }
+      else {
+          item.save();
+          res.redirect('/user/dashboard');
+      }
+  });
+});
+
 
 router.get('/logout',isLoggedIn,function (req,res,next) {
   req.logout();
@@ -26,7 +70,7 @@ next();
 /* GET users listing. */
 router.get('/login', function(req, res, next){
   var messages= req.flash('error');
-  res.render('user/login',{csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length >0});
+  res.render('user/login',{ messages: messages, hasErrors: messages.length >0});
 });
 
 router.post('/login',passport.authenticate('local-login',{
@@ -46,7 +90,7 @@ router.post('/login',passport.authenticate('local-login',{
 
 router.get('/register', function(req, res, next){
   var messages= req.flash('error');
-  res.render('user/register',{csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length >0});
+  res.render('user/register',{ messages: messages, hasErrors: messages.length >0});
 });
 
 
@@ -64,6 +108,7 @@ router.post('/register',passport.authenticate('local-register',{
   }
 
 });
+
 
 module.exports = router;
 
