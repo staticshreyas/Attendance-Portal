@@ -11,7 +11,7 @@ var path = require('path');
 var csrfProtection = csrf();
 //router.use(csrfProtection);
 
-/*Get profile*/
+/*Get dashboard*/
 router.get('/dashboard',isLoggedIn,function (req,res,next) {
   if(req.user.who=="1")
   {
@@ -24,6 +24,24 @@ router.get('/dashboard',isLoggedIn,function (req,res,next) {
   {
     console.log(req.user)
     res.render('user/teacher-dashboard', {
+      user: req.user,
+  });
+  }
+});
+
+/*Get profile*/
+router.get('/profile',isLoggedIn,function (req,res,next) {
+  if(req.user.who=="1")
+  {
+    console.log(req.user)
+      res.render('user/profile', {
+          user: req.user,
+      });
+  }
+  else if(req.user.who=="0")
+  {
+    console.log(req.user)
+    res.render('user/teacher-profile', {
       user: req.user,
   });
   }

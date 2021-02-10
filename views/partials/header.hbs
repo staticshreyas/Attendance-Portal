@@ -14,6 +14,24 @@
                         <span class="nav-link-inner--text">Home</span>
                     </a>
                 </li>
+
+                {{# if login}}
+                <li class="nav-item">
+                    <a href="/user/dashboard" class="nav-link">
+                        <span class="nav-link-inner--text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user/profile" class="nav-link">
+                        <span class="nav-link-inner--text">Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user/logout" class="nav-link">
+                        <span class="nav-link-inner--text">Logout</span>
+                    </a>
+                </li>
+                {{else}}
                 <li class="nav-item">
                     <a href="/user/login" class="nav-link">
                         <span class="nav-link-inner--text">Login</span>
@@ -29,6 +47,7 @@
                         <span class="nav-link-inner--text"> Teacher Registration</span>
                     </a>
                 </li>
+                {{/if}}
             </ul>
             <hr class="d-lg-none" />
             <ul class="navbar-nav align-items-lg-center ml-lg-auto">
