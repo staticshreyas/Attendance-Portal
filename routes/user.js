@@ -13,9 +13,20 @@ var csrfProtection = csrf();
 
 /*Get profile*/
 router.get('/dashboard',isLoggedIn,function (req,res,next) {
+  if(req.user.who=="1")
+  {
+    console.log(req.user)
       res.render('user/dashboard', {
           user: req.user,
       });
+  }
+  else if(req.user.who=="0")
+  {
+    console.log(req.user)
+    res.render('user/teacher-dashboard', {
+      user: req.user,
+  });
+  }
 });
 
 router.get('/upload',isLoggedIn, (req, res) => {
@@ -96,6 +107,27 @@ router.get('/register', function(req, res, next){
 
 router.post('/register',passport.authenticate('local-register',{
   failureRedirect: '/user/register',
+  failureFlash: true
+
+}),function (req,res,next) {
+  if(req.session.oldurl){
+      var oldurl=req.session.oldurl;
+      req.session.oldurl=null;
+      res.redirect(oldurl);
+  }else {
+      res.redirect('/user/dashboard');
+  }
+
+});
+
+router.get('/teacher-register', function(req, res, next){
+  var messages= req.flash('error');
+  res.render('user/teacher-register',{ messages: messages, hasErrors: messages.length >0});
+});
+
+
+router.post('/teacher-register',passport.authenticate('local-register',{
+  failureRedirect: '/user/teacher-register',
   failureFlash: true
 
 }),function (req,res,next) {

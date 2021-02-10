@@ -1,0 +1,164 @@
+<!-- Navbar -->
+<nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light">
+    <div class="container">
+        <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/">
+                        <p>Attendance Portal</p>
+                        <!--<img src="../assets/img/brand/white.png">-->
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">
+                        <span class="nav-link-inner--text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user/login" class="nav-link">
+                        <span class="nav-link-inner--text">Login</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user/register" class="nav-link">
+                        <span class="nav-link-inner--text"> Student Registration</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user/teacher-register" class="nav-link">
+                        <span class="nav-link-inner--text"> Teacher Registration</span>
+                    </a>
+                </li>
+            </ul>
+            <hr class="d-lg-none" />
+            <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="https://www.facebook.com/" target="_blank"
+                        data-toggle="tooltip" data-original-title="Like us on Facebook">
+                        <i class="fab fa-facebook-square"></i>
+                        <span class="nav-link-inner--text d-lg-none">Facebook</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="https://www.instagram.com/" target="_blank"
+                        data-toggle="tooltip" data-original-title="Follow us on Instagram">
+                        <i class="fab fa-instagram"></i>
+                        <span class="nav-link-inner--text d-lg-none">Instagram</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="https://twitter.com/" target="_blank" data-toggle="tooltip"
+                        data-original-title="Follow us on Twitter">
+                        <i class="fab fa-twitter-square"></i>
+                        <span class="nav-link-inner--text d-lg-none">Twitter</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="https://github.com/creativetimofficial" target="_blank"
+                        data-toggle="tooltip" data-original-title="Star us on Github">
+                        <i class="fab fa-github"></i>
+                        <span class="nav-link-inner--text d-lg-none">Github</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main content -->
+<div class="main-content">
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
+        <div class="container">
+            <div class="header-body text-center mb-7">
+                <div class="row justify-content-center">
+                    <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+                        <h1 class="text-white">Create an account</h1>
+                        <p class="text-lead text-white">Please fill in your appropriate details to register yourself in
+                            the attendance portal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separator separator-bottom separator-skew zindex-100">
+            <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--8 pb-5">
+        <!-- Table -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card bg-secondary border-0">
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <div class="text-center text-muted mb-4">
+                            <small>Fill in your details.</small>
+                            {{#if hasErrors}}
+                            <div class="alert alert-danger">
+                                {{# each messages}}
+                                <p>{{this}}</p>
+                                {{/each}}
+                            </div>
+                            {{/if}}
+                        </div>
+                        <form method="POST" action="../user/teacher-register">
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+                                    </div>
+                                    <input class="form-control" name="name" placeholder="Name" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                    </div>
+                                    <input class="form-control" name="subject" placeholder="Subject" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                    </div>
+                                    <input class="form-control" name="email" placeholder="Email" type="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                    </div>
+                                    <input class="form-control" name="password" placeholder="Password" type="password">
+                                </div>
+                            </div>
+
+                            <div class="row my-4">
+                                <div class="col-12">
+                                    <div class="custom-control custom-control-alternative custom-checkbox">
+                                        <input class="custom-control-input" name="teacher" id="teacher" type="checkbox"
+                                            value="0">
+                                        <label class="custom-control-label" for="teacher">
+                                            <span class="text-muted">Click if you are registering as a teacher</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-4">Create account</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
