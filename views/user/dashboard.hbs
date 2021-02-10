@@ -5,7 +5,6 @@
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="javascript:void(0)">
                 <p>Attendance Portal</p>
-                <!--<img src="/assets/img/brand/blue.png" class="navbar-brand-img" alt="...">-->
             </a>
         </div>
         <div class="navbar-inner">
@@ -37,11 +36,18 @@
                             <span class="nav-link-text">Upload Image</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/logout">
+                            <i class="ni ni-user-run"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </nav>
+
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
@@ -57,7 +63,8 @@
                                 <img src="/assets/uploads/{{this.user.name}}.jpg">
                             </span>
                             <div class="media-body  ml-2  d-none d-lg-block">
-                                <span class="mb-0 text-sm  font-weight-bold" style="color: white;">{{this.user.name}}</span>
+                                <span class="mb-0 text-sm  font-weight-bold"
+                                    style="color: white;">{{this.user.name}}</span>
                             </div>
                         </div>
                     </li>
