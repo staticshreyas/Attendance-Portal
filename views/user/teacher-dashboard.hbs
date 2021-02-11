@@ -13,7 +13,7 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="examples/dashboard.html">
+                        <a class="nav-link active" href="/user/dashboard">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
@@ -21,19 +21,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/user/profile">
                             <i class="ni ni-single-02 text-yellow"></i>
-                            <span class="nav-link-text">Profile</span>
+                            <span class="nav-link-text">Students</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="examples/tables.html">
+                        <a class="nav-link" href="/user/teacher-classrooms">
                             <i class="ni ni-bullet-list-67 text-default"></i>
                             <span class="nav-link-text">Classrooms</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/upload">
+                        <a class="nav-link" href="/db_create">
                             <i class="ni ni-circle-08 text-pink"></i>
-                            <span class="nav-link-text">Upload Image</span>
+                            <span class="nav-link-text">Create Student Database</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -59,9 +59,6 @@
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
                         <div class="media align-items-center">
-                            <span class="avatar avatar-sm rounded-circle">
-                                <img src="/assets/uploads/{{this.user.name}}.jpg">
-                            </span>
                             <div class="media-body  ml-2  d-none d-lg-block">
                                 <span class="mb-0 text-sm  font-weight-bold"
                                     style="color: white;">{{this.user.name}}</span>
@@ -80,9 +77,9 @@
                     <div class="col-lg-6 col-7">
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Default</li>
+                                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="/user/teacher-classrooms">Classrooms</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                             </ol>
                         </nav>
                     </div>
@@ -182,6 +179,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Page content -->
     <div class="container-fluid mt--6">
@@ -475,3 +473,4 @@
             </div>
         </div>
     </div>
+</div>

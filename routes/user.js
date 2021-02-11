@@ -47,6 +47,18 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
   }
 });
 
+/*Get Classrooms*/
+/*Get dashboard*/
+router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
+
+ 
+    console.log(req.user)
+    res.render('user/teacher-classrooms', {
+      user: req.user,
+  });
+
+});
+
 router.get('/upload',isLoggedIn, (req, res) => {
   var messages= req.flash('error');
   res.render('user/upload',{messages: messages, hasErrors: messages.length >0});

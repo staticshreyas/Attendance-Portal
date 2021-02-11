@@ -18,7 +18,7 @@ router.get('/db_create', function(req, res, next) {
 
   const { spawn } = require("child_process");
 
-  const env = spawn('./Py-Scripts/mip_env/bin/python',['./Py-Scripts/db_maker.py'])
+  const env = spawn('../mip_env/bin/python',['../Py-Scripts/db_maker.py'])
 
   env.stderr.on( 'data', data => {
     console.log( `stderr: ${data}` );
@@ -26,6 +26,8 @@ router.get('/db_create', function(req, res, next) {
 
   env.on("close", code=>{
     console.log(`child process exited with code ${code}`);
+
+    res.render('user/teacher-dashboard', {user: req.user});
   })
 });
 
