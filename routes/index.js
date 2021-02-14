@@ -11,24 +11,4 @@ router.get('/', function(req, res, next) {
 });
 
 
-
-
-/* Make student xl file*/
-router.get('/db_create', function(req, res, next) {
-
-  const { spawn } = require("child_process");
-
-  const env = spawn('../mip_env/bin/python',['../Py-Scripts/db_maker.py'])
-
-  env.stderr.on( 'data', data => {
-    console.log( `stderr: ${data}` );
-} );
-
-  env.on("close", code=>{
-    console.log(`child process exited with code ${code}`);
-
-    res.render('user/teacher-dashboard', {user: req.user});
-  })
-});
-
 module.exports = router;

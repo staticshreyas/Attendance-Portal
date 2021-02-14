@@ -8,6 +8,8 @@ var imgModel = require('../models/image');
 var fs = require('fs');
 var path = require('path');
 
+const request = require('request');
+
 var csrfProtection = csrf();
 //router.use(csrfProtection);
 
@@ -48,7 +50,6 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 });
 
 /*Get Classrooms*/
-/*Get dashboard*/
 router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
 
  
@@ -65,6 +66,54 @@ router.get('/upload',isLoggedIn, (req, res) => {
 
 
 });
+
+/* Make student xl file*/
+router.get('/db_create', function(req, res, next) {
+
+  const { spawn } = require("child_process");
+
+  const env = spawn('../mip_env/bin/python',['./Py-Scripts/db_maker.py'])
+
+  env.stderr.on( 'data', data => {
+    console.log( `stderr: ${data}` );
+} );
+
+  env.on("close", code=>{
+    console.log(`child process exited with code ${code}`);
+
+    res.render('user/teacher-dashboard', {user: req.user});
+  })
+});
+
+/* Make take attendance*/
+// router.get('/take_attendance', function(req, res, next) {
+
+//   const { spawn } = require("child_process");
+
+//   const env = spawn('../mip_env/bin/python',['../Py-Scripts/main.py'])
+
+//   env.stderr.on( 'data', data => {
+//     console.log( `stderr: ${data}` );
+// } );
+
+//   env.on("close", code=>{
+//     console.log(`child process exited with code ${code}`);
+
+//     res.render('user/teacher-dashboard', {user: req.user});
+//   })
+// });
+
+router.get('/take_attendance', function(req, res, next) {
+
+  request('http://127.0.0.1:5000/camera', function (error, response, body) {
+    console.error('error:', error); // Print the error
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body); // Print the data received
+    res.send(body); //Display the response on the website
+  });
+});
+
+
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
