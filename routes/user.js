@@ -60,12 +60,23 @@ router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
 
 });
 
+/*Get Classrooms*/
+router.get('/class-details',isLoggedIn,function (req,res,next) {
+
+  console.log(req.user)
+  res.render('user/classDetails', {
+    user: req.user,
+});
+
+});
+
 router.get('/upload',isLoggedIn, (req, res) => {
   var messages= req.flash('error');
   res.render('user/upload',{messages: messages, hasErrors: messages.length >0});
 
 
 });
+
 
 /* Make student xl file*/
 router.get('/db_create', function(req, res, next) {
@@ -85,31 +96,11 @@ router.get('/db_create', function(req, res, next) {
   })
 });
 
-/* Make take attendance*/
-// router.get('/take_attendance', function(req, res, next) {
-
-//   const { spawn } = require("child_process");
-
-//   const env = spawn('../mip_env/bin/python',['../Py-Scripts/main.py'])
-
-//   env.stderr.on( 'data', data => {
-//     console.log( `stderr: ${data}` );
-// } );
-
-//   env.on("close", code=>{
-//     console.log(`child process exited with code ${code}`);
-
-//     res.render('user/teacher-dashboard', {user: req.user});
-//   })
-// });
-
 router.get('/take_attendance', function(req, res, next) {
 
+  var messages= req.flash('error');
   request('http://127.0.0.1:5000/camera', function (error, response, body) {
-    console.error('error:', error); // Print the error
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the data received
-    res.send(body); //Display the response on the website
+    res.render('user/classDetails',{messages: messages, hasErrors: messages.length >0});
   });
 });
 

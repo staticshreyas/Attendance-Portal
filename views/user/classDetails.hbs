@@ -6,7 +6,7 @@
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 class="h2 text-white d-inline-block mb-0">Classrooms</h6>
+                <h6 class="h2 text-white d-inline-block mb-0">Classroom 1</h6>
 
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
@@ -30,14 +30,14 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Classrooms</li>
+                                <li class="breadcrumb-item"><a href="/user/teacher-classrooms">Classrooms</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Classroom 1</li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="#" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
-                            Create New Classroom</a>
+                        <a href="/user/db_create" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
+                            Create Classroom Database</a>
                     </div>
                 </div>
 
@@ -87,7 +87,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
+                                        </h5>
                                         <span class="h2 font-weight-bold mb-0">34</span>
                                     </div>
                                     <div class="col-auto">
@@ -124,74 +125,76 @@
 
 
     <!-- Page content -->
-    <div class="container-fluid mt--6">
-        <div class="row">
-            <div class="col-xl-4">
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">Classroom 1</h3>
-                            </div>
-                            <div class="col text-right">
-                                <a href="/user/class-details" class="btn btn-sm btn-primary">See all</a>
-                            </div>
+    <div class="container-fluid mt--6 ">
+        <div class="col-xl-10" style="padding-left: 250px;">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="mb-0">All Students</h3>
+                        </div>
+                        <div style="padding-right: 50px">
+                            <a  href="/user/take_attendance" class="btn btn-sm btn-primary">Take Attendance</a>
+                        </div>
+                        <div class="col-right">
+                            <a href="#!" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
+                                Students</a>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <!-- Projects table -->
-                        <table class="table align-items-center table-flush">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Lectures</th>
-                                    <th scope="col">Attendance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        Shreyas
-                                    </th>
-                                    <td>
-                                        12
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">60%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: 60%;"></div>
-                                                </div>
+                </div>
+                <div class="table-responsive">
+                    <!-- Projects table -->
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Lectures</th>
+                                <th scope="col">Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    Shreyas
+                                </th>
+                                <td>
+                                    12
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="mr-2">60%</span>
+                                        <div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-danger" role="progressbar"
+                                                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                                    style="width: 60%;"></div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Nandu
-                                    </th>
-                                    <td>
-                                        23
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">70%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                        aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: 70%;"></div>
-                                                </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Nandu
+                                </th>
+                                <td>
+                                    23
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="mr-2">70%</span>
+                                        <div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-success" role="progressbar"
+                                                    aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
+                                                    style="width: 70%;"></div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
