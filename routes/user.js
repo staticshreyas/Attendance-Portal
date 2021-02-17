@@ -100,7 +100,11 @@ router.get('/take_attendance', function(req, res, next) {
 
   var messages= req.flash('error');
   request('http://127.0.0.1:5000/camera', function (error, response, body) {
+    console.log(body)
+    if(body)
+    {
     res.render('user/classDetails',{messages: messages, hasErrors: messages.length >0});
+    }
   });
 });
 
