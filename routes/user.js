@@ -83,7 +83,7 @@ router.get('/db_create', function(req, res, next) {
 
   const { spawn } = require("child_process");
 
-  const env = spawn('../mip_env/bin/python',['./Py-Scripts/db_maker.py'])
+  const env = spawn('../mip_env/Scripts/python',['./Py-Scripts/db_maker.py'])
 
   env.stderr.on( 'data', data => {
     console.log( `stderr: ${data}` );
