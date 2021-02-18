@@ -60,20 +60,13 @@ router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
 
 });
 
-/*Get Classrooms*/
+/*Get Classroom details*/
 router.get('/class-details',isLoggedIn,function (req,res,next) {
 
   console.log(req.user)
   res.render('user/classDetails', {
     user: req.user,
 });
-
-});
-
-router.get('/upload',isLoggedIn, (req, res) => {
-  var messages= req.flash('error');
-  res.render('user/upload',{messages: messages, hasErrors: messages.length >0});
-
 
 });
 
@@ -109,7 +102,6 @@ router.get('/take_attendance', function(req, res, next) {
 });
 
 
-
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, __dirname+'../../public/assets/uploads')
@@ -119,7 +111,13 @@ var storage = multer.diskStorage({
   }
 });
 
-var upload = multer({ storage: storage });  
+var upload = multer({ storage: storage }); 
+
+router.get('/upload',isLoggedIn, (req, res) => {
+  var messages= req.flash('error');
+  res.render('user/upload',{messages: messages, hasErrors: messages.length >0});
+
+});
 
 router.post('/upload', upload.single('photo'), (req, res, next) => {
  
