@@ -4,6 +4,8 @@ var csrf = require('csurf');
 var passport = require('passport');
 var multer = require('multer');
 var imgModel = require('../models/image');
+var classModel = require('../models/class');
+var attendanceModel = require('../models/attendance');
  
 var fs = require('fs');
 var path = require('path');
@@ -52,18 +54,25 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 /*Get Classrooms*/
 router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
 
- 
-    console.log(req.user)
-    res.render('user/teacher-classrooms', {
-      user: req.user,
+    classModel.find({'owner':req.user._id},function(err,classrooms){
+      if(err){
+        return done(err);
+      }
+      else{
+        console.log(classrooms)
+        res.render('user/teacher-classrooms', {
+          user: req.user,
+          classrooms:classrooms
+        });
+    }
+  
   });
-
 });
 
 /*Get Classroom details*/
 router.get('/class-details',isLoggedIn,function (req,res,next) {
 
-  console.log(req.user)
+  //console.log(req.user)
   res.render('user/classDetails', {
     user: req.user,
 });
@@ -97,6 +106,34 @@ router.get('/take_attendance', function(req, res, next) {
     if(body)
     {
     res.render('user/classDetails',{messages: messages, hasErrors: messages.length >0});
+    }
+  });
+});
+
+
+
+/*add new class*/
+router.get('/create-class',isLoggedIn, (req, res)=>{
+  console.log(req.user);
+  // var messages= req.flash('error');
+  res.render('user/create-class');
+});
+
+router.post('/create-class', (req, res, next) => {
+  console.log("hereeee");
+  var newClass={
+    name:req.body.name,
+    description:req.body.description,
+    owner:req.user._id,
+  }
+
+  classModel.create(newClass, (err, item) => {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        item.save();
+        res.redirect('/user/teacher-classrooms');
     }
   });
 });
