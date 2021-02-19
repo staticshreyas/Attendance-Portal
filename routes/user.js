@@ -70,13 +70,22 @@ router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
 });
 
 /*Get Classroom details*/
-router.get('/class-details',isLoggedIn,function (req,res,next) {
+router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
 
-  //console.log(req.user)
-  res.render('user/classDetails', {
-    user: req.user,
-});
+  classModel.findById(req.params.id,function(err,classroom){
+    if(err){
+      return done(err);
+    }
+    else{
+      console.log(classroom)
+      res.render('user/classDetails', {
+        user: req.user,
+        classroom:classroom
+      });
+    }
+  });
 
+ 
 });
 
 
