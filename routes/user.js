@@ -3,6 +3,7 @@ var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
 var multer = require('multer');
+var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var attendanceModel = require('../models/attendance');
@@ -11,6 +12,7 @@ var fs = require('fs');
 var path = require('path');
 
 const request = require('request');
+const user = require('../models/user');
 
 var csrfProtection = csrf();
 //router.use(csrfProtection);
@@ -52,20 +54,39 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 });
 
 /*Get Classrooms*/
-router.get('/teacher-classrooms',isLoggedIn,function (req,res,next) {
-
-    classModel.find({'owner':req.user._id},function(err,classrooms){
-      if(err){
-        return done(err);
-      }
-      else{
-        console.log(classrooms)
-        res.render('user/teacher-classrooms', {
-          user: req.user,
-          classrooms:classrooms
-        });
+router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
+  let classrooms=[];
+  let users=[];
+  await classModel.find({'owner':req.user._id},(err,classrooms)=>{
+    if(err){
+      return done(err);
     }
-  
+    else{
+      this.classrooms=classrooms;
+    }
+    });  
+  await userModel.find({who:"1"},(err,users)=>{
+    if(err){
+      return done(err)
+    }
+    else{
+      this.users=users;
+    }
+  });   
+  this.classrooms.map((classroom)=>{
+    let stuArray=[];
+    classroom.students.map((stuId)=>{
+      this.users.map((user)=>{
+          if(stuId.equals(user._id)){
+            stuArray.push(user);
+          }
+      })
+      classroom.studentDetails=stuArray;
+    })
+  })
+  res.render('user/teacher-classrooms', {
+    user: req.user,
+    classrooms:this.classrooms
   });
 });
 
@@ -77,10 +98,16 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
       return done(err);
     }
     else{
-      console.log(classroom)
+      let stuArray=[];
+      classroom.students.map((stuId)=>{
+        userModel.findById(stuId,function(err,student){
+          stuArray.push(student);
+        })
+      });
       res.render('user/classDetails', {
         user: req.user,
-        classroom:classroom
+        classroom:classroom,
+        students:stuArray
       });
     }
   });
@@ -147,6 +174,62 @@ router.post('/create-class', (req, res, next) => {
   });
 });
 
+
+/*add new student in particular class*/
+router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
+  //console.log(req.params.id);
+  
+  userModel.find({'who':"1"},function(err,users){
+    if(err){
+      return done(err);
+    }
+    else{
+      //console.log(users);
+      classModel.findById(req.params.id,function(err,classroom){
+        if(err){
+          return done(err);
+        }
+        else{
+          let notInClassStudents=[];
+          users.map((user)=>{
+            flag=0
+            classroom.students.map((stuId)=>{
+              if (stuId.equals(user._id)){
+                flag=1
+                //notInClassStudents.push(user)
+              }
+            });
+            if(flag===0){
+              notInClassStudents.push(user);
+            }
+          });
+  
+          res.render('user/addStudents', {
+            users: notInClassStudents,
+            classroom:classroom
+          });
+        }
+      });
+    }
+  });
+});
+
+router.post('/class-details/:id/students/new', (req, res, next) => {
+  // var students=[];
+  // req.body.id.map((stuId)=>{
+  //   students.push(stuId)
+  // })
+  var students=req.body.id;
+  classModel.findOneAndUpdate({_id:req.params.id},{$push:{students:students}},{new:true},function(err,updatedClass){
+		if(err){
+			console.log(err);
+		}
+		else{
+      console.log(updatedClass);
+			res.redirect('/user/class-details/'+req.params.id);
+		}
+	});
+});
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {

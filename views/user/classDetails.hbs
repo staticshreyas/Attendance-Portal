@@ -137,7 +137,7 @@
                             <a  href="/user/take_attendance" class="btn btn-sm btn-primary">Take Attendance</a>
                         </div>
                         <div class="col-right">
-                            <a href="#!" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
+                            <a href="/user/class-details/{{this.classroom._id}}/students/new" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
                                 Students</a>
                         </div>
                     </div>
@@ -148,18 +148,17 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Lectures</th>
                                 <th scope="col">Attendance</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {{#each students}}
                             <tr>
-                                <th scope="row">
-                                    Shreyas
-                                </th>
-                                <td>
-                                    12
-                                </td>
+                                <th scope="row">{{name}}</th>
+                                <td>{{email}}</td>
+                                <td>12</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <span class="mr-2">60%</span>
@@ -173,26 +172,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    Nandu
-                                </th>
-                                <td>
-                                    23
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <span class="mr-2">70%</span>
-                                        <div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                    aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                    style="width: 70%;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
