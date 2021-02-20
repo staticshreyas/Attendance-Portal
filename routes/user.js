@@ -196,7 +196,6 @@ router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
             classroom.students.map((stuId)=>{
               if (stuId.equals(user._id)){
                 flag=1
-                //notInClassStudents.push(user)
               }
             });
             if(flag===0){
@@ -215,10 +214,7 @@ router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
 });
 
 router.post('/class-details/:id/students/new', (req, res, next) => {
-  // var students=[];
-  // req.body.id.map((stuId)=>{
-  //   students.push(stuId)
-  // })
+
   var students=req.body.id;
   classModel.findOneAndUpdate({_id:req.params.id},{$push:{students:students}},{new:true},function(err,updatedClass){
 		if(err){
