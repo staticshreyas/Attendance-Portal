@@ -213,16 +213,15 @@ router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
   });
 });
 
-router.post('/class-details/:id/students/new', (req, res, next) => {
-
-  var students=req.body.id;
+router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
+  var students=req.params.stuId;
   classModel.findOneAndUpdate({_id:req.params.id},{$push:{students:students}},{new:true},function(err,updatedClass){
 		if(err){
 			console.log(err);
 		}
 		else{
-      console.log(updatedClass);
-			res.redirect('/user/class-details/'+req.params.id);
+      //console.log(updatedClass);
+			res.redirect('/user/class-details/'+req.params.id+'/students/new');
 		}
 	});
 });

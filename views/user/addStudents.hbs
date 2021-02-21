@@ -53,21 +53,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form action="/user/class-details/{{this.classroom._id}}/students/new" method="post">
                             {{#each users}}
                             <tr>
                                 <th scope="row">{{this.name}}</th>
                                 <td>{{this.email}}</td>
                                 <td>{{this.rollnumber}}</td>
-                                <td><input class="form-control" name="id" value={{this._id}} style="display:none;"></td>
                                 <td>
                                     <div style="padding-right: 50px">
-                                        <button type="submit" class="btn btn-sm btn-primary" >Add this student</button>
+                                        <a href="/user/class-details/{{../this.classroom._id}}/students/new/{{this._id}}">Add this student</a>
                                     </div>
                                 </td>
                             </tr>
                            {{/each}}
-                            </form>
                         </tbody>
                     </table>
                 </div>
