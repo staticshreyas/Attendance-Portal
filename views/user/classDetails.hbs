@@ -35,7 +35,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/user/db_create" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
+                        <a href="/user/xl_create/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
                             Create Classroom Database</a>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                             <h3 class="mb-0">Students Enrolled</h3>
                         </div>
                         <div style="padding-right: 50px">
-                            <a  href="/user/take_attendance" class="btn btn-sm btn-primary">Take Attendance</a>
+                            <a  href="/user/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take Attendance</a>
                         </div>
                         <div class="col-right">
                             <a href="/user/class-details/{{this.classroom._id}}/students/new" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add

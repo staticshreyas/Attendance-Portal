@@ -10,6 +10,7 @@ var attendanceModel = require('../models/attendance');
  
 var fs = require('fs');
 var path = require('path');
+const Excel = require('exceljs')
 
 const request = require('request');
 const user = require('../models/user');
@@ -35,14 +36,14 @@ router.get('/dashboard',isLoggedIn,function (req,res,next) {
 
   if(req.user.who=="1")
   {
-    console.log(req.user)
+    //console.log(req.user)
       res.render('user/dashboard', {
           user: req.user,
       });
   }
   else if(req.user.who=="0")
   {
-    console.log(req.user)
+   // console.log(req.user)
     res.render('user/teacher-dashboard', {
       user: req.user,
   });
@@ -136,7 +137,7 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
 
 
 /* Make student xl file*/
-router.get('/db_create', function(req, res, next) {
+/*router.get('/db_create', function(req, res, next) {
 
   const { spawn } = require("child_process");
 
@@ -151,18 +152,65 @@ router.get('/db_create', function(req, res, next) {
 
     res.render('user/teacher-dashboard', {user: req.user});
   })
-});
+});*/
 
-router.get('/take_attendance', function(req, res, next) {
+router.get('/xl_create/:id', function(req,res,next){
+
+  let workbook = new Excel.Workbook()
+  let worksheet = workbook.addWorksheet('students_db')
+
+  worksheet.columns = [
+    {header: 'name', key: 'name'},
+    {header: 'image', key: 'image'},
+    {header: 'roll_no', key: 'roll_no'},
+  ]
+
+  var query=classModel.find({}).select({"students": 1, "_id":0})
+
+  query.exec(function(err, data){
+    if(err){
+      console.log(err)
+    }
+    else{
+      //console.log(data)
+      for(i=0;i<data[0].students.length;i++)
+      {
+        var a=data[0].students[i]
+        //console.log(a)
+        userModel.findById(a, function(err,student){
+
+          if(err){
+            console.log(err)
+          }
+
+          else{
+            //console.log(student)
+            var obj={}
+            obj["name"]=student.name
+            obj["image"]=student.name+".jpg"
+            obj["roll_no"]=student.rollnumber
+            //console.log(obj)
+
+            worksheet.addRow(obj)
+            workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
+          }
+        })
+
+      }       
+      res.redirect('/user/class-details/'+req.params.id);
+    }
+  })
+
+
+})
+
+router.get('/take_attendance/:id', function(req, res, next) {
 
   var messages= req.flash('error');
   request('http://127.0.0.1:5000/camera', function (error, response, body) {
     console.log(body)
-    if(body)
-    {
-    res.render('user/classDetails',{messages: messages, hasErrors: messages.length >0});
-    }
   });
+  res.redirect('/user/class-details/'+req.params.id);
 });
 
 

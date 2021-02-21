@@ -19,7 +19,7 @@ var userRouter = require('./routes/user');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost:27017/attendance-portal',{useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb://localhost:27017/attendance_portal',{useNewUrlParser: true, useUnifiedTopology: true})
 
 require('./config/passport');
 
