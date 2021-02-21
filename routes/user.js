@@ -226,6 +226,20 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 	});
 });
 
+router.get('/allStudents', (req, res, next) => {
+
+  userModel.find({'who':"1"},function(err,users){
+    if(err){
+      return done(err);
+    }
+    else{
+      res.render('user/allStudents', {
+        users: users,
+      });
+    }
+  });
+});
+
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, __dirname+'../../public/assets/uploads')
