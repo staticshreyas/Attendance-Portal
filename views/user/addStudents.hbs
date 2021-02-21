@@ -9,7 +9,7 @@
             <div class="header-body text-center mb-4">
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-8 col-md-8 px-10">
-                        <h1 class="text-white">Add students to  {{this.classroom.name}} class</h1>
+                        <h1 class="text-white">Add students to {{this.classroom.name}} class</h1>
                         <p class="text-lead text-white">Below is the list of all registered students!</p>
                     </div>
                 </div>
@@ -23,22 +23,15 @@
         </div>
     </div>
 
-       <!-- Page content -->
+    <!-- Page content -->
     <div class="container-fluid mt--6 ">
         <div class="col-xl-10" style="padding-left: 250px;">
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col">
+                        <div class="col" style="padding-left:455px">
                             <h3 class="mb-0">All Students</h3>
                         </div>
-                        {{!-- <div style="padding-right: 50px">
-                            <a  href="/user/take_attendance" class="btn btn-sm btn-primary">Take Attendance</a>
-                        </div>
-                        <div class="col-right">
-                            <a href="/user/class-details/{{this.classroom._id}}/students/new" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
-                                Students</a>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -49,7 +42,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Roll no</th>
-                                <th scope="col"></th>
+                                <th scope="col">Add a student</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,12 +52,13 @@
                                 <td>{{this.email}}</td>
                                 <td>{{this.rollnumber}}</td>
                                 <td>
-                                    <div style="padding-right: 50px">
-                                        <a href="/user/class-details/{{../this.classroom._id}}/students/new/{{this._id}}">Add this student</a>
-                                    </div>
+                                        <a href="/user/class-details/{{../this.classroom._id}}/students/new/{{this._id}}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="ni ni-fat-add text-white"></i>
+                                            Add this student</a>
                                 </td>
                             </tr>
-                           {{/each}}
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
