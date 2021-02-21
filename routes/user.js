@@ -14,11 +14,25 @@ var path = require('path');
 const request = require('request');
 const user = require('../models/user');
 
+let totalClasses=0
+let totalStudents=0
+
+function calc(){
+  classModel.count({},function(err,count){
+    totalClasses=count
+  })
+  userModel.count({who:"1"},function(err,count){
+    totalStudents=count
+  })
+}
+
+
 var csrfProtection = csrf();
 //router.use(csrfProtection);
 
 /*Get dashboard*/
 router.get('/dashboard',isLoggedIn,function (req,res,next) {
+
   if(req.user.who=="1")
   {
     console.log(req.user)
@@ -57,6 +71,7 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
   let classrooms=[];
   let users=[];
+  calc();
   await classModel.find({'owner':req.user._id},(err,classrooms)=>{
     if(err){
       return done(err);
@@ -86,13 +101,15 @@ router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
   })
   res.render('user/teacher-classrooms', {
     user: req.user,
-    classrooms:this.classrooms
+    classrooms:this.classrooms,
+    totClass: totalClasses,
+    totStu: totalStudents
   });
 });
 
 /*Get Classroom details*/
 router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
-
+  calc()
   classModel.findById(req.params.id,function(err,classroom){
     if(err){
       return done(err);
@@ -107,7 +124,9 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
       res.render('user/classDetails', {
         user: req.user,
         classroom:classroom,
-        students:stuArray
+        students:stuArray,
+        totClass: totalClasses,
+        totStu: totalStudents
       });
     }
   });
@@ -175,7 +194,7 @@ router.post('/create-class', (req, res, next) => {
 });
 
 
-/*add new student in particular class*/
+/* Add new student in particular class*/
 router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
   //console.log(req.params.id);
   
@@ -226,6 +245,7 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 	});
 });
 
+/* View All Registered Students*/
 router.get('/allStudents', (req, res, next) => {
 
   userModel.find({'who':"1"},function(err,users){
