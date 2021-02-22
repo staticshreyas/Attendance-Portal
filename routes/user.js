@@ -12,8 +12,9 @@ var fs = require('fs');
 var path = require('path');
 const Excel = require('exceljs')
 
+var upload = multer({ storage: storage }); 
+
 const request = require('request');
-const user = require('../models/user');
 
 let totalClasses=0
 let totalStudents=0
@@ -27,9 +28,6 @@ function calc(){
   })
 }
 
-
-var csrfProtection = csrf();
-//router.use(csrfProtection);
 
 /*Get dashboard*/
 router.get('/dashboard',isLoggedIn,function (req,res,next) {
@@ -135,25 +133,7 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
  
 });
 
-
-/* Make student xl file*/
-/*router.get('/db_create', function(req, res, next) {
-
-  const { spawn } = require("child_process");
-
-  const env = spawn('../mip_env/Scripts/python',['./Py-Scripts/db_maker.py'])
-
-  env.stderr.on( 'data', data => {
-    console.log( `stderr: ${data}` );
-} );
-
-  env.on("close", code=>{
-    console.log(`child process exited with code ${code}`);
-
-    res.render('user/teacher-dashboard', {user: req.user});
-  })
-});*/
-
+/* Create xls file of students in class*/
 router.get('/xl_create/:id', function(req,res,next){
 
   let workbook = new Excel.Workbook()
@@ -206,7 +186,7 @@ router.get('/xl_create/:id', function(req,res,next){
 
 })
 
-
+/* Take attendance of students in class*/
 router.get('/take_attendance/:id', function(req, res, next) {
 
   var messages= req.flash('error');
@@ -217,8 +197,7 @@ router.get('/take_attendance/:id', function(req, res, next) {
 });
 
 
-
-/*add new class*/
+/* Add new class*/
 router.get('/create-class',isLoggedIn, (req, res)=>{
   console.log(req.user);
   // var messages= req.flash('error');
@@ -296,6 +275,7 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 	});
 });
 
+
 /* View All Registered Students*/
 router.get('/allStudents', (req, res, next) => {
 
@@ -311,6 +291,7 @@ router.get('/allStudents', (req, res, next) => {
   });
 });
 
+
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, __dirname+'../../public/assets/uploads')
@@ -320,7 +301,6 @@ var storage = multer.diskStorage({
   }
 });
 
-var upload = multer({ storage: storage }); 
 
 router.get('/upload',isLoggedIn, (req, res) => {
   var messages= req.flash('error');
