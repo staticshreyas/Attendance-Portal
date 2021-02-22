@@ -22,6 +22,10 @@ const classSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  totLec: {
+    type: Number,
+    required: false
+  }
 });
 
 module.exports = new mongoose.model("Class", classSchema);

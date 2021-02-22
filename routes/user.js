@@ -12,7 +12,6 @@ var fs = require('fs');
 var path = require('path');
 const Excel = require('exceljs')
 
-var upload = multer({ storage: storage }); 
 
 const request = require('request');
 
@@ -275,6 +274,19 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 	});
 });
 
+router.get('/add-lec/:id', (req, res, next) => {
+ 
+  classModel.findOneAndUpdate({_id:req.params.id},{$inc: {totLec: 1}},function(err,updatedClass){
+		if(err){
+			console.log(err);
+		}
+		else{
+      //console.log(updatedClass);
+			res.redirect('/user/class-details/'+req.params.id);
+		}
+	});
+});
+
 
 /* View All Registered Students*/
 router.get('/allStudents', (req, res, next) => {
@@ -301,6 +313,7 @@ var storage = multer.diskStorage({
   }
 });
 
+var upload = multer({ storage: storage }); 
 
 router.get('/upload',isLoggedIn, (req, res) => {
   var messages= req.flash('error');

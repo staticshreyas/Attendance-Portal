@@ -6,7 +6,8 @@
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 class="h2 text-white d-inline-block mb-0">{{this.classroom.name}} - {{this.classroom.description}}</h6>
+                <h6 class="h2 text-white d-inline-block mb-0">{{this.classroom.name}} - {{this.classroom.description}}
+                </h6>
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
                         <div class="media align-items-center">
@@ -35,8 +36,12 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/user/xl_create/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
+                        <a href="/user/xl_create/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
+                                class="ni ni-fat-add text-primary"></i>
                             Create Classroom Database</a>
+                        <a href="/user/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
+                                class="ni ni-fat-add text-primary"></i>
+                            Conduct a lecture</a>
                     </div>
                 </div>
 
@@ -67,7 +72,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled
+                                        </h5>
                                         <span class="h2 font-weight-bold mb-0">{{totStu}}</span>
                                     </div>
                                     <div class="col-auto">
@@ -88,7 +94,7 @@
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
                                         </h5>
-                                        <span class="h2 font-weight-bold mb-0">34</span>
+                                        <span class="h2 font-weight-bold mb-0">{{# if this.classroom.totLec}} {{this.classroom.totLec}} {{else}} 0 {{/if}}</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -133,10 +139,12 @@
                             <h3 class="mb-0">Students Enrolled</h3>
                         </div>
                         <div style="padding-right: 50px">
-                            <a  href="/user/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take Attendance</a>
+                            <a href="/user/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take
+                                Attendance</a>
                         </div>
                         <div class="col-right">
-                            <a href="/user/class-details/{{this.classroom._id}}/students/new" class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
+                            <a href="/user/class-details/{{this.classroom._id}}/students/new"
+                                class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
                                 Students</a>
                         </div>
                     </div>
@@ -149,7 +157,9 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Lectures</th>
-                                <th scope="col"> <div style="padding-left: 50px;">Attendance</div></th>
+                                <th scope="col">
+                                    <div style="padding-left: 50px;">Attendance</div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,7 +167,9 @@
                             <tr>
                                 <th scope="row">{{name}}</th>
                                 <td>{{email}}</td>
-                                <td><div style="padding-left: 25px;">12</div></td>
+                                <td>
+                                    <div style="padding-left: 25px;">12</div>
+                                </td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <span class="mr-2">60%</span>
