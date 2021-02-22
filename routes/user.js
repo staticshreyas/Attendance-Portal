@@ -71,15 +71,16 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 
 /*Get Classrooms*/
 router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
-  let classes=[];
-  let users=[];
+  var classes=[]
+  var stu=[]
+
   calc();
   await classModel.find({'owner':req.user._id},(err,classrooms)=>{
     if(err){
       return done(err);
     }
     else{
-      this.classrooms=classrooms;
+      classes=classrooms;
     }
     });  
   await userModel.find({who:"1"},(err,users)=>{
@@ -87,23 +88,40 @@ router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
       return done(err)
     }
     else{
-      this.users=users;
+      stu=users;
     }
-  });   
-  this.classrooms.map((classroom)=>{
-    let stuArray=[];
-    classroom.students.map((stuId)=>{
-      this.users.map((user)=>{
-          if(stuId.equals(user._id)){
-            stuArray.push(user);
-          }
-      })
-      classroom.studentDetails=stuArray;
-    })
-  })
+  });
+
+  //console.log(classes)
+  //console.log(stu)
+  
+  for(i=0;i<classes.length;i++)
+  {
+    let stuArray=[]
+    let classroom=classes[i]
+    //console.log(classroom)
+    for(j=0;j<classroom.students.length;j++)
+    {
+      let studentId=classroom.students[j]._id
+      //console.log(studentId)
+      for(z=0;z<stu.length;z++)
+      {
+        if((stu[z]._id).equals(studentId)){
+          stuArray.push(stu[z])
+          break
+          //console.log(stu)
+        }
+      }
+
+      classroom.studentDetails=stuArray
+
+    }
+
+  }
+
   res.render('user/teacher-classrooms', {
     user: req.user,
-    classrooms:this.classrooms,
+    classrooms:classes,
     totClass: totalClasses,
     totStu: totalStudents
   });
@@ -124,7 +142,7 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
         })
       });
       var a=req.params.id
-      console.log(a)
+      //console.log(a)
 
       mongoClient.connect(url, function(err, databases){
         if(err){
