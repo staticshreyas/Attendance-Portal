@@ -163,9 +163,10 @@ router.get('/xl_create/:id', function(req,res,next){
     {header: 'name', key: 'name'},
     {header: 'image', key: 'image'},
     {header: 'roll_no', key: 'roll_no'},
+    {header: 'classid', key: 'classid'}
   ]
 
-  var query=classModel.find({}).select({"students": 1, "_id":0})
+  var query=classModel.find({_id: req.params.id}).select({"students": 1, "_id":1})
 
   query.exec(function(err, data){
     if(err){
@@ -189,6 +190,7 @@ router.get('/xl_create/:id', function(req,res,next){
             obj["name"]=student.name
             obj["image"]=student.name+".jpg"
             obj["roll_no"]=student.rollnumber
+            obj["classid"]=data[0].id
             //console.log(obj)
 
             worksheet.addRow(obj)
@@ -204,13 +206,14 @@ router.get('/xl_create/:id', function(req,res,next){
 
 })
 
+
 router.get('/take_attendance/:id', function(req, res, next) {
 
   var messages= req.flash('error');
   request('http://127.0.0.1:5000/camera', function (error, response, body) {
     console.log(body)
   });
-  res.redirect('/user/class-details/'+req.params.id);
+  res.render('user/cameraOn');
 });
 
 
