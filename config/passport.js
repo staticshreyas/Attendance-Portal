@@ -27,7 +27,6 @@ passport.use('local-register', new LocalStrategy({
     var rollnumber=req.body.rollnumber
     var teacher=req.body.teacher
     var student=req.body.student
-    var subject=req.body.subject
 
     req.checkBody('email','Invalid email').notEmpty().isEmail();
     req.checkBody('password','Invalid password').notEmpty().isLength({min:4});
@@ -54,7 +53,6 @@ passport.use('local-register', new LocalStrategy({
             newUser.password = newUser.encryptPassword(password);
             newUser.class=classs
             newUser.rollnumber=rollnumber
-            newUser.subject=subject
             if(teacher=="0")
             {
                 newUser.who=teacher

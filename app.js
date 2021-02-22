@@ -83,15 +83,15 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// port=3000
-// app.listen(port,function(err){
-//   if(err){
-//     console.log(err)
-//   }
-//   else{
-//     console.log("Listening to port:",port)
-//   }
-//})
+port=3000
+app.listen(port,function(err){
+  if(err){
+    console.log(err)
+  }
+  else{
+    console.log("Listening to port:",port)
+  }
+})
 
 
 module.exports = app;
