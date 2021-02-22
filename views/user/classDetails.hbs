@@ -94,7 +94,8 @@
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
                                         </h5>
-                                        <span class="h2 font-weight-bold mb-0">{{# if this.classroom.totLec}} {{this.classroom.totLec}} {{else}} 0 {{/if}}</span>
+                                        <span class="h2 font-weight-bold mb-0">{{# if this.classroom.totLec}}
+                                            {{this.classroom.totLec}} {{else}} 0 {{/if}}</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -112,7 +113,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Total Attendance</h5>
-                                        <span class="h2 font-weight-bold mb-0">43%</span>
+                                        <span class="h2 font-weight-bold mb-0">{{totP}}%</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
@@ -168,22 +169,23 @@
                                 <th scope="row">{{name}}</th>
                                 <td>{{email}}</td>
                                 <td>
-                                    <div style="padding-left: 25px;">12</div>
+                                    <div style="padding-left: 25px;">{{counts}}</div>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <span class="mr-2">60%</span>
+                                        <span class="mr-2">{{percent}}%</span>
                                         <div>
                                             <div class="progress">
                                                 <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                    style="width: 60%;"></div>
+                                                    aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100"
+                                                    style="width: {{percent}}%;"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             {{/each}}
+
                         </tbody>
                     </table>
                 </div>

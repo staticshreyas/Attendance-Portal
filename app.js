@@ -13,6 +13,11 @@ const validator= require('express-validator');
 var MongoStore= require('connect-mongo')(session);
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+var hbs = require('hbs');
+
+hbs.registerHelper('getByKey', function(data,key) {
+    return data[key];
+});
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');

@@ -1,12 +1,16 @@
 var express = require('express');
 var router = express.Router();
-var csrf = require('csurf');
 var passport = require('passport');
 var multer = require('multer');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
-var attendanceModel = require('../models/attendance');
+var attendanceModel = require('../models/record');
+
+var mongodb = require('mongodb');  
+  
+var mongoClient = mongodb.MongoClient;  
+var url = "mongodb://localhost:27017/attendance_portal";
  
 var fs = require('fs');
 var path = require('path');
@@ -67,7 +71,7 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 
 /*Get Classrooms*/
 router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
-  let classrooms=[];
+  let classes=[];
   let users=[];
   calc();
   await classModel.find({'owner':req.user._id},(err,classrooms)=>{
@@ -119,13 +123,52 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
           stuArray.push(student);
         })
       });
-      res.render('user/classDetails', {
-        user: req.user,
-        classroom:classroom,
-        students:stuArray,
-        totClass: totalClasses,
-        totStu: totalStudents
-      });
+      var a=req.params.id
+      console.log(a)
+
+      mongoClient.connect(url, function(err, databases){
+        if(err){
+          throw err;
+        }
+        else{
+          var dbConn=databases.db('attendance_portal')
+          var records=dbConn.collection("attendance")
+
+          records.find({'data.Class': req.params.id}).toArray( function(error, response) {  
+            if (error) {  
+                throw error;  
+            } 
+            var totalP=0
+            for(i=0;i<stuArray.length;i++){
+              var k=0;
+              let student=stuArray[i]
+              for(j=0;j<response.length;j++)
+              {
+                if(student.name==response[j].data.Name[0]){
+                  k++
+                }
+              }    
+              totalP+=k
+              stuArray[i]["counts"]=k.toString()
+              stuArray[i]["percent"]=((k/(classroom.totLec))*100).toString()
+              k=0
+            }
+
+            var totalPercent=(((totalP)/(classroom.totLec))*100).toString()
+
+            //console.log(stuArray)
+            databases.close();  
+            res.render('user/classDetails', {
+              user: req.user,
+              classroom:classroom,
+              students:stuArray,
+              totClass: totalClasses,
+              totStu: totalStudents,
+              totP:totalPercent
+            });
+        }); 
+        }
+      })
     }
   });
 
