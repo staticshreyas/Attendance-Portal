@@ -26,14 +26,6 @@ const classSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
-  count: [{
-    type: String,
-    required: false
-  }],
-  percent: [{
-    type: String,
-    required: false
-  }]
 });
 
 module.exports = new mongoose.model("Class", classSchema);

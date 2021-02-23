@@ -68,10 +68,13 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
   calc();
 
   classModel.find({ 'owner': req.user._id }, (err, classrooms) => {
+
     if (err) {
       return done(err);
     }
+
     else {
+
       classes = classrooms;
       userModel.find({ who: "1" }, (err, users) => {
         if (err) {
@@ -82,7 +85,6 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
           for (i = 0; i < classes.length; i++) {
             let stuArray = []
             let classroom = classes[i]
-
             for (j = 0; j < classroom.students.length; j++) {
               let studentId = classroom.students[j]._id
               //console.log(studentId)
@@ -94,33 +96,38 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
                 }
               }
             }
+            classes[i].studentDetails= stuArray
+          }
+
+          for(i=0;i<classes.length;i++){
+            let classroom=classes[i]
+            let stuArray=classes[i].studentDetails
+
             var classId=(classroom._id).toString()
-            recordModel.find({ 'data.Class':classId }, function (err, resp) {
-
-              if (err) {
-                throw err
+            recordModel.find({ 'data.Class': classId}, function (error, resp) {
+              if (error) {
+                throw error;
               }
-
-              else {
-                console.log(resp)
+              //console.log(resp)
+              if (resp) {
                 var response = JSON.parse(JSON.stringify(resp))
-                if (resp) {
-                  for (i = 0; i < stuArray.length; i++) {
-                    var k = 0;
-                    let student = stuArray[i]
-                    for (j = 0; j < response.length; j++) {
-                      if (student.name == response[j].data.Name[0]) {
-                        k++
-                      }
+                for (l = 0; l < stuArray.length; l++) {
+                  var k = 0;
+                  let student = stuArray[l]
+                  for (m = 0; m < response.length; m++) {
+                    if (student.name == response[m].data.Name[0]) {
+                      k++
                     }
-                    stuArray[i]["counts"] = k.toString()
-                    stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toString()
                   }
-
-                  classroom.studentDetails = stuArray
+                  stuArray[l]["counts"] = k.toString()
+                  stuArray[l]["percent"] = ((k / (classroom.totLec)) * 100).toString()
+                  //console.log(k)
                 }
               }
-            })
+              classroom.studentDetails=stuArray
+            });
+            classes[i]=classroom
+
           }
 
           res.render('user/teacher-classrooms', {
