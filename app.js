@@ -13,11 +13,11 @@ const validator= require('express-validator');
 var MongoStore= require('connect-mongo')(session);
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
-var hbs = require('hbs');
+//var hbs = require('hbs');
 
-hbs.registerHelper('getByKey', function(data,key) {
-    return data[key];
-});
+// hbs.registerHelper('getByKey', function(data,key) {
+//     return data[key];
+// });
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
@@ -28,14 +28,29 @@ mongoose.connect('mongodb://localhost:27017/attendance_portal',{useNewUrlParser:
 
 require('./config/passport');
 
+const hbs=expressHbs.create({
+  defaultLayout: 'layout',
+  extname: '.hbs',
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+
+  //create custom helpers
+  helpers:{
+    maxTwoItems:function(context,options){
+      items=[]
+      if(context.length<=2)
+        limit=context.length
+      else
+        limit=2
+      for (var i = 0;i<limit; i++) {
+         items.push(options.fn(context[i]));
+      }
+      return items;
+    }
+  }
+})
+
 // view engine setup
-app.engine('.hbs',expressHbs(
-  {
-defaultLayout: 'layout',
-extname: '.hbs',
-handlebars: allowInsecurePrototypeAccess(Handlebars)
-}
-));
+app.engine('.hbs',hbs.engine);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
