@@ -5,13 +5,9 @@ var multer = require('multer');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
-var attendanceModel = require('../models/record');
+var recordModel = require('../models/record');
 
-var mongodb = require('mongodb');  
-  
-var mongoClient = mongodb.MongoClient;  
-var url = "mongodb://localhost:27017/attendance_portal";
- 
+   
 var fs = require('fs');
 var path = require('path');
 const Excel = require('exceljs')
@@ -70,66 +66,69 @@ router.get('/profile',isLoggedIn,function (req,res,next) {
 });
 
 /*Get Classrooms*/
-router.get('/teacher-classrooms',isLoggedIn, async(req,res,next)=>{
+router.get('/teacher-classrooms',isLoggedIn, function(req,res,next){
   var classes=[]
   var stu=[]
-
   calc();
-  await classModel.find({'owner':req.user._id},(err,classrooms)=>{
+
+   classModel.find({'owner':req.user._id},(err,classrooms)=>{
     if(err){
       return done(err);
     }
     else{
       classes=classrooms;
-    }
-    });  
-  await userModel.find({who:"1"},(err,users)=>{
-    if(err){
-      return done(err)
-    }
-    else{
-      stu=users;
-    }
-  });
-
-  //console.log(classes)
-  //console.log(stu)
-  
-  for(i=0;i<classes.length;i++)
-  {
-    let stuArray=[]
-    let classroom=classes[i]
-    //console.log(classroom)
-    for(j=0;j<classroom.students.length;j++)
-    {
-      let studentId=classroom.students[j]._id
-      //console.log(studentId)
-      for(z=0;z<stu.length;z++)
-      {
-        if((stu[z]._id).equals(studentId)){
-          stuArray.push(stu[z])
-          break
-          //console.log(stu)
+      userModel.find({who:"1"},(err,users)=>{
+        if(err){
+          return done(err)
         }
-      }
+        else{
+          stu=users;
+          for(i=0;i<classes.length;i++)
+          {
+            let stuArray=[]
+            let classroom=classes[i]
+            //console.log(classroom)
+            for(j=0;j<classroom.students.length;j++)
+            {
+              let studentId=classroom.students[j]._id
+              //console.log(studentId)
+              for(z=0;z<stu.length;z++)
+              {
+                if((stu[z]._id).equals(studentId)){
+                  stuArray.push(stu[z])
+                  break
+                  //console.log(stu)
+                }
+              }
+            }
+            recordModel.find({},function(err, records){
+              if(err){
+                throw err
+              }
+              else{
+                //console.log(records)
 
-      classroom.studentDetails=stuArray
+              }
+            })
+            classroom.studentDetails=stuArray
+          }
 
+          res.render('user/teacher-classrooms', {
+            user: req.user,
+            classrooms:classes,
+            totClass: totalClasses,
+            totStu: totalStudents
+          });
+        }
+      });
     }
-
-  }
-
-  res.render('user/teacher-classrooms', {
-    user: req.user,
-    classrooms:classes,
-    totClass: totalClasses,
-    totStu: totalStudents
-  });
+    });    
 });
 
 /*Get Classroom details*/
 router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
   calc()
+
   classModel.findById(req.params.id,function(err,classroom){
     if(err){
       return done(err);
@@ -141,21 +140,15 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
           stuArray.push(student);
         })
       });
-      var a=req.params.id
-      //console.log(a)
-
-      mongoClient.connect(url, function(err, databases){
-        if(err){
-          throw err;
-        }
-        else{
-          var dbConn=databases.db('attendance_portal')
-          var records=dbConn.collection("attendance")
-
-          records.find({'data.Class': req.params.id}).toArray( function(error, response) {  
+      recordModel.find({'data.Class': req.params.id},function(error, resp) {  
             if (error) {  
                 throw error;  
             } 
+
+            var response= JSON.parse(JSON.stringify(resp))
+            if(response){
+            //console.log(response[0].data)
+
             var totalP=0
             for(i=0;i<stuArray.length;i++){
               var k=0;
@@ -171,11 +164,7 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
               stuArray[i]["percent"]=((k/(classroom.totLec))*100).toString()
               k=0
             }
-
             var totalPercent=(((totalP)/(classroom.totLec))*100).toString()
-
-            //console.log(stuArray)
-            databases.close();  
             res.render('user/classDetails', {
               user: req.user,
               classroom:classroom,
@@ -184,13 +173,22 @@ router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
               totStu: totalStudents,
               totP:totalPercent
             });
-        }); 
-        }
-      })
+          }
+
+          else{
+
+            res.render('user/classDetails', {
+              user: req.user,
+              classroom:classroom,
+              students:stuArray,
+              totClass: totalClasses,
+              totStu: totalStudents,
+            });
+          }
+
+        });  
     }
   });
-
- 
 });
 
 /* Create xls file of students in class*/
