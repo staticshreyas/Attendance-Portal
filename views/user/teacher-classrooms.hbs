@@ -36,7 +36,8 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/user/create-class" class="btn btn-sm btn-neutral"> <i class="ni ni-fat-add text-primary"></i>
+                        <a href="/user/create-class" class="btn btn-sm btn-neutral"> <i
+                                class="ni ni-fat-add text-primary"></i>
                             Create New Classroom</a>
                     </div>
                 </div>
@@ -68,7 +69,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled
+                                        </h5>
                                         <span class="h2 font-weight-bold mb-0">{{totStu}}</span>
                                     </div>
                                     <div class="col-auto">
@@ -87,7 +89,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
+                                        </h5>
                                         <span class="h2 font-weight-bold mb-0">34</span>
                                     </div>
                                     <div class="col-auto">
@@ -127,7 +130,7 @@
     <div class="container-fluid mt--6">
         <div class="row">
             {{#each classrooms}}
-            <div class="col-xl-4">               
+            <div class="col-xl-4">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
@@ -146,32 +149,36 @@
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Lectures</th>
-                                    <th scope="col"> <div style="padding-left: 50px;">Attendance</div></th>
+                                    <th scope="col">
+                                        <div style="padding-left: 50px;">Attendance</div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {{#each studentDetails}}
                                 <tr>
                                     <th scope="row">{{name}}</th>
-                                    <td><div style="padding-left: 25px;">{{counts}}</div></td>
+                                    <td>
+                                        <div style="padding-left: 25px;">{{counts}}</div>
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <span class="mr-2">{{percent}}%</span>
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                        aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: {{percent}}%;"></div>
+                                                        aria-valuenow="{{percent}}" aria-valuemin="0"
+                                                        aria-valuemax="100" style="width: {{percent}}%;"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-                                </tr>              
+                                </tr>
                                 {{/each}}
                             </tbody>
                         </table>
                     </div>
-                </div>               
+                </div>
             </div>
             {{/each}}
         </div>

@@ -7,7 +7,7 @@ var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
 
-   
+
 var fs = require('fs');
 var path = require('path');
 const Excel = require('exceljs')
@@ -15,220 +15,230 @@ const Excel = require('exceljs')
 
 const request = require('request');
 
-let totalClasses=0
-let totalStudents=0
+let totalClasses = 0
+let totalStudents = 0
 
-function calc(){
-  classModel.count({},function(err,count){
-    totalClasses=count
+function calc() {
+  classModel.count({}, function (err, count) {
+    totalClasses = count
   })
-  userModel.count({who:"1"},function(err,count){
-    totalStudents=count
+  userModel.count({ who: "1" }, function (err, count) {
+    totalStudents = count
   })
 }
 
 
 /*Get dashboard*/
-router.get('/dashboard',isLoggedIn,function (req,res,next) {
+router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
-  if(req.user.who=="1")
-  {
+  if (req.user.who == "1") {
     //console.log(req.user)
-      res.render('user/dashboard', {
-          user: req.user,
-      });
+    res.render('user/dashboard', {
+      user: req.user,
+    });
   }
-  else if(req.user.who=="0")
-  {
-   // console.log(req.user)
+  else if (req.user.who == "0") {
+    // console.log(req.user)
     res.render('user/teacher-dashboard', {
       user: req.user,
-  });
+    });
   }
 });
 
 /*Get profile*/
-router.get('/profile',isLoggedIn,function (req,res,next) {
-  if(req.user.who=="1")
-  {
+router.get('/profile', isLoggedIn, function (req, res, next) {
+  if (req.user.who == "1") {
     console.log(req.user)
-      res.render('user/profile', {
-          user: req.user,
-      });
+    res.render('user/profile', {
+      user: req.user,
+    });
   }
-  else if(req.user.who=="0")
-  {
+  else if (req.user.who == "0") {
     console.log(req.user)
     res.render('user/teacher-profile', {
       user: req.user,
-  });
+    });
   }
 });
 
 /*Get Classrooms*/
-router.get('/teacher-classrooms',isLoggedIn, function(req,res,next){
-  var classes=[]
-  var stu=[]
+router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
+  var classes = []
+  var stu = []
   calc();
 
-   classModel.find({'owner':req.user._id},(err,classrooms)=>{
-    if(err){
+  classModel.find({ 'owner': req.user._id }, (err, classrooms) => {
+    if (err) {
       return done(err);
     }
-    else{
-      classes=classrooms;
-      userModel.find({who:"1"},(err,users)=>{
-        if(err){
+    else {
+      classes = classrooms;
+      userModel.find({ who: "1" }, (err, users) => {
+        if (err) {
           return done(err)
         }
-        else{
-          stu=users;
-          for(i=0;i<classes.length;i++)
-          {
-            let stuArray=[]
-            let classroom=classes[i]
-            //console.log(classroom)
-            for(j=0;j<classroom.students.length;j++)
-            {
-              let studentId=classroom.students[j]._id
+        else {
+          stu = users;
+          for (i = 0; i < classes.length; i++) {
+            let stuArray = []
+            let classroom = classes[i]
+
+            for (j = 0; j < classroom.students.length; j++) {
+              let studentId = classroom.students[j]._id
               //console.log(studentId)
-              for(z=0;z<stu.length;z++)
-              {
-                if((stu[z]._id).equals(studentId)){
+              for (z = 0; z < stu.length; z++) {
+                if ((stu[z]._id).equals(studentId)) {
                   stuArray.push(stu[z])
                   break
                   //console.log(stu)
                 }
               }
             }
-            recordModel.find({},function(err, records){
-              if(err){
+            var classId=(classroom._id).toString()
+            recordModel.find({ 'data.Class':classId }, function (err, resp) {
+
+              if (err) {
                 throw err
               }
-              else{
-                //console.log(records)
 
+              else {
+                console.log(resp)
+                var response = JSON.parse(JSON.stringify(resp))
+                if (resp) {
+                  for (i = 0; i < stuArray.length; i++) {
+                    var k = 0;
+                    let student = stuArray[i]
+                    for (j = 0; j < response.length; j++) {
+                      if (student.name == response[j].data.Name[0]) {
+                        k++
+                      }
+                    }
+                    stuArray[i]["counts"] = k.toString()
+                    stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toString()
+                  }
+
+                  classroom.studentDetails = stuArray
+                }
               }
             })
-            classroom.studentDetails=stuArray
           }
 
           res.render('user/teacher-classrooms', {
             user: req.user,
-            classrooms:classes,
+            classrooms: classes,
             totClass: totalClasses,
             totStu: totalStudents
           });
         }
       });
     }
-    });    
+  });
 });
 
 /*Get Classroom details*/
-router.get('/class-details/:id',isLoggedIn,function (req,res,next) {
+router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   calc()
 
-  classModel.findById(req.params.id,function(err,classroom){
-    if(err){
+  classModel.findById(req.params.id, function (err, classroom) {
+    if (err) {
       return done(err);
     }
-    else{
-      let stuArray=[];
-      classroom.students.map((stuId)=>{
-        userModel.findById(stuId,function(err,student){
+    else {
+      let stuArray = [];
+
+      classroom.students.map((stuId) => {
+        userModel.findById(stuId, function (err, student) {
           stuArray.push(student);
         })
       });
-      recordModel.find({'data.Class': req.params.id},function(error, resp) {  
-            if (error) {  
-                throw error;  
-            } 
 
-            var response= JSON.parse(JSON.stringify(resp))
-            if(response){
-            //console.log(response[0].data)
+      recordModel.find({ 'data.Class': req.params.id }, function (error, resp) {
+        if (error) {
+          throw error;
+        }
 
-            var totalP=0
-            for(i=0;i<stuArray.length;i++){
-              var k=0;
-              let student=stuArray[i]
-              for(j=0;j<response.length;j++)
-              {
-                if(student.name==response[j].data.Name[0]){
-                  k++
-                }
-              }    
-              totalP+=k
-              stuArray[i]["counts"]=k.toString()
-              stuArray[i]["percent"]=((k/(classroom.totLec))*100).toString()
-              k=0
+        var response = JSON.parse(JSON.stringify(resp))
+        if (response) {
+          //console.log(response[0].data)
+
+          var totalP = 0
+          for (i = 0; i < stuArray.length; i++) {
+            var k = 0;
+            let student = stuArray[i]
+            for (j = 0; j < response.length; j++) {
+              if (student.name == response[j].data.Name[0]) {
+                k++
+              }
             }
-            var totalPercent=(((totalP)/(classroom.totLec))*100).toString()
-            res.render('user/classDetails', {
-              user: req.user,
-              classroom:classroom,
-              students:stuArray,
-              totClass: totalClasses,
-              totStu: totalStudents,
-              totP:totalPercent
-            });
+            totalP += k
+            stuArray[i]["counts"] = k.toString()
+            stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toString()
+            k = 0
           }
+          var totalPercent = (((totalP) / (classroom.totLec)) * 100).toString()
+          res.render('user/classDetails', {
+            user: req.user,
+            classroom: classroom,
+            students: stuArray,
+            totClass: totalClasses,
+            totStu: totalStudents,
+            totP: totalPercent
+          });
+        }
 
-          else{
+        else {
 
-            res.render('user/classDetails', {
-              user: req.user,
-              classroom:classroom,
-              students:stuArray,
-              totClass: totalClasses,
-              totStu: totalStudents,
-            });
-          }
+          res.render('user/classDetails', {
+            user: req.user,
+            classroom: classroom,
+            students: stuArray,
+            totClass: totalClasses,
+            totStu: totalStudents,
+          });
+        }
 
-        });  
+      });
     }
   });
 });
 
 /* Create xls file of students in class*/
-router.get('/xl_create/:id', function(req,res,next){
+router.get('/xl_create/:id', function (req, res, next) {
 
   let workbook = new Excel.Workbook()
   let worksheet = workbook.addWorksheet('students_db')
 
   worksheet.columns = [
-    {header: 'name', key: 'name'},
-    {header: 'image', key: 'image'},
-    {header: 'roll_no', key: 'roll_no'},
-    {header: 'classid', key: 'classid'}
+    { header: 'name', key: 'name' },
+    { header: 'image', key: 'image' },
+    { header: 'roll_no', key: 'roll_no' },
+    { header: 'classid', key: 'classid' }
   ]
 
-  var query=classModel.find({_id: req.params.id}).select({"students": 1, "_id":1})
+  var query = classModel.find({ _id: req.params.id }).select({ "students": 1, "_id": 1 })
 
-  query.exec(function(err, data){
-    if(err){
+  query.exec(function (err, data) {
+    if (err) {
       console.log(err)
     }
-    else{
+    else {
       //console.log(data)
-      for(i=0;i<data[0].students.length;i++)
-      {
-        var a=data[0].students[i]
+      for (i = 0; i < data[0].students.length; i++) {
+        var a = data[0].students[i]
         //console.log(a)
-        userModel.findById(a, function(err,student){
+        userModel.findById(a, function (err, student) {
 
-          if(err){
+          if (err) {
             console.log(err)
           }
 
-          else{
+          else {
             //console.log(student)
-            var obj={}
-            obj["name"]=student.name
-            obj["image"]=student.name+".jpg"
-            obj["roll_no"]=student.rollnumber
-            obj["classid"]=data[0].id
+            var obj = {}
+            obj["name"] = student.name
+            obj["image"] = student.name + ".jpg"
+            obj["roll_no"] = student.rollnumber
+            obj["classid"] = data[0].id
             //console.log(obj)
 
             worksheet.addRow(obj)
@@ -236,8 +246,8 @@ router.get('/xl_create/:id', function(req,res,next){
           }
         })
 
-      }       
-      res.redirect('/user/class-details/'+req.params.id);
+      }
+      res.redirect('/user/class-details/' + req.params.id);
     }
   })
 
@@ -245,9 +255,9 @@ router.get('/xl_create/:id', function(req,res,next){
 })
 
 /* Take attendance of students in class*/
-router.get('/take_attendance/:id', function(req, res, next) {
+router.get('/take_attendance/:id', function (req, res, next) {
 
-  var messages= req.flash('error');
+  var messages = req.flash('error');
   request('http://127.0.0.1:5000/camera', function (error, response, body) {
     console.log(body)
   });
@@ -256,7 +266,7 @@ router.get('/take_attendance/:id', function(req, res, next) {
 
 
 /* Add new class*/
-router.get('/create-class',isLoggedIn, (req, res)=>{
+router.get('/create-class', isLoggedIn, (req, res) => {
   console.log(req.user);
   // var messages= req.flash('error');
   res.render('user/create-class');
@@ -264,55 +274,55 @@ router.get('/create-class',isLoggedIn, (req, res)=>{
 
 router.post('/create-class', (req, res, next) => {
   console.log("hereeee");
-  var newClass={
-    name:req.body.name,
-    description:req.body.description,
-    owner:req.user._id,
+  var newClass = {
+    name: req.body.name,
+    description: req.body.description,
+    owner: req.user._id,
   }
 
   classModel.create(newClass, (err, item) => {
     if (err) {
-        console.log(err);
+      console.log(err);
     }
     else {
-        item.save();
-        res.redirect('/user/teacher-classrooms');
+      item.save();
+      res.redirect('/user/teacher-classrooms');
     }
   });
 });
 
 
 /* Add new student in particular class*/
-router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
+router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
   //console.log(req.params.id);
-  
-  userModel.find({'who':"1"},function(err,users){
-    if(err){
+
+  userModel.find({ 'who': "1" }, function (err, users) {
+    if (err) {
       return done(err);
     }
-    else{
+    else {
       //console.log(users);
-      classModel.findById(req.params.id,function(err,classroom){
-        if(err){
+      classModel.findById(req.params.id, function (err, classroom) {
+        if (err) {
           return done(err);
         }
-        else{
-          let notInClassStudents=[];
-          users.map((user)=>{
-            flag=0
-            classroom.students.map((stuId)=>{
-              if (stuId.equals(user._id)){
-                flag=1
+        else {
+          let notInClassStudents = [];
+          users.map((user) => {
+            flag = 0
+            classroom.students.map((stuId) => {
+              if (stuId.equals(user._id)) {
+                flag = 1
               }
             });
-            if(flag===0){
+            if (flag === 0) {
               notInClassStudents.push(user);
             }
           });
-  
+
           res.render('user/addStudents', {
             users: notInClassStudents,
-            classroom:classroom
+            classroom: classroom
           });
         }
       });
@@ -321,40 +331,40 @@ router.get('/class-details/:id/students/new',isLoggedIn, (req, res)=>{
 });
 
 router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
-  var students=req.params.stuId;
-  classModel.findOneAndUpdate({_id:req.params.id},{$push:{students:students}},{new:true},function(err,updatedClass){
-		if(err){
-			console.log(err);
-		}
-		else{
+  var students = req.params.stuId;
+  classModel.findOneAndUpdate({ _id: req.params.id }, { $push: { students: students } }, { new: true }, function (err, updatedClass) {
+    if (err) {
+      console.log(err);
+    }
+    else {
       //console.log(updatedClass);
-			res.redirect('/user/class-details/'+req.params.id+'/students/new');
-		}
-	});
+      res.redirect('/user/class-details/' + req.params.id + '/students/new');
+    }
+  });
 });
 
 router.get('/add-lec/:id', (req, res, next) => {
- 
-  classModel.findOneAndUpdate({_id:req.params.id},{$inc: {totLec: 1}},function(err,updatedClass){
-		if(err){
-			console.log(err);
-		}
-		else{
+
+  classModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { totLec: 1 } }, function (err, updatedClass) {
+    if (err) {
+      console.log(err);
+    }
+    else {
       //console.log(updatedClass);
-			res.redirect('/user/class-details/'+req.params.id);
-		}
-	});
+      res.redirect('/user/class-details/' + req.params.id);
+    }
+  });
 });
 
 
 /* View All Registered Students*/
 router.get('/allStudents', (req, res, next) => {
 
-  userModel.find({'who':"1"},function(err,users){
-    if(err){
+  userModel.find({ 'who': "1" }, function (err, users) {
+    if (err) {
       return done(err);
     }
-    else{
+    else {
       res.render('user/allStudents', {
         users: users,
       });
@@ -365,111 +375,110 @@ router.get('/allStudents', (req, res, next) => {
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, __dirname+'../../public/assets/uploads')
+    cb(null, __dirname + '../../public/assets/uploads')
   },
   filename: (req, file, cb) => {
-      cb(null, file.originalname)
+    cb(null, file.originalname)
   }
 });
 
-var upload = multer({ storage: storage }); 
+var upload = multer({ storage: storage });
 
-router.get('/upload',isLoggedIn, (req, res) => {
-  var messages= req.flash('error');
-  res.render('user/upload',{messages: messages, hasErrors: messages.length >0});
+router.get('/upload', isLoggedIn, (req, res) => {
+  var messages = req.flash('error');
+  res.render('user/upload', { messages: messages, hasErrors: messages.length > 0 });
 
 });
 
 router.post('/upload', upload.single('photo'), (req, res, next) => {
- 
+
   var obj = {
     user: req.user,
-      img: {
-          data: fs.readFileSync(path.join(__dirname+'../../public/assets/uploads/' + req.file.filename)),
-          contentType: 'image/png'
-      }
+    img: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/assets/uploads/' + req.file.filename)),
+      contentType: 'image/png'
+    }
   }
   imgModel.create(obj, (err, item) => {
-      if (err) {
-          console.log(err);
-      }
-      else {
-          item.save();
-          res.redirect('/user/dashboard');
-      }
+    if (err) {
+      console.log(err);
+    }
+    else {
+      item.save();
+      res.redirect('/user/dashboard');
+    }
   });
 });
 
 
-router.get('/logout',isLoggedIn,function (req,res,next) {
+router.get('/logout', isLoggedIn, function (req, res, next) {
   req.logout();
   res.redirect('/');
 });
 
-router.use('/',notLoggedIn, function (req,res,next)
-{
-next();
+router.use('/', notLoggedIn, function (req, res, next) {
+  next();
 });
 
 /* GET users listing. */
-router.get('/login', function(req, res, next){
-  var messages= req.flash('error');
-  res.render('user/login',{ messages: messages, hasErrors: messages.length >0});
+router.get('/login', function (req, res, next) {
+  var messages = req.flash('error');
+  res.render('user/login', { messages: messages, hasErrors: messages.length > 0 });
 });
 
-router.post('/login',passport.authenticate('local-login',{
+router.post('/login', passport.authenticate('local-login', {
   failureRedirect: '/user/login',
   failureFlash: true
 
-}),function (req,res,next) {
-  if(req.session.oldurl){
-      var oldurl=req.session.oldurl;
-      req.session.oldurl=null;
-      res.redirect(oldurl);
-  }else {
-      res.redirect('/user/dashboard');
+}), function (req, res, next) {
+  if (req.session.oldurl) {
+    var oldurl = req.session.oldurl;
+    req.session.oldurl = null;
+    res.redirect(oldurl);
+  } else {
+    res.redirect('/user/dashboard');
   }
 
 });
 
-router.get('/register', function(req, res, next){
-  var messages= req.flash('error');
-  res.render('user/register',{ messages: messages, hasErrors: messages.length >0});
+router.get('/register', function (req, res, next) {
+  var messages = req.flash('error');
+  res.render('user/register', { messages: messages, hasErrors: messages.length > 0 });
 });
 
 
-router.post('/register',passport.authenticate('local-register',{
+router.post('/register', passport.authenticate('local-register', {
   failureRedirect: '/user/register',
   failureFlash: true
 
-}),function (req,res,next) {
-  if(req.session.oldurl){
-      var oldurl=req.session.oldurl;
-      req.session.oldurl=null;
-      res.redirect(oldurl);
-  }else {
-      res.redirect('/user/dashboard');
+}), function (req, res, next) {
+  if (req.session.oldurl) {
+    var oldurl = req.session.oldurl;
+    req.session.oldurl = null;
+    res.redirect(oldurl);
+  } else {
+    res.redirect('/user/dashboard');
   }
 
 });
 
-router.get('/teacher-register', function(req, res, next){
-  var messages= req.flash('error');
-  res.render('user/teacher-register',{ messages: messages, hasErrors: messages.length >0});
+router.get('/teacher-register', function (req, res, next) {
+  var messages = req.flash('error');
+  res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0 });
 });
 
 
-router.post('/teacher-register',passport.authenticate('local-register',{
+router.post('/teacher-register', passport.authenticate('local-register', {
   failureRedirect: '/user/teacher-register',
   failureFlash: true
 
-}),function (req,res,next) {
-  if(req.session.oldurl){
-      var oldurl=req.session.oldurl;
-      req.session.oldurl=null;
-      res.redirect(oldurl);
-  }else {
-      res.redirect('/user/dashboard');
+}), function (req, res, next) {
+  if (req.session.oldurl) {
+    var oldurl = req.session.oldurl;
+    req.session.oldurl = null;
+    res.redirect(oldurl);
+  } else {
+    res.redirect('/user/dashboard');
   }
 
 });
@@ -477,16 +486,16 @@ router.post('/teacher-register',passport.authenticate('local-register',{
 
 module.exports = router;
 
-function isLoggedIn(req,res,next) {
-  if (req.isAuthenticated()){
-      return next();
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
   }
   res.redirect('/user/login');
 }
 
-function notLoggedIn(req,res,next) {
-  if (!req.isAuthenticated()){
-      return next();
+function notLoggedIn(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return next();
   }
   res.redirect('/user/login');
 }
