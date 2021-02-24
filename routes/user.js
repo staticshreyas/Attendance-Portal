@@ -27,6 +27,75 @@ function calc() {
   })
 }
 
+async function forClassDeatils(classId) {
+
+  var classroom= await classModel.findById(classId)
+
+  //console.log(classroom._id)
+  //console.log(classId)
+
+  var studentPromise=classroom.students.map(async (stuId) => {
+    var students= await userModel.findById(stuId)
+    return students 
+  });
+
+  var stuArray=await Promise.all(studentPromise)
+
+  var resp=await recordModel.find({ 'data.Class': classId.toString() })
+
+  var response = JSON.parse(JSON.stringify(resp))
+
+  console.log(response)
+
+  var totalP = 0
+  for (i = 0; i < stuArray.length; i++) {
+    var k = 0;
+    let student = stuArray[i]
+    for (j = 0; j < response.length; j++) {
+      for(w=0;w<response[j].data.Name.length;w++){
+        if (student.name == response[j].data.Name[w]) {
+        k++
+        }
+      }
+    }
+    totalP += k
+    stuArray[i]["counts"] = k.toString()
+    stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
+    k = 0
+  }
+
+  var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
+
+  
+  var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent}
+
+  //console.log(obj)
+
+  return obj
+
+
+}
+
+async function forTeacherClasses(teacherId){
+
+  var allClasses=[]
+  var classrooms= await classModel.find({ 'owner': teacherId })
+
+  for(classes of classrooms){
+    var obj=forClassDeatils(classes._id)
+    var ob = await obj
+    var classroom=ob.classroom
+    var stuArray=ob.stuArray
+    classroom.studentDetails=stuArray
+    allClasses.push(classroom)
+  }
+
+  //console.log(allClasses[0].studentDetails)
+
+  return allClasses
+}
+
+
 
 /*Get dashboard*/
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
@@ -63,158 +132,39 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
 
 /*Get Classrooms*/
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
-  var classes = []
-  var stu = []
+
   calc();
+  var obj= forTeacherClasses(req.user._id)
 
-  classModel.find({ 'owner': req.user._id }, (err, classrooms) => {
+  obj.then(classes=>{
+    res.render('user/teacher-classrooms', {
+      user: req.user,
+      classrooms: classes,
+      totClass: totalClasses,
+      totStu: totalStudents
+    });
+  })
 
-    if (err) {
-      return done(err);
-    }
-
-    else {
-
-      classes = classrooms;
-      userModel.find({ who: "1" }, (err, users) => {
-        if (err) {
-          return done(err)
-        }
-        else {
-          stu = users;
-          for (i = 0; i < classes.length; i++) {
-            let stuArray = []
-            let classroom = classes[i]
-            for (j = 0; j < classroom.students.length; j++) {
-              let studentId = classroom.students[j]._id
-              //console.log(studentId)
-              for (z = 0; z < stu.length; z++) {
-                if ((stu[z]._id).equals(studentId)) {
-                  stuArray.push(stu[z])
-                  break
-                  //console.log(stu)
-                }
-              }
-            }
-            classes[i].studentDetails= stuArray
-          }
-
-          for(i=0;i<classes.length;i++){
-            let classroom=classes[i]
-            let stuArray=classes[i].studentDetails
-
-            var classId=(classroom._id).toString()
-            recordModel.find({ 'data.Class': classId}, function (error, resp) {
-              if (error) {
-                throw error;
-              }
-              console.log(resp)
-              if (resp) {
-                var response = JSON.parse(JSON.stringify(resp))
-                for (l = 0; l < stuArray.length; l++) {
-                  var k = 0;
-                  let student = stuArray[l]
-                  for (m = 0; m < response.length; m++) {
-                    for(w=0;w<response[m].data.Name.length;w++){
-                        if (student.name == response[m].data.Name[w]) {
-                        k++
-                        }
-                    }
-                  }
-                  stuArray[l]["counts"] = k.toString()
-                  stuArray[l]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
-                  //console.log(k)
-                }
-              }
-              classroom.studentDetails=stuArray
-            });
-            classes[i]=classroom
-
-          }
-
-          res.render('user/teacher-classrooms', {
-            user: req.user,
-            classrooms: classes,
-            totClass: totalClasses,
-            totStu: totalStudents
-          });
-        }
-      });
-    }
-  });
 });
-
-
-
 
 
 /*Get Classroom details*/
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   calc()
-
-  classModel.findById(req.params.id, function (err, classroom) {
-    if (err) {
-      return done(err);
-    }
-    else {
-      let stuArray = [];
-
-      classroom.students.map((stuId) => {
-        userModel.findById(stuId, function (err, student) {
-          stuArray.push(student);
-        })
-      });
-
-      recordModel.find({ 'data.Class': req.params.id }, function (error, resp) {
-        if (error) {
-          throw error;
-        }
-
-        var response = JSON.parse(JSON.stringify(resp))
-        if (response) {
-          console.log(response)
-          var totalP = 0
-          for (i = 0; i < stuArray.length; i++) {
-            var k = 0;
-            let student = stuArray[i]
-            for (j = 0; j < response.length; j++) {
-              for(w=0;w<response[j].data.Name.length;w++){
-                if (student.name == response[j].data.Name[w]) {
-                k++
-                }
-              }
-            }
-            totalP += k
-            stuArray[i]["counts"] = k.toString()
-            stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
-            k = 0
-          }
-          var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
-          res.render('user/classDetails', {
-            user: req.user,
-            classroom: classroom,
-            students: stuArray,
-            totClass: totalClasses,
-            totStu: totalStudents,
-            totP: totalPercent
-          });
-        }
-
-        else {
-
-          res.render('user/classDetails', {
-            user: req.user,
-            classroom: classroom,
-            students: stuArray,
-            totClass: totalClasses,
-            totStu: totalStudents,
-          });
-        }
-
-      });
-    }
-  });
+  var obj=forClassDeatils(req.params.id)
+  obj.then((ob)=>{
+    //console.log(ob)
+    res.render('user/classDetails', {
+      user: req.user,
+      classroom: ob.classroom,
+      students: ob.stuArray,
+      totClass: totalClasses,
+      totStu: totalStudents,
+      totP: ob.totalPercent
+    });
+  })
 });
+
 
 /* Create xls file of students in class*/
 router.get('/xl_create/:id', function (req, res, next) {
