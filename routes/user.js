@@ -122,7 +122,7 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
                     }
                   }
                   stuArray[l]["counts"] = k.toString()
-                  stuArray[l]["percent"] = ((k / (classroom.totLec)) * 100).toString()
+                  stuArray[l]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
                   //console.log(k)
                 }
               }
@@ -172,7 +172,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 
         var response = JSON.parse(JSON.stringify(resp))
         if (response) {
-          //console.log(response[0].data)
+          console.log(response)
           var totalP = 0
           for (i = 0; i < stuArray.length; i++) {
             var k = 0;
@@ -186,10 +186,10 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
             }
             totalP += k
             stuArray[i]["counts"] = k.toString()
-            stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toString()
+            stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
             k = 0
           }
-          var totalPercent = (((totalP) / (classroom.totLec)) * 100).toString()
+          var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
           res.render('user/classDetails', {
             user: req.user,
             classroom: classroom,
