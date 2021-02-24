@@ -173,14 +173,15 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
         var response = JSON.parse(JSON.stringify(resp))
         if (response) {
           //console.log(response[0].data)
-
           var totalP = 0
           for (i = 0; i < stuArray.length; i++) {
             var k = 0;
             let student = stuArray[i]
             for (j = 0; j < response.length; j++) {
-              if (student.name == response[j].data.Name[0]) {
+              for(w=0;w<response[j].data.Name.length;w++){
+                if (student.name == response[j].data.Name[w]) {
                 k++
+                }
               }
             }
             totalP += k
