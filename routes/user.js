@@ -108,15 +108,17 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
               if (error) {
                 throw error;
               }
-              //console.log(resp)
+              console.log(resp)
               if (resp) {
                 var response = JSON.parse(JSON.stringify(resp))
                 for (l = 0; l < stuArray.length; l++) {
                   var k = 0;
                   let student = stuArray[l]
                   for (m = 0; m < response.length; m++) {
-                    if (student.name == response[m].data.Name[0]) {
-                      k++
+                    for(w=0;w<response[m].data.Name.length;w++){
+                        if (student.name == response[m].data.Name[w]) {
+                        k++
+                        }
                     }
                   }
                   stuArray[l]["counts"] = k.toString()
@@ -141,6 +143,10 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     }
   });
 });
+
+
+
+
 
 /*Get Classroom details*/
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
