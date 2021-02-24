@@ -45,7 +45,7 @@ async function forClassDeatils(classId) {
 
   var response = JSON.parse(JSON.stringify(resp))
 
-  console.log(response)
+  //console.log(response)
 
   var totalP = 0
   for (i = 0; i < stuArray.length; i++) {
@@ -61,13 +61,12 @@ async function forClassDeatils(classId) {
     totalP += k
     stuArray[i]["counts"] = k.toString()
     stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
-    k = 0
   }
 
-  var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
+  var totalPercent = (((totalP) / (classroom.totLec)) * 100).toFixed(2).toString()
 
   
-  var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent}
+  var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent, totalP: totalP}
 
   //console.log(obj)
 
@@ -87,6 +86,8 @@ async function forTeacherClasses(teacherId){
     var classroom=ob.classroom
     var stuArray=ob.stuArray
     classroom.studentDetails=stuArray
+    classroom.totalP=ob.totalP
+    classroom.totalPercent=ob.totalPercent
     allClasses.push(classroom)
   }
 
@@ -137,11 +138,22 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
   var obj= forTeacherClasses(req.user._id)
 
   obj.then(classes=>{
+    var totalLectures=0
+    var totalP=0;
+    for(i=0;i<classes.length;i++){
+      totalLectures+=classes[i].totLec
+    }
+    for(i=0;i<classes.length;i++){
+      totalP=totalP+(parseInt(classes[i].totalP))
+    }
+    var avgPercent=(((totalP)/(totalLectures))*100).toFixed(2).toString()
     res.render('user/teacher-classrooms', {
       user: req.user,
       classrooms: classes,
       totClass: totalClasses,
-      totStu: totalStudents
+      totStu: totalStudents,
+      totLec: totalLectures,
+      avgPercent:avgPercent
     });
   })
 
@@ -159,7 +171,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
       classroom: ob.classroom,
       students: ob.stuArray,
       totClass: totalClasses,
-      totStu: totalStudents,
+      totStu: ob.stuArray.length,
       totP: ob.totalPercent
     });
   })

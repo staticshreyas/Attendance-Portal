@@ -89,9 +89,9 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures by {{this.user.name}}
                                         </h5>
-                                        <span class="h2 font-weight-bold mb-0">34</span>
+                                        <span class="h2 font-weight-bold mb-0">{{totLec}}</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -108,8 +108,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Attendance</h5>
-                                        <span class="h2 font-weight-bold mb-0">43%</span>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Attendance in {{this.user.name}}'s class</h5>
+                                        <span class="h2 font-weight-bold mb-0">{{avgPercent}}%</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">

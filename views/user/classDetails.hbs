@@ -72,7 +72,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled in {{this.classroom.name}}
                                         </h5>
                                         <span class="h2 font-weight-bold mb-0">{{totStu}}</span>
                                     </div>
@@ -92,7 +92,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Condcuted
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Of {{this.classroom.name}} Condcuted
                                         </h5>
                                         <span class="h2 font-weight-bold mb-0">{{# if this.classroom.totLec}}
                                             {{this.classroom.totLec}} {{else}} 0 {{/if}}</span>
@@ -112,7 +112,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Attendance</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Average {{this.classroom.name}} Attendance</h5>
                                         <span class="h2 font-weight-bold mb-0">{{totP}}%</span>
                                     </div>
                                     <div class="col-auto">
