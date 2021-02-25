@@ -387,6 +387,7 @@ router.post('/login', passport.authenticate('local-login', {
   failureFlash: true
 
 }), function (req, res, next) {
+  req.session.user=req.user
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;
@@ -408,6 +409,7 @@ router.post('/register', passport.authenticate('local-register', {
   failureFlash: true
 
 }), function (req, res, next) {
+  req.session.user=req.user
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;

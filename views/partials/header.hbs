@@ -20,7 +20,7 @@
                         <span class="nav-link-inner--text">Dashboard</span>
                     </a>
                 </li>
-                {{# if this.user.who}}
+                {{# if this.session.user.who}}
                 <li class="nav-item">
                     <a href="/user/profile" class="nav-link">
                         <span class="nav-link-inner--text">Profile</span>
@@ -29,7 +29,7 @@
                 {{else}}
                 <li class="nav-item">
                     <a href="/user/teacher-classrooms" class="nav-link">
-                        <span class="nav-link-inner--text">Classrooms {{this.session}}</span>
+                        <span class="nav-link-inner--text">Classrooms</span>
                     </a>
                 </li>
                 {{/if}}
