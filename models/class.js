@@ -24,7 +24,8 @@ const classSchema = new mongoose.Schema({
   },
   totLec: {
     type: Number,
-    required: false
+    required: false,
+    default:0
   },
 });
 

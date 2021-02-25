@@ -45,7 +45,7 @@ async function forClassDeatils(classId) {
 
   var response = JSON.parse(JSON.stringify(resp))
 
-  //console.log(response)
+  //console.log(stuArray)
 
   var totalP = 0
   for (i = 0; i < stuArray.length; i++) {
@@ -58,17 +58,20 @@ async function forClassDeatils(classId) {
         }
       }
     }
-    totalP += k
+    totalP += k 
     stuArray[i]["counts"] = k.toString()
-    stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
+    if(classroom.totLec==0)
+      stuArray[i]["percent"]=0
+    else
+      stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()  
+   
   }
-
-  var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
-
+  if(classroom.totLec==0)
+    var totalPercent=0 
+  else
+    var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
   
   var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent, totalP: totalP}
-
-  //console.log(obj)
 
   return obj
 
@@ -120,7 +123,7 @@ async function creatXl(classId){
             obj["image"] = student.name + ".jpg"
             obj["roll_no"] = student.rollnumber
             obj["classid"] = data[0].id
-            console.log(obj)
+            //console.log(obj)
 
             worksheet.addRow(obj)
             workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
@@ -133,13 +136,11 @@ async function creatXl(classId){
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
   if (req.user.who == "1") {
-    //console.log(req.user)
     res.render('user/dashboard', {
       user: req.user,
     });
   }
   else if (req.user.who == "0") {
-    // console.log(req.user)
     res.render('user/teacher-dashboard', {
       user: req.user,
     });
@@ -149,13 +150,11 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 /*Get profile*/
 router.get('/profile', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
-    console.log(req.user)
     res.render('user/profile', {
       user: req.user,
     });
   }
   else if (req.user.who == "0") {
-    console.log(req.user)
     res.render('user/teacher-profile', {
       user: req.user,
     });
@@ -177,7 +176,12 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     for(i=0;i<classes.length;i++){
       totalP=totalP+(parseInt(classes[i].totalP))
     }
-    var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString()
+    if(totalLectures===0){
+      var avgPercent=0
+    }
+    else{
+      var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString() 
+    }
     res.render('user/teacher-classrooms', {
       user: req.user,
       classrooms: classes,
