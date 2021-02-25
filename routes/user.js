@@ -63,7 +63,7 @@ async function forClassDeatils(classId) {
     stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
   }
 
-  var totalPercent = (((totalP) / (classroom.totLec)) * 100).toFixed(2).toString()
+  var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
 
   
   var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent, totalP: totalP}
@@ -94,6 +94,37 @@ async function forTeacherClasses(teacherId){
   //console.log(allClasses[0].studentDetails)
 
   return allClasses
+}
+
+async function creatXl(classId){
+
+  let workbook = new Excel.Workbook()
+  let worksheet = workbook.addWorksheet('students_db')
+
+  worksheet.columns = [
+    { header: 'name', key: 'name' },
+    { header: 'image', key: 'image' },
+    { header: 'roll_no', key: 'roll_no' },
+    { header: 'classid', key: 'classid' }
+  ]
+
+  var data = await classModel.find({ _id: classId }).select({ "students": 1, "_id": 1 })
+
+  for (i = 0; i < data[0].students.length; i++) {
+        var a = data[0].students[i]
+        //console.log(a)
+        var student = await userModel.findById(a) 
+        //console.log(student)
+            var obj = {}
+            obj["name"] = student.name
+            obj["image"] = student.name + ".jpg"
+            obj["roll_no"] = student.rollnumber
+            obj["classid"] = data[0].id
+            console.log(obj)
+
+            worksheet.addRow(obj)
+            workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
+  }
 }
 
 
@@ -146,7 +177,7 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     for(i=0;i<classes.length;i++){
       totalP=totalP+(parseInt(classes[i].totalP))
     }
-    var avgPercent=(((totalP)/(totalLectures))*100).toFixed(2).toString()
+    var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString()
     res.render('user/teacher-classrooms', {
       user: req.user,
       classrooms: classes,
@@ -163,6 +194,7 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 /*Get Classroom details*/
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   calc()
+  creatXl(req.params.id)
   var obj=forClassDeatils(req.params.id)
   obj.then((ob)=>{
     //console.log(ob)
@@ -177,58 +209,6 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   })
 });
 
-
-/* Create xls file of students in class*/
-router.get('/xl_create/:id', function (req, res, next) {
-
-  let workbook = new Excel.Workbook()
-  let worksheet = workbook.addWorksheet('students_db')
-
-  worksheet.columns = [
-    { header: 'name', key: 'name' },
-    { header: 'image', key: 'image' },
-    { header: 'roll_no', key: 'roll_no' },
-    { header: 'classid', key: 'classid' }
-  ]
-
-  var query = classModel.find({ _id: req.params.id }).select({ "students": 1, "_id": 1 })
-
-  query.exec(function (err, data) {
-    if (err) {
-      console.log(err)
-    }
-    else {
-      //console.log(data)
-      for (i = 0; i < data[0].students.length; i++) {
-        var a = data[0].students[i]
-        //console.log(a)
-        userModel.findById(a, function (err, student) {
-
-          if (err) {
-            console.log(err)
-          }
-
-          else {
-            //console.log(student)
-            var obj = {}
-            obj["name"] = student.name
-            obj["image"] = student.name + ".jpg"
-            obj["roll_no"] = student.rollnumber
-            obj["classid"] = data[0].id
-            //console.log(obj)
-
-            worksheet.addRow(obj)
-            workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
-          }
-        })
-
-      }
-      res.redirect('/user/class-details/' + req.params.id);
-    }
-  })
-
-
-})
 
 /* Take attendance of students in class*/
 router.get('/take_attendance/:id', function (req, res, next) {
