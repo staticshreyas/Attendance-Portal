@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="container mt--8 pb-5" >
+  <div class="container mt--8 pb-5">
     <div class="row justify-content-center" style="margin-top: 300px;">
       <div class="card card-profile shadow mt--300">
         <div class="px-4">
@@ -38,13 +38,13 @@
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-4 mt-lg-0">
                 <a href="/user/dashboard" class="btn btn-sm btn-info mr-4">Dashboard</a>
-                <a href="/user/logout" class="btn btn-sm btn-default float-right">Logout</a>
+                <div style="padding-top: 10px;"></div><a href="/user/logout" class="btn btn-sm btn-default mr-4">Logout</a>
               </div>
             </div>
             <div class="col-lg-4 order-lg-1">
               <div class="card-profile-stats d-flex justify-content-center">
                 <div>
-                  <span class="heading">78%</span>
+                  <span class="heading">62%</span>
                   <span class="description">Attendance</span>
                 </div>
               </div>
@@ -59,9 +59,11 @@
           <div class="mt-5 py-5 border-top text-center">
             <div class="row justify-content-center">
               <div class="col-lg-9">
-                <p>An artist of considerable range, Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick
-                  Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a
-                  solid groove structure. An artist of considerable range.</p>
+                <p>Hey {{this.user.name}}! It appears you have 62% attendance which is below the 75% limit.</p>
+                <br>
+                <p>OR</p>
+                <br>
+                <p>Hey {{this.user.name}}! It appears you have 78% attendance which is above the 75% limit.</p>
               </div>
             </div>
           </div>
