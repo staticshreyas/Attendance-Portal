@@ -14,6 +14,7 @@ const Excel = require('exceljs')
 
 
 const request = require('request');
+const { basename } = require('path');
 
 let totalClasses = 0
 let totalStudents = 0
@@ -134,16 +135,46 @@ async function creatXl(classId){
 
 /*Get dashboard*/
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
-
+  console.log(req.user.who)
   if (req.user.who == "1") {
     res.render('user/dashboard', {
       user: req.user,
     });
   }
   else if (req.user.who == "0") {
-    res.render('user/teacher-dashboard', {
-      user: req.user,
-    });
+
+    calc();
+    var obj= forTeacherClasses(req.user._id)
+    
+    obj.then(classes=>{
+      console.log(classes)
+      var totalLectures=0
+      var totalP=0;
+      for(i=0;i<classes.length;i++){
+        totalLectures+=classes[i].totLec
+      }
+      for(i=0;i<classes.length;i++){
+        totalP=totalP+(parseInt(classes[i].totalP))
+      } 
+      if(totalLectures===0){
+        var avgPercent=0
+      }
+      else{
+        var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString() 
+      }
+
+     
+      //console.log(topAttPerStuPerClass)
+      res.render('user/teacher-dashboard', {
+        user: req.user,
+        classrooms: classes,
+        totClass: totalClasses,
+        totStu: totalStudents,
+        totLec: totalLectures,
+        avgPercent:avgPercent,
+        
+      });
+    })
   }
 });
 
