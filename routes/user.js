@@ -162,8 +162,22 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
       else{
         var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString() 
       }
-
-     
+      
+      topAttPerStuPerClass=[]
+      for(i=0;i<classes.length;i++){
+        max=0
+        for(j=0;j<classes[i].studentDetails.length;j++){
+          var a=classes[i].studentDetails[j]
+          var b=classes[i].studentDetails[max]
+          if(parseFloat(a.percent) > parseFloat(b.percent)){
+            max=j
+          }
+        }
+        var b=classes[i].studentDetails[max]
+        if(parseFloat(b.percent)!=0){
+          topAttPerStuPerClass.push({className:classes[i].name,studentName:b.name,studentCounts:b.counts,studentPercent:b.percent.toString()})
+        }       
+      }
       //console.log(topAttPerStuPerClass)
       res.render('user/teacher-dashboard', {
         user: req.user,
@@ -172,7 +186,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         totStu: totalStudents,
         totLec: totalLectures,
         avgPercent:avgPercent,
-        
+        totClassAttStats:totClassAttStats
       });
     })
   }

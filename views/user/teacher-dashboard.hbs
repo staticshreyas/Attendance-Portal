@@ -196,7 +196,7 @@
                     </div>
                     <div class="table-responsive">
                         <!-- Projects table -->
-                   
+                     
                     </div>
                 </div>
             </div>
@@ -212,7 +212,43 @@
                     </div>
                     <div class="table-responsive">
                         <!-- Projects table -->
-                        
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Class Name</th>
+                                    <th scope="col">Student Name</th>
+                                    <th scope="col">Lectures</th>
+                                    <th scope="col">Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each topAttPerStuPerClass}}
+                                <tr>
+                                    <th scope="row">
+                                       {{className}}
+                                    </th>
+                                    <td>
+                                        <div style="padding-left: 25px;">{{studentName}}</div>
+                                    </td>
+                                     <td>
+                                        <div style="padding-left: 25px;">{{studentCounts}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="mr-2">{{studentPercent}}%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                                                        aria-valuenow="{{studentPercent}}" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: {{studentPercent}}%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
