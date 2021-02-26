@@ -177,7 +177,25 @@
                         <!-- Chart -->
                         <div class="chart">
                             <canvas id="chart-bars" class="chart-canvas"></canvas>
-                              
+                                {{!-- <script>
+                                var data = {
+                                    labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                                    datasets: [
+                                        {
+                                            label: "My First dataset",
+                                            fillColor: "rgba(220,220,220,0.2)",
+                                            strokeColor: "rgba(220,220,220,1)",
+                                            pointColor: "rgba(220,220,220,1)",
+                                            pointStrokeColor: "#fff",
+                                            pointHighlightFill: "#fff",
+                                            pointHighlightStroke: "rgba(220,220,220,1)",
+                                            data: [5, 20, 30, 22, 17, 29]
+                                        }
+                                    ]
+                                };
+                                var ctx = document.getElementById("chart-bars").getContext("2d");
+                                var myNewChart = new Chart(ctx).Line(data);
+                            </script> --}}
                         </div>
                     </div>
                 </div>
@@ -196,7 +214,39 @@
                     </div>
                     <div class="table-responsive">
                         <!-- Projects table -->
-                     
+                       <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Class Name</th>
+                                    <th scope="col">Total Lectures</th>
+                                    <th scope="col">Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each totClassAttStats}}
+                                <tr>
+                                    <th scope="row">
+                                       {{className}}
+                                    </th>
+                                    <td>
+                                        <div style="padding-left: 50px;">{{classAttLec}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="mr-2">{{classAttPer}}%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                                                        aria-valuenow="{{classAttPer}}" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: {{classAttPer}}%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

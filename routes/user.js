@@ -162,6 +162,13 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
       else{
         var avgPercent=(((totalP)/(totalLectures*totalStudents))*100).toFixed(2).toString() 
       }
+
+      totClassAttStats=[]
+      for(i=0;i<classes.length;i++){
+        var obj={className:classes[i].name,classAttPer:classes[i].totalPercent.toString(),classAttLec:classes[i].totLec}
+        totClassAttStats.push(obj)
+      }
+      console.log(totClassAttStats)
       
       topAttPerStuPerClass=[]
       for(i=0;i<classes.length;i++){
@@ -186,6 +193,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         totStu: totalStudents,
         totLec: totalLectures,
         avgPercent:avgPercent,
+        topAttPerStuPerClass:topAttPerStuPerClass,
         totClassAttStats:totClassAttStats
       });
     })
