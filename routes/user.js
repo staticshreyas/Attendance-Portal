@@ -136,7 +136,7 @@ async function studentAttendance(stuId){
   var student= await userModel.findById(stuId)
 
   var resp=await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
-  if(resp){
+  if(resp.length>0){
 
     var response = JSON.parse(JSON.stringify(resp))
 
@@ -171,7 +171,15 @@ async function studentAttendance(stuId){
     var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
 
   }else{
+    var classes= await classModel.find({'students': student._id})
+    //console.log(classes)
+    if(classes.length==0)
+    {
+      attendance=-1
+    }
+    else{
     attendance=0
+    }
   }
   return attendance
 }

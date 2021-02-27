@@ -38,14 +38,19 @@
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-4 mt-lg-0">
                 <a href="/user/dashboard" class="btn btn-sm btn-info mr-4">Dashboard</a>
-                <div style="padding-top: 10px;"></div><a href="/user/logout" class="btn btn-sm btn-default mr-4">Logout</a>
+                <div style="padding-top: 10px;"></div><a href="/user/logout"
+                  class="btn btn-sm btn-default mr-4">Logout</a>
               </div>
             </div>
             <div class="col-lg-4 order-lg-1">
               <div class="card-profile-stats d-flex justify-content-center">
                 <div>
+                  {{#ifCond attendance '==' -1}}
+                  <span class="description">Not in any class</span>
+                  {{else}}
                   <span class="heading">{{attendance}}%</span>
                   <span class="description">Attendance</span>
+                  {{/ifCond}}
                 </div>
               </div>
             </div>
@@ -59,11 +64,16 @@
           <div class="mt-5 py-5 border-top text-center">
             <div class="row justify-content-center">
               <div class="col-lg-9">
-                {{#ifCond attendance '<' 75}}
-                <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance which is <mark style="background-color:tomato;">BELOW THE 75% LIMIT.</mark></p>
+                {{#ifCond attendance '==' -1}}
+                <p>Hey {{this.user.name}}! It appears you are not part of any class.</mark></p>
                 {{else}}
-                <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance which is <mark style="background-color:lawngreen;">ABOVE THE 75% LIMIT.</p>
-                {{/ifCond}}
+                {{#ifCond attendance '<' 75}} <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance
+                  which is <mark style="background-color:tomato;">BELOW THE 75% LIMIT.</mark></p>
+                  {{else}}
+                  <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance which is <mark
+                      style="background-color:lawngreen;">ABOVE THE 75% LIMIT.</p>
+                  {{/ifCond}}
+                  {{/ifCond}}
               </div>
             </div>
           </div>
