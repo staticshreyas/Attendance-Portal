@@ -136,42 +136,44 @@ async function studentAttendance(stuId){
   var student= await userModel.findById(stuId)
 
   var resp=await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
-  var response = JSON.parse(JSON.stringify(resp))
+  if(resp){
 
-  var totalStuRecords=resp.length
-  var totalStuLecs=0
+    var response = JSON.parse(JSON.stringify(resp))
 
-  //console.log(totalStuRecords)
-  var mark={}
-  for(record of response){
-    if(mark){
-      if(mark.classId==1){
-        continue
+    var totalStuRecords=resp.length
+    var totalStuLecs=0
+  
+    //console.log(totalStuRecords)
+    var mark={}
+    for(record of response){
+      if(mark){
+        if(mark.classId==1){
+          continue
+        }
+      var classId=record.data.Class[0]
+      mark={classId: 1}
+      var obj=forClassDeatils(classId)
+      var ob = await obj
+      var classroom=ob.classroom
+      totalStuLecs+=classroom.totLec
       }
-    var classId=record.data.Class[0]
-    mark={classId: 1}
-    var obj=forClassDeatils(classId)
-    var ob = await obj
-    var classroom=ob.classroom
-    totalStuLecs+=classroom.totLec
+      else{
+      var classId=record.data.Class[0]
+      mark={classd: 1}
+      var obj=forClassDeatils(classId)
+      var ob = await obj
+      var classroom=ob.classroom
+      totalStuLecs+=classroom.totLec
+  
+      }
     }
-    else{
-    var classId=record.data.Class[0]
-    mark={classd: 1}
-    var obj=forClassDeatils(classId)
-    var ob = await obj
-    var classroom=ob.classroom
-    totalStuLecs+=classroom.totLec
+  
+    var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
 
-    }
+  }else{
+    attendance=0
   }
-
-  var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
-
   return attendance
-
-
-
 }
 
 
