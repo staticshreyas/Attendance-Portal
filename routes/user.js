@@ -142,13 +142,28 @@ async function studentAttendance(stuId){
   var totalStuLecs=0
 
   //console.log(totalStuRecords)
-
+  var mark={}
   for(record of response){
+    if(mark){
+      if(mark.classId==1){
+        continue
+      }
     var classId=record.data.Class[0]
+    mark={classId: 1}
     var obj=forClassDeatils(classId)
     var ob = await obj
     var classroom=ob.classroom
     totalStuLecs+=classroom.totLec
+    }
+    else{
+    var classId=record.data.Class[0]
+    mark={classd: 1}
+    var obj=forClassDeatils(classId)
+    var ob = await obj
+    var classroom=ob.classroom
+    totalStuLecs+=classroom.totLec
+
+    }
   }
 
   var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
