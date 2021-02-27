@@ -65,7 +65,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-9">
                 {{#ifCond attendance '==' -1}}
-                <p>Hey {{this.user.name}}! It appears you are not part of any class.</mark></p>
+                <p>Hey {{this.user.name}}! It appears you are not part a of any class.</mark></p>
                 {{else}}
                 {{#ifCond attendance '<' 75}} <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance
                   which is <mark style="background-color:tomato;">BELOW THE 75% LIMIT.</mark></p>
