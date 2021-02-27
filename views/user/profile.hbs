@@ -44,7 +44,7 @@
             <div class="col-lg-4 order-lg-1">
               <div class="card-profile-stats d-flex justify-content-center">
                 <div>
-                  <span class="heading">62%</span>
+                  <span class="heading">{{attendance}}%</span>
                   <span class="description">Attendance</span>
                 </div>
               </div>
@@ -59,11 +59,11 @@
           <div class="mt-5 py-5 border-top text-center">
             <div class="row justify-content-center">
               <div class="col-lg-9">
-                <p>Hey {{this.user.name}}! It appears you have 62% attendance which is below the 75% limit.</p>
-                <br>
-                <p>OR</p>
-                <br>
-                <p>Hey {{this.user.name}}! It appears you have 78% attendance which is above the 75% limit.</p>
+                {{#ifCond attendance '<' 75}}
+                <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance which is <mark style="background-color:tomato;">BELOW THE 75% LIMIT.</mark></p>
+                {{else}}
+                <p>Hey {{this.user.name}}! It appears you have {{attendance}}% attendance which is <mark style="background-color:lawngreen;">ABOVE THE 75% LIMIT.</p>
+                {{/ifCond}}
               </div>
             </div>
           </div>

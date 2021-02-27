@@ -131,6 +131,34 @@ async function creatXl(classId){
   }
 }
 
+async function studentAttendance(stuId){
+
+  var student= await userModel.findById(stuId)
+
+  var resp=await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
+  var response = JSON.parse(JSON.stringify(resp))
+
+  var totalStuRecords=resp.length
+  var totalStuLecs=0
+
+  //console.log(totalStuRecords)
+
+  for(record of response){
+    var classId=record.data.Class[0]
+    var obj=forClassDeatils(classId)
+    var ob = await obj
+    var classroom=ob.classroom
+    totalStuLecs+=classroom.totLec
+  }
+
+  var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
+
+  return attendance
+
+
+
+}
+
 
 
 /*Get dashboard*/
@@ -203,9 +231,13 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 /*Get profile*/
 router.get('/profile', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
-    res.render('user/profile', {
-      user: req.user,
-    });
+    var obj=studentAttendance(req.user.id)
+    obj.then(attendance=>{
+      res.render('user/profile', {
+        user: req.user,
+        attendance: attendance
+      });
+    })
   }
   else if (req.user.who == "0") {
     res.render('user/teacher-profile', {
