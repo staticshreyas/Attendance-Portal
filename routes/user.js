@@ -271,6 +271,16 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
   }
 });
 
+/*Get user classes*/
+router.get('/userClasses', isLoggedIn, function (req, res, next) {
+  if (req.user.who == "1") {
+    res.render('user/user-classes', {
+      user: req.user,
+    });
+
+  }
+});
+
 /*Get Classrooms*/
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 
