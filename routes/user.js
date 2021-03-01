@@ -64,14 +64,16 @@ async function forClassDeatils(classId) {
     if(classroom.totLec==0)
       stuArray[i]["percent"]=0
     else
-      stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()  
-   
+      stuArray[i]["percent"] = ((k / (classroom.totLec)) * 100).toFixed(2).toString()
+    
+    classroom.studentDetails=stuArray 
   }
   if(classroom.totLec==0)
     var totalPercent=0 
   else
     var totalPercent = (((totalP) / (classroom.totLec*stuArray.length)) * 100).toFixed(2).toString()
   
+
   var obj=  {classroom: classroom, stuArray: stuArray, totalPercent: totalPercent, totalP: totalP}
 
   return obj
@@ -137,39 +139,32 @@ async function studentAttendance(stuId){
 
   var resp=await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
   if(resp.length>0){
-
     var response = JSON.parse(JSON.stringify(resp))
-
     var totalStuRecords=resp.length
     var totalStuLecs=0
-  
-    //console.log(totalStuRecords)
-    var mark={}
+      var mark={}
     for(record of response){
-      if(mark){
-        if(mark.classId==1){
+      if(Object.keys(mark).length>0){
+        if(mark.class.id==record.data.Class[0]){
           continue
         }
       var classId=record.data.Class[0]
-      mark={classId: 1}
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
+      mark={class: classroom}
       totalStuLecs+=classroom.totLec
       }
       else{
       var classId=record.data.Class[0]
-      mark={classd: 1}
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
+      mark={class: classroom}
       totalStuLecs+=classroom.totLec
-  
       }
     }
-  
     var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
-
   }else{
     var classes= await classModel.find({'students': student._id})
     //console.log(classes)
@@ -184,6 +179,67 @@ async function studentAttendance(stuId){
   return attendance
 }
 
+async function forUserClasses(stuId){
+
+  var allClasses=[]
+  var student= await userModel.findById(stuId)
+
+  var resp=await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
+  if(resp.length>0){
+
+    var response = JSON.parse(JSON.stringify(resp))
+
+    var totalStuRecords=resp.length
+    var totalStuLecs=0
+
+
+  
+    var mark={}
+
+    for(record of response){
+      if(Object.keys(mark).length>0){
+        if(mark.class.id==record.data.Class[0]){
+          continue
+        }
+      var classId=record.data.Class[0]
+      var obj=forClassDeatils(classId)
+      var ob = await obj
+      var classroom=ob.classroom
+      mark={class: classroom}
+      allClasses.push(classroom)
+      totalStuLecs+=classroom.totLec
+      }
+      else{
+      var classId=record.data.Class[0]
+      var obj=forClassDeatils(classId)
+      var ob = await obj
+      var classroom=ob.classroom
+      mark={class: classroom}
+      allClasses.push(classroom)
+      totalStuLecs+=classroom.totLec
+      }
+
+    }
+
+    var attendance=((totalStuRecords/totalStuLecs)*100).toFixed(2).toString()
+  }else{
+    var classes= await classModel.find({'students': student._id})
+    if(classes.length==0)
+    {
+      totalStuRecords=0
+      attendance=-1
+    }
+    else{
+    totalStuRecords=0
+    attendance=0
+    }
+  }
+ //console.log(allClasses)
+  var obj={attendance: attendance, classes:allClasses,totalLecs: totalStuRecords}
+
+  return obj
+
+}
 
 
 /*Get dashboard*/
@@ -273,11 +329,31 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
 
 /*Get user classes*/
 router.get('/userClasses', isLoggedIn, function (req, res, next) {
+  calc()
   if (req.user.who == "1") {
-    res.render('user/user-classes', {
-      user: req.user,
-    });
+    var obj=forUserClasses(req.user._id)
+    obj.then(ob=>{
+      
+      for(i=0;i<ob.classes.length;i++){
+        var classroom=ob.classes[i]
+        for(j=0;j<classroom.studentDetails.length;j++){
+          var student=classroom.studentDetails[j]
+          if(student.name==req.user.name){
+            ob.classes[i].studentDetails=student
+            break
+          }
+        }
+      }
 
+      res.render('user/user-classes', {
+        user: req.user,
+        totClass: totalClasses,
+        classrooms:ob.classes,
+        attendance:ob.attendance,
+        totLec: ob.totalLecs,
+        totStuClass: ob.classes.length,
+      });
+    })
   }
 });
 

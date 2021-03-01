@@ -67,9 +67,10 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">{{this.user.name}}'s Classrooms
+                                        <h5 class="card-title text-uppercase text-muted mb-0">{{this.user.name}}'s
+                                            Classrooms
                                         </h5>
-                                        <span class="h2 font-weight-bold mb-0">{{totStu}}</span>
+                                        <span class="h2 font-weight-bold mb-0">{{totStuClass}}</span>
                                     </div>
                                     <div class="col-auto">
                                         <div
@@ -106,8 +107,14 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Attendance Of {{this.user.name}}</h5>
-                                        <span class="h2 font-weight-bold mb-0">{{avgPercent}}%</span>
+
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Attendance Of
+                                            {{this.user.name}}</h5>
+                                        {{# ifCond attendance '==' -1}}
+                                        <span class="h2 font-weight-bold mb-0">0%</span>
+                                        {{else}}
+                                        <span class="h2 font-weight-bold mb-0">{{attendance}}%</span>
+                                        {{/ifCond}}
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
@@ -144,34 +151,30 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Lectures</th>
+                                    <th scope="col" style="padding-left: 50px;">Lectures</th>
                                     <th scope="col">
-                                        <div style="padding-left: 50px;">Attendance</div>
+                                        <div style="padding-left: 70px;">Attendance</div>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#maxTwoItems studentDetails}}
                                 <tr>
-                                    <th scope="row">{{name}}</th>
                                     <td>
-                                        <div style="padding-left: 25px;">{{counts}}</div>
+                                        <div style="padding-left: 45px;">{{studentDetails.counts}}</div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">{{percent}}%</span>
+                                        <div class="d-flex align-items-center" style="padding-left: 20px;">
+                                            <span class="mr-2">{{studentDetails.percent}}%</span>
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                        aria-valuenow="{{percent}}" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: {{percent}}%;"></div>
+                                                        aria-valuenow="{{studentDetails.percent}}" aria-valuemin="0"
+                                                        aria-valuemax="100" style="width: {{studentDetails.percent}}%;"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                                {{/maxTwoItems}}
                             </tbody>
                         </table>
                     </div>
