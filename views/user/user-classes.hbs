@@ -140,10 +140,7 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 class="mb-0">{{name}}</h3>
-                            </div>
-                            <div class="col text-right">
-                                <a href="/user/class-details/{{_id}}" class="btn btn-sm btn-primary">See all</a>
+                                <h3 class="mb-0">{{name}} - {{description}}</h3>
                             </div>
                         </div>
                     </div>
@@ -160,7 +157,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div style="padding-left: 45px;">{{studentDetails.counts}}</div>
+                                        <div style="padding-left: 40px;">{{studentDetails.counts}} / {{totLec}}</div>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center" style="padding-left: 20px;">
