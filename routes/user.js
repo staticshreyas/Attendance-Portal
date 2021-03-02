@@ -294,6 +294,18 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
           topAttPerStuPerClass.push({className:classes[i].name,studentName:b.name,studentCounts:b.counts,studentPercent:b.percent.toString()})
         }       
       }
+
+      defaultersList=[]
+      for(i=0;i<classes.length;i++){
+        for(j=0;j<classes[i].studentDetails.length;j++){
+          var a=classes[i].studentDetails[j]
+          if(parseFloat(a.percent)<75){
+            defaultersList.push({studentName:a.name,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,studentPercent:a.percent.toString()})
+          }
+        }
+      }
+      console.log(defaultersList);
+
       //console.log(topAttPerStuPerClass)
       res.render('user/teacher-dashboard', {
         user: req.user,
