@@ -253,7 +253,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
       for(j=0;j<classes[i].studentDetails.length;j++){
         var a=classes[i].studentDetails[j]
         if(parseFloat(a.percent)<75){
-          defaultersList.push({studentName:a.name,studentRollno:a.rollnumber,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,studentPercent:a.percent.toString()})
+          defaultersList.push({studentName:a.name,studentRollno:a.rollnumber,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,classCounts:classes[i].totLec,studentPercent:a.percent.toString()})
         }
       }
     }
