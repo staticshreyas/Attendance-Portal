@@ -242,6 +242,29 @@ async function forUserClasses(stuId){
 }
 
 
+/*defaulter list*/
+router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
+  console.log(req.user.who)
+  var obj= forTeacherClasses(req.user._id)
+  
+  obj.then(classes=>{
+    defaultersList=[]
+    for(i=0;i<classes.length;i++){
+      for(j=0;j<classes[i].studentDetails.length;j++){
+        var a=classes[i].studentDetails[j]
+        if(parseFloat(a.percent)<75){
+          defaultersList.push({studentName:a.name,studentRollno:a.rollnumber,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,studentPercent:a.percent.toString()})
+        }
+      }
+    }
+    console.log(defaultersList);
+
+    res.render('user/defaulterStudents', {
+      defaulterStudents:defaultersList,
+    });
+  })
+});
+
 /*Get dashboard*/
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
   console.log(req.user.who)
@@ -300,7 +323,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         for(j=0;j<classes[i].studentDetails.length;j++){
           var a=classes[i].studentDetails[j]
           if(parseFloat(a.percent)<75){
-            defaultersList.push({studentName:a.name,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,studentPercent:a.percent.toString()})
+            defaultersList.push({studentName:a.name,studentRollno:a.rollnumber,studentEmail:a.email,className:classes[i].name,studentCounts:a.counts,studentPercent:a.percent.toString()})
           }
         }
       }
@@ -315,7 +338,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         totLec: totalLectures,
         avgPercent:avgPercent,
         topAttPerStuPerClass:topAttPerStuPerClass,
-        totClassAttStats:totClassAttStats
+        totClassAttStats:totClassAttStats,
       });
     })
   }
@@ -368,6 +391,8 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
     })
   }
 });
+
+
 
 /*Get Classrooms*/
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
