@@ -300,7 +300,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         var obj={className:classes[i].name,classAttPer:classes[i].totalPercent.toString(),classAttLec:classes[i].totLec}
         totClassAttStats.push(obj)
       }
-      console.log(totClassAttStats)
+      //console.log(totClassAttStats)
       
       topAttPerStuPerClass=[]
       for(i=0;i<classes.length;i++){

@@ -83,7 +83,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures by {{this.user.name}}
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures by
+                                            {{this.user.name}}
                                         </h5>
                                         <span class="h2 font-weight-bold mb-0">{{totLec}}</span>
                                     </div>
@@ -102,7 +103,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Attendance in {{this.user.name}}'s class</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Attendance in
+                                            {{this.user.name}}'s class</h5>
                                         <span class="h2 font-weight-bold mb-0">{{avgPercent}}%</span>
                                     </div>
                                     <div class="col-auto">
@@ -163,6 +165,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-4">
                 <div class="card">
                     <div class="card-header bg-transparent">
@@ -176,8 +179,9 @@
                     <div class="card-body">
                         <!-- Chart -->
                         <div class="chart">
-                            <canvas id="chart-bars" class="chart-canvas"></canvas>
-                                {{!-- <script>
+                            <canvas id="chart-bars" class="chart-canvas" data-prefix="$"></canvas>
+                            {{!--
+                            <script>
                                 var data = {
                                     labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                                     datasets: [
@@ -209,12 +213,12 @@
                             <div class="col">
                                 <h3 class="mb-0">Total attendance percent of all your classes</h3>
                             </div>
-                          
+
                         </div>
                     </div>
                     <div class="table-responsive">
                         <!-- Projects table -->
-                       <table class="table align-items-center table-flush">
+                        <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Class Name</th>
@@ -226,7 +230,7 @@
                                 {{#each totClassAttStats}}
                                 <tr>
                                     <th scope="row">
-                                       {{className}}
+                                        {{className}}
                                     </th>
                                     <td>
                                         <div style="padding-left: 50px;">{{classAttLec}}</div>
@@ -237,8 +241,8 @@
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                        aria-valuenow="{{classAttPer}}" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: {{classAttPer}}%;"></div>
+                                                        aria-valuenow="{{classAttPer}}" aria-valuemin="0"
+                                                        aria-valuemax="100" style="width: {{classAttPer}}%;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,7 +261,7 @@
                             <div class="col">
                                 <h3 class="mb-0">Student with hightest attendance in your classes</h3>
                             </div>
-                           
+
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -275,12 +279,12 @@
                                 {{#each topAttPerStuPerClass}}
                                 <tr>
                                     <th scope="row">
-                                       {{className}}
+                                        {{className}}
                                     </th>
                                     <td>
                                         <div style="padding-left: 25px;">{{studentName}}</div>
                                     </td>
-                                     <td>
+                                    <td>
                                         <div style="padding-left: 25px;">{{studentCounts}}</div>
                                     </td>
                                     <td>
@@ -289,8 +293,8 @@
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                        aria-valuenow="{{studentPercent}}" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: {{studentPercent}}%;"></div>
+                                                        aria-valuenow="{{studentPercent}}" aria-valuemin="0"
+                                                        aria-valuemax="100" style="width: {{studentPercent}}%;"></div>
                                                 </div>
                                             </div>
                                         </div>
