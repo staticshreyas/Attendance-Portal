@@ -1,5 +1,7 @@
 {{> header}}
 
+<link rel="stylesheet" href="/assets/css/form_style.css" type="text/css">
+
 <!-- Main content -->
 <div class="main-content">
     <!-- Header -->
@@ -45,7 +47,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
                                     </div>
-                                    <input class="form-control" name="name" placeholder="Name" type="text">
+                                    <input class="form-control" name="name" placeholder="Name" type="text" value="{{filledformdata.name}}" style="{{#if filledformdata.name}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 
@@ -54,7 +56,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                                     </div>
-                                    <input class="form-control" name="class" placeholder="Class" type="text">
+                                    <input class="form-control" name="class" placeholder="Class" type="text" value="{{filledformdata.class}}" style="{{#if filledformdata.class}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 
@@ -63,7 +65,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-books"></i></span>
                                     </div>
-                                    <input class="form-control" name="rollnumber" placeholder="Roll Number" type="text">
+                                    <input class="form-control" name="rollnumber" placeholder="Roll Number" type="text" value="{{filledformdata.rollnumber}}" style="{{#if filledformdata.rollnumber}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 
@@ -72,7 +74,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" name="email" placeholder="Email" type="email">
+                                    <input class="form-control" name="email" placeholder="Email" type="email" value="{{filledformdata.email}}" style="{{#if filledformdata.email}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 
