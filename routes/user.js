@@ -15,6 +15,7 @@ const Excel = require('exceljs')
 
 const request = require('request');
 const { basename } = require('path');
+const { response } = require('express');
 
 let totalClasses = 0
 let totalStudents = 0
@@ -626,11 +627,24 @@ router.post('/login', passport.authenticate('local-login', {
 
 router.get('/register', function (req, res, next) {
   var messages = req.flash('error');
-  res.render('user/register', { messages: messages, hasErrors: messages.length > 0 });
+  var filledformdata = {}
+  if(req.session.filledformdata){
+    filledformdata = req.session.filledformdata ;
+    req.session.filledformdata = undefined;
+  }
+  var filledformdata = {
+    // 'name' : filledformdata.usernameInput!=''? filledformdata.usernameInput : 'Name',
+    'name': filledformdata.usernameInput,
+    'class' : filledformdata.class,
+    'rollnumber' : filledformdata.rollnumber,
+    'email' : filledformdata.emailInput,
+  }
+  console.log("form data: ", filledformdata);
+  res.render('user/register', { messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
 });
 
 
-router.post('/register', passport.authenticate('local-register', {
+router.post('/register',check ,passport.authenticate('local-register', {
   failureRedirect: '/user/register',
   failureFlash: true
 
@@ -645,6 +659,22 @@ router.post('/register', passport.authenticate('local-register', {
   }
 
 });
+
+function check(req, res, next){
+  console.log("entered name",req.body.name);
+  var input = {
+    'usernameInput' : req.body.name,
+    'class' : req.body.class,
+    'rollnumber' : req.body.rollnumber,
+    'emailInput' : req.body.email,
+  }
+  req.session.filledformdata = input;
+  // req.flash('emailInput',req.body.email);
+  // req.flash('usernameInput',req.body.name);
+  // req.flash('class',req.body.class);
+  // req.flash('rollnumber',req.body.rollnumber);
+  next();
+}
 
 router.get('/teacher-register', function (req, res, next) {
   var messages = req.flash('error');
