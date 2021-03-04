@@ -633,13 +633,11 @@ router.get('/register', function (req, res, next) {
     req.session.filledformdata = undefined;
   }
   var filledformdata = {
-    // 'name' : filledformdata.usernameInput!=''? filledformdata.usernameInput : 'Name',
     'name': filledformdata.usernameInput,
     'class' : filledformdata.class,
     'rollnumber' : filledformdata.rollnumber,
     'email' : filledformdata.emailInput,
   }
-  console.log("form data: ", filledformdata);
   res.render('user/register', { messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
 });
 
@@ -661,7 +659,6 @@ router.post('/register',check ,passport.authenticate('local-register', {
 });
 
 function check(req, res, next){
-  console.log("entered name",req.body.name);
   var input = {
     'usernameInput' : req.body.name,
     'class' : req.body.class,
@@ -669,10 +666,6 @@ function check(req, res, next){
     'emailInput' : req.body.email,
   }
   req.session.filledformdata = input;
-  // req.flash('emailInput',req.body.email);
-  // req.flash('usernameInput',req.body.name);
-  // req.flash('class',req.body.class);
-  // req.flash('rollnumber',req.body.rollnumber);
   next();
 }
 
