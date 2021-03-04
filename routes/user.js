@@ -124,7 +124,7 @@ async function creatXl(classId){
         //console.log(student)
             var obj = {}
             obj["name"] = student.name
-            obj["image"] = student.name + ".jpg"
+            obj["image"] = student.rollnumber + ".jpg"
             obj["roll_no"] = student.rollnumber
             obj["classid"] = data[0].id
             //console.log(obj)
