@@ -143,17 +143,25 @@ async function studentAttendance(stuId){
     var response = JSON.parse(JSON.stringify(resp))
     var totalStuRecords=resp.length
     var totalStuLecs=0
-      var mark={}
+    var mark=[]
     for(record of response){
-      if(Object.keys(mark).length>0){
-        if(mark.class.id==record.data.Class[0]){
+      if(mark.length>0){
+        var found=false
+        for(var i=0;i<mark.length;i++){
+          if(mark[i].id==record.data.Class[0]){
+            found=true
+            break
+          }
+        }
+        if(found){
           continue
         }
       var classId=record.data.Class[0]
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
-      mark={class: classroom}
+      mark.push(classroom)
+      //console.log(classroom)
       totalStuLecs+=classroom.totLec
       }
       else{
@@ -161,7 +169,8 @@ async function studentAttendance(stuId){
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
-      mark={class: classroom}
+      mark.push(classroom)
+      //console.log(classroom)
       totalStuLecs+=classroom.totLec
       }
     }
@@ -192,21 +201,22 @@ async function forUserClasses(stuId){
 
     var totalStuRecords=resp.length
     var totalStuLecs=0
-
-
-  
-    var mark={}
-
     for(record of response){
-      if(Object.keys(mark).length>0){
-        if(mark.class.id==record.data.Class[0]){
+      if(allClasses.length>0){
+        var found=false
+        for(var i=0;i<allClasses.length;i++){
+          if(allClasses[i].id==record.data.Class[0]){
+            found=true
+            break
+          }
+        }
+        if(found){
           continue
         }
       var classId=record.data.Class[0]
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
-      mark={class: classroom}
       allClasses.push(classroom)
       totalStuLecs+=classroom.totLec
       }
@@ -215,7 +225,6 @@ async function forUserClasses(stuId){
       var obj=forClassDeatils(classId)
       var ob = await obj
       var classroom=ob.classroom
-      mark={class: classroom}
       allClasses.push(classroom)
       totalStuLecs+=classroom.totLec
       }
