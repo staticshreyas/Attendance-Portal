@@ -1,5 +1,6 @@
 {{> header}}
 
+<link rel="stylesheet" href="/assets/css/form_style.css" type="text/css">
 
 <!-- Main content -->
 <div class="main-content">
@@ -46,7 +47,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
                                     </div>
-                                    <input class="form-control" name="name" placeholder="Name" type="text">
+                                    <input class="form-control" name="name" placeholder="Name" type="text" value="{{filledformdata.usernameInput}}" style="{{#if filledformdata.usernameInput}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 
@@ -55,7 +56,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" name="email" placeholder="Email" type="email">
+                                    <input class="form-control" name="email" placeholder="Email" type="email" value="{{filledformdata.emailInput}}" style="{{#if filledformdata.emailInput}}background-color: rgb(232, 240, 254);{{/if}}">
                                 </div>
                             </div>
 

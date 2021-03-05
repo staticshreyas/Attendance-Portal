@@ -627,16 +627,9 @@ router.post('/login', passport.authenticate('local-login', {
 
 router.get('/register', function (req, res, next) {
   var messages = req.flash('error');
-  var filledformdata = {}
   if(req.session.filledformdata){
-    filledformdata = req.session.filledformdata ;
+    var filledformdata = req.session.filledformdata ;
     req.session.filledformdata = undefined;
-  }
-  var filledformdata = {
-    'name': filledformdata.usernameInput,
-    'class' : filledformdata.class,
-    'rollnumber' : filledformdata.rollnumber,
-    'email' : filledformdata.emailInput,
   }
   res.render('user/register', { messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
 });
@@ -647,7 +640,8 @@ router.post('/register',check ,passport.authenticate('local-register', {
   failureFlash: true
 
 }), function (req, res, next) {
-  req.session.user=req.user
+  req.session.filledformdata = undefined;
+  req.session.user=req.user;
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;
@@ -671,15 +665,20 @@ function check(req, res, next){
 
 router.get('/teacher-register', function (req, res, next) {
   var messages = req.flash('error');
-  res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0 });
+  if(req.session.filledformdata){
+    var filledformdata = req.session.filledformdata ;
+    req.session.filledformdata = undefined;
+  }
+  res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
 
 
-router.post('/teacher-register', passport.authenticate('local-register', {
+router.post('/teacher-register',check ,passport.authenticate('local-register', {
   failureRedirect: '/user/teacher-register',
   failureFlash: true
 
 }), function (req, res, next) {
+  req.session.filledformdata = undefined;
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;
