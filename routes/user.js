@@ -392,8 +392,35 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
 });
 
 
+/* defaulter classes for a student*/
+router.get('/defaulterClasses', isLoggedIn, function (req, res, next) {
+  calc()
+  defaultersList=[];
+  if (req.user.who == "1") {
+    var obj=forUserClasses(req.user._id)
+    obj.then(ob=>{     
+      for(i=0;i<ob.classes.length;i++){
+        var classroom=ob.classes[i]
+        for(j=0;j<classroom.studentDetails.length;j++){
+          var student=classroom.studentDetails[j]
+          if(student.name==req.user.name){
+            if(parseFloat(student.percent)<75){
+              defaultersList.push({className:classroom.name,studentCounts:student.counts,classCounts:classroom.totLec,studentPercent:student.percent.toString()})
+            }
+          }
+        }
+      }
 
-/*Get Classrooms*/
+      res.render('user/defaulterClasses', {
+        defaulterClasses:defaultersList,
+      });
+    })
+  }
+});
+
+
+
+/*Get teacher Classrooms*/
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 
   calc();
