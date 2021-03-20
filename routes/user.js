@@ -251,6 +251,13 @@ async function forUserClasses(stuId){
 
 }
 
+// function to get all lectures taken by this ownerid-> teacher
+async function forUserClasses(ownerId){
+  var resp=await recordModel.find({ 'owner': ownerId.toString() }); // get all attendance for this teacher
+  return resp;
+
+}
+
 
 /*defaulter list*/
 router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
@@ -287,6 +294,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
     calc();
     var obj= forTeacherClasses(req.user._id)
+    var all_lectures_conducted = forUserClasses(req.user._id) // array of all lectures taken by this teacher
     
     obj.then(classes=>{
       console.log(classes)
@@ -328,17 +336,37 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         }       
       }
 
-      //console.log(topAttPerStuPerClass)
-      res.render('user/teacher-dashboard', {
-        user: req.user,
-        classrooms: classes,
-        totClass: totalClasses,
-        totStu: totalStudents,
-        totLec: totalLectures,
-        avgPercent:avgPercent,
-        topAttPerStuPerClass:topAttPerStuPerClass,
-        totClassAttStats:totClassAttStats,
-      });
+      var graphdata_as_object = {}
+      all_lectures_conducted.then(lectures=>{
+        
+        for(lecture of lectures){
+          var time_string = lecture._doc.AttendanceRecord;                      // timestamp of attendance record
+          var time_components = time_string.split(" ");                         // day, month, date, time, year
+          var year_month =  time_components[4] + ": " + time_components[1];     //merge year + month
+          graphdata_as_object[year_month] ? graphdata_as_object[year_month] += 1 : graphdata_as_object[year_month] = 1 ;  //add the lectures
+          
+        }
+        // converting object to arrays for graph
+        var bar_x = Object.keys(graphdata_as_object)
+        var bar_y = Object.values(graphdata_as_object)
+        // show maximum last 8 months of data
+        bar_x = bar_x.slice(-8);            
+        bar_y = bar_y.slice(-8);
+        res.render('user/teacher-dashboard', {
+          user: req.user,
+          classrooms: classes,
+          totClass: totalClasses,
+          totStu: totalStudents,
+          totLec: totalLectures,
+          avgPercent:avgPercent,
+          topAttPerStuPerClass:topAttPerStuPerClass,
+          totClassAttStats:totClassAttStats,
+          bar_x : JSON.stringify(bar_x),
+          bar_y : bar_y,
+          // bar_graph: bar_data,
+        });
+
+      })
     })
   }
 });
@@ -450,7 +478,9 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 router.get('/take_attendance/:id', function (req, res, next) {
 
   var messages = req.flash('error');
-  request('http://127.0.0.1:5000/camera', function (error, response, body) {
+  var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()
+  console.log("nodeurl :",url);
+  request(url, function (error, response, body) {
     console.log(body)
   });
   res.render('user/cameraOn');

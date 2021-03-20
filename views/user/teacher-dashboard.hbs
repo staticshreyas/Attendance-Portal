@@ -179,27 +179,55 @@
                     <div class="card-body">
                         <!-- Chart -->
                         <div class="chart">
-                            <canvas id="chart-bars" class="chart-canvas" data-prefix="$"></canvas>
-                            {{!--
+                            <canvas id="chart-bars-custom" class="chart-canvas" data-prefix="$" style="width: 100%; height:100%;"></canvas>
+                            
                             <script>
                                 var data = {
-                                    labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                                    //labels: ['Jul', 'Aug','sa','sasa','dsds','ffdfd','fdfd','gfdgd','gfyvdfsvgfvsdgvdgfd','gfdgdf','sadad','dfdfd'],
+                                    labels: {{{bar_x}}},
                                     datasets: [
                                         {
                                             label: "My First dataset",
-                                            fillColor: "rgba(220,220,220,0.2)",
-                                            strokeColor: "rgba(220,220,220,1)",
-                                            pointColor: "rgba(220,220,220,1)",
+                                            backgroundColor: "rgba(220,40,40,0.9)", // 251, 99,64
+                                            barPercentage: 0.15,
+                                            //barThickness: 17%,
+                                            strokeColor: "rgba(220,0,0,1)",
+                                            pointColor: "rgba(220,0,0,1)",
                                             pointStrokeColor: "#fff",
                                             pointHighlightFill: "#fff",
                                             pointHighlightStroke: "rgba(220,220,220,1)",
-                                            data: [5, 20, 30, 22, 17, 29]
+                                            //data: [5, 20, 30, 22, 17, 29,21,31,43,22,12]
+                                            data: [{{bar_y}}]
                                         }
                                     ]
                                 };
-                                var ctx = document.getElementById("chart-bars").getContext("2d");
-                                var myNewChart = new Chart(ctx).Line(data);
-                            </script> --}}
+                                var options = {
+                                    scales: {
+                                        xAxes: [{
+                                            gridLines: {
+                                                display:false
+                                                //lineWidth: 5
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            gridLines: {
+                                                //display:false
+                                                lineWidth: 0.5,
+                                                borderDash: [5,5],
+                                            }   
+                                        }]
+                                    }
+                                }
+
+
+                                var ctx = document.getElementById("chart-bars-custom").getContext("2d");
+                                //var myNewChart = new Chart(ctx).Line(data);
+                                var myNewChart = new Chart(ctx,{
+                                    type: 'bar',
+                                    data: data,
+                                    options: options,
+                                })
+                            </script>
                         </div>
                     </div>
                 </div>
