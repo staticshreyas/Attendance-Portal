@@ -31,7 +31,8 @@
                 <div class="card-header border-0">
                     <div class="row align-items-center">
                         <div class="col" style="padding-left:85px">
-                            <h4 class="mb-0">View The List Of Classes in which you have <mark style="background-color:tomato;">BELOW 75%</mark>attendace</h3>
+                            <h4 class="mb-0">View The List Of Classes in which you have <mark
+                                    style="background-color:tomato;">BELOW 75%</mark>attendace</h3>
                         </div>
                     </div>
                 </div>
@@ -50,6 +51,9 @@
                         </thead>
                         <tbody>
                             {{#each defaulterClasses}}
+                            {{#ifCond classCounts '==' 0}}
+                            <div></div>
+                            {{else}}
                             <tr>
                                 <td></td>
                                 <th scope="row">{{className}}</th>
@@ -62,13 +66,14 @@
                                         <div>
                                             <div class="progress">
                                                 <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                    aria-valuenow="{{studentPercent}}" aria-valuemin="0" aria-valuemax="100"
-                                                    style="width: {{studentPercent}}%;"></div>
+                                                    aria-valuenow="{{studentPercent}}" aria-valuemin="0"
+                                                    aria-valuemax="100" style="width: {{studentPercent}}%;"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
                             {{/each}}
 
                         </tbody>

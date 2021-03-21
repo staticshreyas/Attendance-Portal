@@ -52,6 +52,9 @@
                         </thead>
                         <tbody>
                             {{#each defaulterStudents}}
+                            {{#ifCond classCounts '==' 0}}
+                            <div></div>
+                            {{else}}
                             <tr>
                                 <th scope="row">{{studentName}}</th>
                                 <td>{{studentRollno}}</td>
@@ -73,6 +76,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
                             {{/each}}
 
                         </tbody>
