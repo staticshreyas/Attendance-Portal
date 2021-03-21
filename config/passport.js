@@ -74,7 +74,6 @@ passport.use('local-register', new LocalStrategy({
                     else {
                         newUser.who = ""
                     }
-
                     newUser.save(function (err, result) {
                         if (err) {
                             throw err;

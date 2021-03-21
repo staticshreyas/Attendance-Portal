@@ -9,11 +9,9 @@ async function forClassDeatils(classId) {
 
     var classroom = await classModel.findById(classId)
 
-    //console.log(classroom._id)
-    //console.log(classId)
-
     var studentPromise = classroom.students.map(async (stuId) => {
         var students = await userModel.findById(stuId)
+        console.log(students)
         return students
     });
 
@@ -118,6 +116,7 @@ async function studentAttendance(stuId) {
     var student = await userModel.findById(stuId)
 
     var resp = await recordModel.find({ 'data.RollNo': parseInt(student.rollnumber) })
+    //console.log(resp)
     if (resp.length > 0) {
         var response = JSON.parse(JSON.stringify(resp))
         var totalStuRecords = resp.length
@@ -193,6 +192,7 @@ async function forUserClasses(stuId) {
                     continue
                 }
                 var classId = record.data.Class[0]
+                console.log(classId)
                 var obj = forClassDeatils(classId)
                 var ob = await obj
                 var classroom = ob.classroom
