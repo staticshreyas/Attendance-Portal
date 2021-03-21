@@ -53,7 +53,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
   console.log(req.user.who)
   if (req.user.who == "1") {
-    res.render('user/dashboard', {
+    res.render('dashboard/user-dashboard', {
       user: req.user,
     });
   }
@@ -119,7 +119,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         // show maximum last 8 months of data
         bar_x = bar_x.slice(-8);
         bar_y = bar_y.slice(-8);
-        res.render('user/teacher-dashboard', {
+        res.render('dashboard/teacher-dashboard', {
           user: req.user,
           classrooms: classes,
           totClass: totalClasses,
@@ -138,7 +138,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
   }
 });
 
-/*Get student profile*/
+//Get student profile
 router.get('/profile', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
     var obj = api.studentAttendance(req.user.id)
@@ -156,7 +156,7 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
   }
 });
 
-/*Get user classes*/
+//Get classrooms of a student
 router.get('/userClasses', isLoggedIn, function (req, res, next) {
   calc()
   if (req.user.who == "1") {
@@ -174,7 +174,7 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
         }
       }
 
-      res.render('user/user-classes', {
+      res.render('classroom/user-classes', {
         user: req.user,
         totClass: totalClasses,
         classrooms: ob.classes,
@@ -211,7 +211,7 @@ router.get('/defaulterClasses', isLoggedIn, function (req, res, next) {
   }
 });
 
-/*Get teacher Classrooms*/
+//Get classrooms of a teacher
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
   calc();
   var obj = api.forTeacherClasses(req.user._id)
@@ -231,7 +231,7 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     else {
       var avgPercent = (((totalP) / (totalLectures * totalStudents)) * 100).toFixed(2).toString()
     }
-    res.render('user/teacher-classrooms', {
+    res.render('classroom/teacher-classrooms', {
       user: req.user,
       classrooms: classes,
       totClass: totalClasses,
@@ -243,14 +243,14 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 
 });
 
-/*Get Classroom details*/
+//Get classroom details
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   calc()
   api.creatXl(req.params.id)
   var obj = api.forClassDeatils(req.params.id)
   obj.then((ob) => {
     //console.log(ob)
-    res.render('user/classDetails', {
+    res.render('classroom/classDetails', {
       user: req.user,
       classroom: ob.classroom,
       students: ob.stuArray,
@@ -261,7 +261,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
   })
 });
 
-/* Take attendance of students in class*/
+//Take attendance of students in class
 router.get('/take_attendance/:id', function (req, res, next) {
   var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()
   request(url, function (error, response, body) {
@@ -270,10 +270,10 @@ router.get('/take_attendance/:id', function (req, res, next) {
   res.render('user/cameraOn');
 });
 
-/* Add new class*/
+//Add new class
 router.get('/create-class', isLoggedIn, (req, res) => {
   console.log(req.user);
-  res.render('user/create-class');
+  res.render('classroom/create-class');
 });
 router.post('/create-class', (req, res, next) => {
   var newClass = {
@@ -293,7 +293,7 @@ router.post('/create-class', (req, res, next) => {
   });
 });
 
-/* Add new student in particular class*/
+//Add new student in particular class
 router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
   userModel.find({ 'who': "1" }, function (err, users) {
     if (err) {
@@ -318,7 +318,6 @@ router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
               notInClassStudents.push(user);
             }
           });
-
           res.render('user/addStudents', {
             users: notInClassStudents,
             classroom: classroom
@@ -335,7 +334,6 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
       console.log(err);
     }
     else {
-      //console.log(updatedClass);
       res.redirect('/user/class-details/' + req.params.id + '/students/new');
     }
   });
@@ -354,7 +352,7 @@ router.get('/add-lec/:id', (req, res, next) => {
   });
 });
 
-/* View All Registered Students*/
+//Get all registered students
 router.get('/allStudents', (req, res, next) => {
   userModel.find({ 'who': "1" }, function (err, users) {
     if (err) {
@@ -368,11 +366,13 @@ router.get('/allStudents', (req, res, next) => {
   });
 });
 
+//Function for logging out 
 router.get('/logout', isLoggedIn, function (req, res, next) {
   req.logout();
   res.redirect('/');
 });
 
+//Functions for uploading a photo
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, __dirname + '../../public/assets/uploads')
@@ -381,15 +381,12 @@ var storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 });
-
 var upload = multer({ storage: storage });
-
 router.get('/upload', isLoggedIn, (req, res) => {
   var messages = req.flash('error');
   res.render('user/upload', { messages: messages, hasErrors: messages.length > 0 });
 
 });
-
 router.post('/upload', upload.single('photo'), (req, res, next) => {
 
   var obj = {
@@ -410,15 +407,16 @@ router.post('/upload', upload.single('photo'), (req, res, next) => {
   });
 });
 
+//Function used for running the routes below if not logged in 
 router.use('/', notLoggedIn, function (req, res, next) {
   next();
 });
 
+//Functions for logging in 
 router.get('/login', function (req, res, next) {
   var messages = req.flash('error');
   res.render('user/login', { messages: messages, hasErrors: messages.length > 0 });
 });
-
 router.post('/login', passport.authenticate('local-login', {
   failureRedirect: '/user/login',
   failureFlash: true
@@ -435,6 +433,7 @@ router.post('/login', passport.authenticate('local-login', {
 
 });
 
+//Fuctions for registering a new student
 router.get('/register', function (req, res, next) {
   var messages = req.flash('error');
   if (req.session.filledformdata) {
@@ -443,7 +442,6 @@ router.get('/register', function (req, res, next) {
   }
   res.render('user/register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
-
 router.post('/register', check, passport.authenticate('local-register', {
   failureRedirect: '/user/register',
   failureFlash: true
@@ -461,6 +459,7 @@ router.post('/register', check, passport.authenticate('local-register', {
 
 });
 
+//Function for form fields 
 function check(req, res, next) {
   var input = {
     'usernameInput': req.body.name,
@@ -471,6 +470,7 @@ function check(req, res, next) {
   req.session.filledformdata = input;
   next();
 }
+//Functions for registering a new teacher
 router.get('/teacher-register', function (req, res, next) {
   var messages = req.flash('error');
   if (req.session.filledformdata) {
@@ -479,7 +479,6 @@ router.get('/teacher-register', function (req, res, next) {
   }
   res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
-
 router.post('/teacher-register', check, passport.authenticate('local-register', {
   failureRedirect: '/user/teacher-register',
   failureFlash: true
@@ -504,7 +503,6 @@ function isLoggedIn(req, res, next) {
   }
   res.redirect('/user/login');
 }
-
 function notLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
     return next();
