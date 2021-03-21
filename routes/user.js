@@ -6,11 +6,16 @@ var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
+var csrf = require('csurf');
+
 
 
 var fs = require('fs');
 var path = require('path');
 const Excel = require('exceljs')
+
+var csrfProtection = csrf();
+router.use(csrfProtection);
 
 
 const request = require('request');
@@ -635,7 +640,7 @@ var upload = multer({ storage: storage });
 
 router.get('/upload', isLoggedIn, (req, res) => {
   var messages = req.flash('error');
-  res.render('user/upload', { messages: messages, hasErrors: messages.length > 0 });
+  res.render('user/upload', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0 });
 
 });
 
@@ -672,7 +677,7 @@ router.use('/', notLoggedIn, function (req, res, next) {
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
   var messages = req.flash('error');
-  res.render('user/login', { messages: messages, hasErrors: messages.length > 0 });
+  res.render('user/login', { csrfToken: req.csrfToken(),messages: messages, hasErrors: messages.length > 0 });
 });
 
 router.post('/login', passport.authenticate('local-login', {
@@ -697,7 +702,7 @@ router.get('/register', function (req, res, next) {
     var filledformdata = req.session.filledformdata ;
     req.session.filledformdata = undefined;
   }
-  res.render('user/register', { messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
+  res.render('user/register', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
 });
 
 
@@ -735,7 +740,7 @@ router.get('/teacher-register', function (req, res, next) {
     var filledformdata = req.session.filledformdata ;
     req.session.filledformdata = undefined;
   }
-  res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
+  res.render('user/teacher-register', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
 
 

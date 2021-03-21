@@ -10,8 +10,10 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-5 col-lg-6 col-md-8 px-5">
                         <h1 class="text-white">Upload an image</h1>
-                        <p class="text-lead text-white">Please upload an image which contains your face clearly for training the face recognition model.</p>
-                        <p style="color: white;">Note: The uploaded picture will also be used as your default profile picture</p>
+                        <p class="text-lead text-white">Please upload an image which contains your face clearly for
+                            training the face recognition model.</p>
+                        <p style="color: white;">Note: The uploaded picture will also be used as your default profile
+                            picture</p>
                     </div>
                 </div>
             </div>
@@ -53,6 +55,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                                 <button type="submit" class="btn btn-primary mt-4">Upload Photo</button>
                             </div>
                         </form>
