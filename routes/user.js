@@ -1,21 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var multer = require('multer');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
-var csrf = require('csurf');
+var multer = require('multer');
 
 
 
+const Excel = require('exceljs')
 var fs = require('fs');
 var path = require('path');
-const Excel = require('exceljs')
 
-var csrfProtection = csrf();
-router.use(csrfProtection);
 
 
 const request = require('request');
@@ -627,6 +624,11 @@ router.get('/allStudents', (req, res, next) => {
 });
 
 
+router.get('/logout', isLoggedIn, function (req, res, next) {
+  req.logout();
+  res.redirect('/');
+});
+
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, __dirname + '../../public/assets/uploads')
@@ -640,7 +642,7 @@ var upload = multer({ storage: storage });
 
 router.get('/upload', isLoggedIn, (req, res) => {
   var messages = req.flash('error');
-  res.render('user/upload', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0 });
+  res.render('user/upload', {messages: messages, hasErrors: messages.length > 0 });
 
 });
 
@@ -665,11 +667,6 @@ router.post('/upload', upload.single('photo'), (req, res, next) => {
 });
 
 
-router.get('/logout', isLoggedIn, function (req, res, next) {
-  req.logout();
-  res.redirect('/');
-});
-
 router.use('/', notLoggedIn, function (req, res, next) {
   next();
 });
@@ -677,7 +674,7 @@ router.use('/', notLoggedIn, function (req, res, next) {
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
   var messages = req.flash('error');
-  res.render('user/login', { csrfToken: req.csrfToken(),messages: messages, hasErrors: messages.length > 0 });
+  res.render('user/login', { messages: messages, hasErrors: messages.length > 0 });
 });
 
 router.post('/login', passport.authenticate('local-login', {
@@ -702,7 +699,7 @@ router.get('/register', function (req, res, next) {
     var filledformdata = req.session.filledformdata ;
     req.session.filledformdata = undefined;
   }
-  res.render('user/register', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
+  res.render('user/register', { messages: messages, hasErrors: messages.length > 0,filledformdata:filledformdata });
 });
 
 
@@ -733,14 +730,13 @@ function check(req, res, next){
   req.session.filledformdata = input;
   next();
 }
-
 router.get('/teacher-register', function (req, res, next) {
   var messages = req.flash('error');
   if(req.session.filledformdata){
     var filledformdata = req.session.filledformdata ;
     req.session.filledformdata = undefined;
   }
-  res.render('user/teacher-register', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
+  res.render('user/teacher-register', {messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
 
 
