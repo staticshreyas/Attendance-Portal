@@ -252,7 +252,7 @@ async function forUserClasses(stuId){
 }
 
 // function to get all lectures taken by this ownerid-> teacher
-async function forUserClasses(ownerId){
+async function allLecTeacher(ownerId){
   var resp=await recordModel.find({ 'owner': ownerId.toString() }); // get all attendance for this teacher
   return resp;
 
@@ -294,7 +294,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
     calc();
     var obj= forTeacherClasses(req.user._id)
-    var all_lectures_conducted = forUserClasses(req.user._id) // array of all lectures taken by this teacher
+    var all_lectures_conducted = allLecTeacher(req.user._id) // array of all lectures taken by this teacher
     
     obj.then(classes=>{
       console.log(classes)
