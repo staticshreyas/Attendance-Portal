@@ -1,21 +1,5 @@
 @charset 'UTF-8';
-/*!
 
-=========================================================
-* Argon Dashboard - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md)
-
-* Coded by www.creative-tim.com
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 :root
 {
     --blue: #5e72e4;
@@ -2242,7 +2226,7 @@ pre code
 .table-hover tbody tr:hover
 {
     color: #525f7f;
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 
 .table-primary,
@@ -2549,7 +2533,7 @@ pre code
 .table-active > th,
 .table-active > td
 {
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 
 .table-hover .table-active:hover
@@ -2573,7 +2557,7 @@ pre code
 {
     color: #8898aa;
     border-color: #e9ecef; 
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 
 .table-dark
@@ -4686,7 +4670,7 @@ input[type='button'].btn-block
     text-decoration: none;
 
     color: #16181b;
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 .dropdown-item.active,
 .dropdown-item:active
@@ -7369,7 +7353,7 @@ a.badge:focus
     text-decoration: none;
 
     color: #525f7f;
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 .list-group-item-action:active
 {
@@ -18850,7 +18834,7 @@ a.btn-icon-only
     color: #32325d;
     border: 0;
     border-radius: .375rem;
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 
     -moz-appearance: none;
 }
@@ -21382,7 +21366,7 @@ textarea[resize='horizontal']
 .navbar-vertical.navbar-light
 {
     border-color: rgba(0, 0, 0, .05); 
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 .navbar-vertical.navbar-dark
 {
@@ -21596,7 +21580,7 @@ textarea[resize='horizontal']
     padding-left: 1rem;
 
     border-radius: .375rem; 
-    background: #f6f9fc;
+    background: #dbe9f8;
 }
 .navbar-vertical.navbar-expand-xs .lavalamp-object
 {
@@ -21714,7 +21698,7 @@ textarea[resize='horizontal']
         padding-left: 1rem;
 
         border-radius: .375rem; 
-        background: #f6f9fc;
+        background: #dbe9f8;
     }
     .navbar-vertical.navbar-expand-sm .lavalamp-object
     {
@@ -21833,7 +21817,7 @@ textarea[resize='horizontal']
         padding-left: 1rem;
 
         border-radius: .375rem; 
-        background: #f6f9fc;
+        background: #dbe9f8;
     }
     .navbar-vertical.navbar-expand-md .lavalamp-object
     {
@@ -21952,7 +21936,7 @@ textarea[resize='horizontal']
         padding-left: 1rem;
 
         border-radius: .375rem; 
-        background: #f6f9fc;
+        background: #dbe9f8;
     }
     .navbar-vertical.navbar-expand-lg .lavalamp-object
     {
@@ -22071,7 +22055,7 @@ textarea[resize='horizontal']
         padding-left: 1rem;
 
         border-radius: .375rem; 
-        background: #f6f9fc;
+        background: #dbe9f8;
     }
     .navbar-vertical.navbar-expand-xl .lavalamp-object
     {
@@ -22274,7 +22258,7 @@ textarea[resize='horizontal']
         padding-left: 25px !important; 
 
         border-radius: 0 !important;
-        background: #f6f9fc;
+        background: #dbe9f8;
     }
 }
 
@@ -23774,7 +23758,7 @@ textarea[resize='horizontal']
 .table .thead-light th
 {
     color: #8898aa; 
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 .table .thead-light th a
 {
@@ -28972,7 +28956,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
     text-decoration: none;
 
     color: #16181b;
-    background-color: #f6f9fc;
+    background-color: #dbe9f8;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected],

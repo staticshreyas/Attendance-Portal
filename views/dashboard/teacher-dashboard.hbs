@@ -6,15 +6,13 @@
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
+                <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">Dashboard</h5>
 
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
                         <div class="media align-items-center">
-                            <div class="media-body  ml-2  d-none d-lg-block">
-                                <span class="mb-0 text-sm  font-weight-bold"
-                                    style="color: white;">{{this.user.name}}</span>
-                            </div>
+                            <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
+                                <b>{{this.user.name}}</b></h4>
                         </div>
                     </li>
                 </ul>
@@ -139,7 +137,8 @@
                         <!-- Chart -->
                         <div class="chart">
                             <!-- Chart wrapper -->
-                            <canvas id="chart-line-dark" style="width: 100%; height:100%;" class="chart-canvas"></canvas>
+                            <canvas id="chart-line-dark" style="width: 100%; height:100%;"
+                                class="chart-canvas"></canvas>
                             <script>
 
                                 var data = {
@@ -161,7 +160,7 @@
                                                 display: false
                                             },
                                             ticks: {
-                                                fontColor:'#eeeeee',
+                                                fontColor: '#eeeeee',
                                             }
                                         }],
                                         yAxes: [{
@@ -171,7 +170,7 @@
                                             },
                                             ticks: {
                                                 suggestedMin: 0,
-                                                fontColor:'#eeeeee',
+                                                fontColor: '#eeeeee',
                                             }
                                         }]
                                     },
@@ -179,7 +178,7 @@
                                         display: false,
                                     },
                                 }
-                                
+
                                 var ctx = document.getElementById("chart-line-dark").getContext("2d");
                                 var myNewChart = new Chart(ctx, {
                                     type: 'line',
