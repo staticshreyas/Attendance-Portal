@@ -143,18 +143,13 @@
                             <script>
 
                                 var data = {
-                                    labels: {{{ bar_x }}},
+                                    labels: {{{ line_x }}},
                                 datasets: [
                                     {
                                         label: "Lectures Conducted ",
-                                    backgroundColor: "", // 251, 99,64
-                                    barPercentage: 0.15,
-                                    strokeColor: "rgba(220,0,0,1)",
-                                    pointColor: "rgba(220,0,0,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(220,220,220,1)",
-                                    data: [{{ bar_y }}]
+                                        backgroundColor: "rgb(75,192,192)", // 251, 99,64
+                                        barPercentage: 0.15,
+                                        data: [{{ line_y }}]
                                     }
                                 ]
                                 };
@@ -164,6 +159,9 @@
                                         xAxes: [{
                                             gridLines: {
                                                 display: false
+                                            },
+                                            ticks: {
+                                                fontColor:'#eeeeee',
                                             }
                                         }],
                                         yAxes: [{
@@ -173,6 +171,7 @@
                                             },
                                             ticks: {
                                                 suggestedMin: 0,
+                                                fontColor:'#eeeeee',
                                             }
                                         }]
                                     },
@@ -198,8 +197,8 @@
                     <div class="card-header bg-transparent">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="text-uppercase text-muted ls-1 mb-1">Classwise Analysis</h6>
-                                <h5 class="h3 mb-0">Total lectures conducted</h5>
+                                <h6 class="text-uppercase text-muted ls-1 mb-1">Monthly Analysis</h6>
+                                <h5 class="h3 mb-0">Total Mass Bunks</h5>
                             </div>
                         </div>
                     </div>
@@ -216,14 +215,9 @@
                                 datasets: [
                                     {
                                         label: "Lectures Condcuted ",
-                                    backgroundColor: "rgba(220,40,40,0.9)", // 251, 99,64
-                                    barPercentage: 0.15,
-                                    strokeColor: "rgba(220,0,0,1)",
-                                    pointColor: "rgba(220,0,0,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(220,220,220,1)",
-                                    data: [{{ bar_y }}]
+                                        backgroundColor: "rgba(220,40,40,0.9)", // 251, 99,64
+                                        barPercentage: 0.15,
+                                        data: [{{ bar_y }}]
                                     }
                                 ]
                                 };

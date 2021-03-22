@@ -103,20 +103,33 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         }
       }
 
-      var graphdata_as_object = {}
+      var line_data_as_object = {}
+      var bar_data_as_object = {}
       all_lectures_conducted.then(lectures => {
 
         for (lecture of lectures) {
+          // formatting total lectures data
           var time_string = lecture._doc.AttendanceRecord;                      // timestamp of attendance record
           var time_components = time_string.split(" ");                         // day, month, date, time, year
           var year_month = time_components[4] + ": " + time_components[1];     //merge year + month
-          graphdata_as_object[year_month] ? graphdata_as_object[year_month] += 1 : graphdata_as_object[year_month] = 1;  //add the lectures
+          line_data_as_object[year_month] ? line_data_as_object[year_month] += 1 : line_data_as_object[year_month] = 1;  //add the lectures
+
+          // separating mass bunk data
+          if(lecture._doc.data.Name.length == 0){ 
+            bar_data_as_object[year_month] ? bar_data_as_object[year_month] += 1 : bar_data_as_object[year_month] = 1;  // add the mass bunk lectures
+          }
 
         }
-        // converting object to arrays for graph
-        var bar_x = Object.keys(graphdata_as_object)
-        var bar_y = Object.values(graphdata_as_object)
-        // show maximum last 8 months of data
+        // converting object to arrays for line graph
+        var line_x = Object.keys(line_data_as_object)
+        var line_y = Object.values(line_data_as_object)
+        // converting object to arrays for bar graph
+        var bar_x = Object.keys(bar_data_as_object)
+        var bar_y = Object.values(bar_data_as_object)
+        // show maximum last 8 months of data for line graph
+        line_x = line_x.slice(-8);
+        line_y = line_y.slice(-8);
+        // show maximum last 8 months of data for bar graph
         bar_x = bar_x.slice(-8);
         bar_y = bar_y.slice(-8);
         res.render('dashboard/teacher-dashboard', {
@@ -128,9 +141,10 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
           avgPercent: avgPercent,
           topAttPerStuPerClass: topAttPerStuPerClass,
           totClassAttStats: totClassAttStats,
+          line_x: JSON.stringify(line_x),
+          line_y: line_y,
           bar_x: JSON.stringify(bar_x),
           bar_y: bar_y,
-          // bar_graph: bar_data,
         });
 
       })
