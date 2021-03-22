@@ -231,6 +231,8 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     else {
       var avgPercent = (((totalP) / (totalLectures * totalStudents)) * 100).toFixed(2).toString()
     }
+    //classes.studentDetails=classes.studentDetails.slice(0,1)
+    //console.log(classes.studentDetails)
     res.render('classroom/teacher-classrooms', {
       user: req.user,
       classrooms: classes,
