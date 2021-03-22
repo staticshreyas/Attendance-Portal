@@ -133,53 +133,21 @@
                                 <h6 class="text-light text-uppercase ls-1 mb-1">Monthly Analysis</h6>
                                 <h5 class="h3 text-white mb-0">Total Lectures Conducted</h5>
                             </div>
-                            <div class="col">
-                                <ul class="nav nav-pills justify-content-end">
-                                    <li class="nav-item mr-2 mr-md-0" data-toggle="chart"
-                                        data-target="#chart-sales-dark"
-                                        data-update='{"data":{"datasets":[{"data":[{{ bar_y }}]}]}}'>
-                                        <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                            <span class="d-none d-md-block">Month</span>
-                                            <span class="d-md-none">M</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <!-- Chart -->
                         <div class="chart">
                             <!-- Chart wrapper -->
-                            <canvas id="chart-sales-dark" class="chart-canvas"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4">
-                <div class="card">
-                    <div class="card-header bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="text-uppercase text-muted ls-1 mb-1">Monthly Analysis</h6>
-                                <h5 class="h3 mb-0">Total lectures conducted</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!-- Chart -->
-                        <div class="chart">
-                            <canvas id="chart-bars-custom" class="chart-canvas" data-prefix="$"
-                                style="width: 100%; height:100%;"></canvas>
-
+                            <canvas id="chart-line-dark" style="width: 100%; height:100%;" class="chart-canvas"></canvas>
                             <script>
+
                                 var data = {
                                     labels: {{{ bar_x }}},
                                 datasets: [
                                     {
                                         label: {{{ bar_x }}},
-                                    backgroundColor: "rgba(220,40,40,0.9)", // 251, 99,64
+                                    backgroundColor: "", // 251, 99,64
                                     barPercentage: 0.15,
                                     strokeColor: "rgba(220,0,0,1)",
                                     pointColor: "rgba(220,0,0,1)",
@@ -187,9 +155,10 @@
                                     pointHighlightFill: "#fff",
                                     pointHighlightStroke: "rgba(220,220,220,1)",
                                     data: [{{ bar_y }}]
-                                        }
+                                    }
                                 ]
                                 };
+
                                 var options = {
                                     scales: {
                                         xAxes: [{
@@ -211,8 +180,77 @@
                                         display: false,
                                     },
                                 }
+                                
+                                var ctx = document.getElementById("chart-line-dark").getContext("2d");
+                                var myNewChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: data,
+                                    options: options,
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="text-uppercase text-muted ls-1 mb-1">Monthly Analysis</h6>
+                                <h5 class="h3 mb-0">Total lectures conducted</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Chart -->
+                        <div class="chart">
+                            <canvas id="chart-bars-custom" class="chart-canvas"
+                                style="width: 100%; height:100%;"></canvas>
+
+                            <script>
+
+                                var data = {
+                                    labels: {{{ bar_x }}},
+                                datasets: [
+                                    {
+                                        label: {{{ bar_x }}},
+                                    backgroundColor: "rgba(220,40,40,0.9)", // 251, 99,64
+                                    barPercentage: 0.15,
+                                    strokeColor: "rgba(220,0,0,1)",
+                                    pointColor: "rgba(220,0,0,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(220,220,220,1)",
+                                    data: [{{ bar_y }}]
+                                    }
+                                ]
+                                };
+
+                                var options = {
+                                    scales: {
+                                        xAxes: [{
+                                            gridLines: {
+                                                display: false
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            gridLines: {
+                                                lineWidth: 0.5,
+                                                borderDash: [5, 5],
+                                            },
+                                            ticks: {
+                                                suggestedMin: 0,
+                                            }
+                                        }]
+                                    },
+                                    legend: {
+                                        display: false,
+                                    },
+                                }
+
                                 var ctx = document.getElementById("chart-bars-custom").getContext("2d");
-                                //var myNewChart = new Chart(ctx).Line(data);
                                 var myNewChart = new Chart(ctx, {
                                     type: 'bar',
                                     data: data,
@@ -278,7 +316,7 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 class="mb-0">Student with hightest attendance in your classes</h3>
+                                <h3 class="mb-0">Student with hightest attendance</h3>
                             </div>
 
                         </div>
