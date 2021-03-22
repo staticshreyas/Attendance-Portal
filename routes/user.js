@@ -173,7 +173,7 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
           }
         }
       }
-
+      console.log(ob.classes[0])
       res.render('classroom/user-classes', {
         user: req.user,
         totClass: totalClasses,

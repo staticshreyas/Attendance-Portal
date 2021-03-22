@@ -196,6 +196,8 @@ async function forUserClasses(stuId) {
                 var obj = forClassDeatils(classId)
                 var ob = await obj
                 var classroom = ob.classroom
+                var owner = await userModel.find({ '_id': classroom.owner })
+                classroom['teacher'] = owner[0].name
                 allClasses.push(classroom)
                 totalStuLecs += classroom.totLec
             }
@@ -204,6 +206,8 @@ async function forUserClasses(stuId) {
                 var obj = forClassDeatils(classId)
                 var ob = await obj
                 var classroom = ob.classroom
+                var owner = await userModel.find({ '_id': classroom.owner })
+                classroom['teacher'] = owner[0].name
                 allClasses.push(classroom)
                 totalStuLecs += classroom.totLec
             }
