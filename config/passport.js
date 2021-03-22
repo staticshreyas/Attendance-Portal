@@ -25,6 +25,30 @@ function validateEmail(email) {
     }
 }
 
+function validatePassword(password) {
+    var p = password
+    errors = [];
+    if (p.length < 6) {
+        errors.push("Your password must be at least 6 characters."); 
+    }
+    if (p.length > 15) {
+        errors.push("Your password must be atmost 15 characters."); 
+    }
+    if (p.search(/[A-Z]/i) < 0) {
+        errors.push("Your password must contain at least one upercase letter.");
+    }
+    if (p.search(/[a-z]/i) < 0) {
+        errors.push("Your password must contain at least one lowercase letter.");
+    }
+    if (p.search(/[0-9]/) < 0) {
+        errors.push("Your password must contain at least one digit."); 
+    }
+    if (p.search(/[!@#$%^&*]/) < 0) {
+        errors.push("Your password must contain at least one special character."); 
+    }
+    return errors;
+}
+
 passport.use('local-register', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -38,7 +62,7 @@ passport.use('local-register', new LocalStrategy({
         var student = req.body.student
         var messages = [];
         req.checkBody('email', 'Invalid email').notEmpty().isEmail();
-        req.checkBody('password', 'Invalid password').notEmpty().isLength({ min: 4 });
+        req.checkBody('password', 'Invalid password').notEmpty();
         var errors = req.validationErrors();
         if (errors) {
             errors.forEach(function (error) {
@@ -48,6 +72,10 @@ passport.use('local-register', new LocalStrategy({
         }
         else if (!validateEmail(email)) {
             messages.push("Email Domain: @somaiya.edu required")
+            return done(null, false, req.flash('error', messages));
+        }
+        else if((validatePassword(password)).length!=0) {
+            messages=validatePassword(password)
             return done(null, false, req.flash('error', messages));
         }
         else {
