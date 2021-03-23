@@ -52,10 +52,12 @@
                                 <td>{{this.email}}</td>
                                 <td>{{this.rollnumber}}</td>
                                 <td>
+                                    <div style="padding-left: 25px;">
                                         <a href="/user/class-details/{{../this.classroom._id}}/students/new/{{this._id}}"
                                             class="btn btn-sm btn-primary">
-                                            <i class="ni ni-fat-add text-white"></i>
-                                            Add this student</a>
+                                            <i class="fas fa-plus text-white"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             {{/each}}

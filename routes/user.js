@@ -5,6 +5,7 @@ var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var multer = require('multer');
+const mongo = require('mongodb');
 
 var api = require('../api/api')
 
@@ -376,6 +377,21 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
     }
     else {
       res.redirect('/user/class-details/' + req.params.id + '/students/new');
+    }
+  });
+});
+
+//Remove a student from a particular class
+router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
+  var classId = new mongo.ObjectID(req.params.id);
+  var students = new mongo.ObjectID(req.params.stuId);
+  classModel.findOneAndUpdate({_id:req.params.id} ,{ $pull: {"students": {_id: req.params.stuId} } },{ new: true }, function (err, deleted) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      console.log(deleted)
+      res.redirect('/user/class-details/' + req.params.id);
     }
   });
 });

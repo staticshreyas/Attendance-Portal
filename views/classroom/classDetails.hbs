@@ -6,14 +6,16 @@
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">{{this.classroom.name}} - {{this.classroom.description}}
+                <h6 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">
+                    {{this.classroom.name}} - {{this.classroom.description}}
                 </h6>
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
                         <div class="media align-items-center">
                             <div class="media-body  ml-2  d-none d-lg-block">
                                 <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
-                                <b>{{this.user.name}}</b></h4>
+                                    <b>{{this.user.name}}</b>
+                                </h4>
                             </div>
                         </div>
                     </li>
@@ -69,7 +71,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled in {{this.classroom.name}}
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Students Enrolled in
+                                            {{this.classroom.name}}
                                         </h5>
                                         <span class="h2 font-weight-bold mb-0">{{totStu}}</span>
                                     </div>
@@ -89,7 +92,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Of {{this.classroom.name}} Conducted
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Lectures Of
+                                            {{this.classroom.name}} Conducted
                                         </h5>
                                         <span class="h2 font-weight-bold mb-0">{{# if this.classroom.totLec}}
                                             {{this.classroom.totLec}} {{else}} 0 {{/if}}</span>
@@ -109,7 +113,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Average {{this.classroom.name}} Attendance</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Average
+                                            {{this.classroom.name}} Attendance</h5>
                                         <span class="h2 font-weight-bold mb-0">{{totP}}%</span>
                                     </div>
                                     <div class="col-auto">
@@ -158,6 +163,7 @@
                                 <th scope="col">
                                     <div style="padding-left: 50px;">Attendance</div>
                                 </th>
+                                <th scope="col">Remove A Student</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -178,6 +184,14 @@
                                                     style="width: {{percent}}%;"></div>
                                             </div>
                                         </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="padding-left: 40px;">
+                                        <a href="/user/class-details/{{../this.classroom._id}}/students/remove/{{this._id}}"
+                                            class="btn btn-sm " style="background-color: rgb(224, 41, 41);">
+                                            <i class="fas fa-minus text-white"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
