@@ -385,12 +385,11 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
   var classId = new mongo.ObjectID(req.params.id);
   var students = new mongo.ObjectID(req.params.stuId);
-  classModel.findOneAndUpdate({_id:req.params.id} ,{ $pull: {"students": {_id: req.params.stuId} } },{ new: true }, function (err, deleted) {
+  classModel.findOneAndUpdate({_id:req.params.id} ,{ $pull: {"students":  req.params.stuId } },{ new: true }, function (err, deleted) {
     if (err) {
       console.log(err);
     }
     else {
-      console.log(deleted)
       res.redirect('/user/class-details/' + req.params.id);
     }
   });
