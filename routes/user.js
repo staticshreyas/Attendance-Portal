@@ -4,6 +4,7 @@ var passport = require('passport');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
+var recordModel = require('../models/record');
 var multer = require('multer');
 const mongo = require('mongodb');
 
@@ -69,7 +70,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
             }
           }
         }
-        console.log(ob.classes[0])
+        //console.log(ob.classes[0])
         res.render('classroom/user-classes', {
           user: req.user,
           totClass: totalClasses,
@@ -88,7 +89,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
     var all_lectures_conducted = api.allLecTeacher(req.user._id) // array of all lectures taken by this teacher
 
     obj.then(classes => {
-      console.log(classes)
+      //console.log(classes)
       var totalLectures = 0
       var totalP = 0;
       for (i = 0; i < classes.length; i++) {
@@ -336,14 +337,22 @@ router.post('/create-class', (req, res, next) => {
 });
 
 //delete particular class
-router.get('/teacher-classroom/delete/:id', (req, res, next) => {
-  var classId = new mongo.ObjectID(req.params.id);
+router.get('/teacher-classroom/delete/:id', async(req, res, next) => {
+  var classId = req.params.id;
   classModel.findByIdAndDelete(classId, function (err, deleted) {
     if (err) {
       console.log(err);
     }
     else {
-      res.redirect('/user/teacher-classrooms');
+      recordModel.deleteMany({'data.Class':classId.toString()},function(err,attendanceDel){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log("attendaceRecord"+JSON.stringify(attendanceDel));
+          res.redirect('/user/teacher-classrooms');
+        }
+      });
     }
   });
 });
