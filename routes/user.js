@@ -335,6 +335,19 @@ router.post('/create-class', (req, res, next) => {
   });
 });
 
+//delete particular class
+router.get('/teacher-classroom/delete/:id', (req, res, next) => {
+  var classId = new mongo.ObjectID(req.params.id);
+  classModel.findByIdAndDelete(classId, function (err, deleted) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.redirect('/user/teacher-classrooms');
+    }
+  });
+});
+
 //Add new student in particular class
 router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
   userModel.find({ 'who': "1" }, function (err, users) {
