@@ -53,9 +53,32 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
   console.log(req.user.who)
   if (req.user.who == "1") {
-    res.render('dashboard/user-dashboard', {
-      user: req.user,
-    });
+    calc()
+    if (req.user.who == "1") {
+      var obj = api.forUserClasses(req.user._id)
+      obj.then(ob => {
+
+        for (i = 0; i < ob.classes.length; i++) {
+          var classroom = ob.classes[i]
+          for (j = 0; j < classroom.studentDetails.length; j++) {
+            var student = classroom.studentDetails[j]
+            if (student.name == req.user.name) {
+              ob.classes[i].studentDetails = student
+              break
+            }
+          }
+        }
+        console.log(ob.classes[0])
+        res.render('classroom/user-classes', {
+          user: req.user,
+          totClass: totalClasses,
+          classrooms: ob.classes,
+          attendance: ob.attendance,
+          totLec: ob.totalLecs,
+          totStuClass: ob.classes.length,
+        });
+      })
+    }
   }
   else if (req.user.who == "0") {
 
@@ -98,7 +121,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
           }
         }
         var b = classes[i].studentDetails[max]
-        if(b){
+        if (b) {
           if (parseFloat(b.percent) != 0) {
             topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, studentPercent: b.percent.toString() })
           }
@@ -117,7 +140,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
           line_data_as_object[year_month] ? line_data_as_object[year_month] += 1 : line_data_as_object[year_month] = 1;  //add the lectures
 
           // separating mass bunk data
-          if(lecture._doc.data.Name.length == 0){ 
+          if (lecture._doc.data.Name.length == 0) {
             bar_data_as_object[year_month] ? bar_data_as_object[year_month] += 1 : bar_data_as_object[year_month] = 1;  // add the mass bunk lectures
           }
 

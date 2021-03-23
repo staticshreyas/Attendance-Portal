@@ -5,7 +5,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="navbar-brand" href="/">
-                        <p style="margin-top: 10px; font-size: 20px"><i class="fas fa-camera" ></i> Capture It!</p>
+                        <p style="margin-top: 10px; font-size: 20px"><i class="fas fa-camera"></i> Capture It!</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -15,11 +15,20 @@
                 </li>
 
                 {{# if login}}
+                {{# ifEquals this.session.user.who "1"}}
+                <li class="nav-item">
+                    <a href="/user/userClasses" class="nav-link">
+                        <span class="nav-link-inner--text">Classes</span>
+                    </a>
+                </li>
+                {{/ifEquals}}
+                {{# ifEquals this.session.user.who "0"}}
                 <li class="nav-item">
                     <a href="/user/dashboard" class="nav-link">
                         <span class="nav-link-inner--text">Dashboard</span>
                     </a>
                 </li>
+                {{/ifEquals}}
                 {{# ifEquals this.session.user.who "1"}}
                 <li class="nav-item">
                     <a href="/user/profile" class="nav-link">
@@ -81,8 +90,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://github.com" target="_blank"
-                        data-toggle="tooltip" data-original-title="Star us on Github">
+                    <a class="nav-link nav-link-icon" href="https://github.com" target="_blank" data-toggle="tooltip"
+                        data-original-title="Star us on Github">
                         <i class="fab fa-github"></i>
                         <span class="nav-link-inner--text d-lg-none">Github</span>
                     </a>

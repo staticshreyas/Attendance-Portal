@@ -17,24 +17,24 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav">
-                    <li class="nav-item mt-1">
+                    <!--<li class="nav-item mt-1">
                         <a {{# ifCond title '==' "Dashboard" }} class="nav-link active" {{else}} class="nav-link"
                             {{/ifCond}} href="/user/dashboard">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
+                        </a>
+                    </li>-->
+                    <li class="nav-item mt-1">
+                        <a {{# ifCond title '==' "Classes" }} class="nav-link active" {{else}} class="nav-link"
+                            {{/ifCond}} href="/user/userClasses">
+                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <span class="nav-link-text">Classrooms</span>
                         </a>
                     </li>
                     <li class="nav-item mt-1">
                         <a class="nav-link" href="/user/profile">
                             <i class="ni ni-single-02 text-yellow"></i>
                             <span class="nav-link-text">Profile</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mt-1">
-                        <a {{# ifCond title '==' "Classes" }} class="nav-link active" {{else}} class="nav-link"
-                            {{/ifCond}} href="/user/userClasses">
-                            <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">Classrooms</span>
                         </a>
                     </li>
                     <li class="nav-item mt-1">
