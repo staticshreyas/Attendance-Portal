@@ -186,28 +186,38 @@ router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
         var obj = { className: classes[i].name, classAttPer: classes[i].totalPercent.toString(), classAttLec: classes[i].totLec }
         totClassAttStats.push(obj)
       }
-      // topAttPerStuPerClass = []
-      // for (i = 0; i < classes.length; i++) {
-      //   max = 0
-      //   for (j = 0; j < classes[i].studentDetails.length; j++) {
-      //     var a = classes[i].studentDetails[j]
-      //     var b = classes[i].studentDetails[max]
-      //     if (parseFloat(a.percent) > parseFloat(b.percent)) {
-      //       max = j
-      //     }
-      //   }
-      //   var b = classes[i].studentDetails[max]
-      //   if (b) {
-      //     if (parseFloat(b.percent) != 0) {
-      //       topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, studentPercent: b.percent.toString() })
-      //     }
-      //   }
-      // }
       res.render('user/classTotAttendPer', {
-        //topAttPerStuPerClass: topAttPerStuPerClass,
         totClassAttStats: totClassAttStats,
       });
   })
+});
+
+//topAttPerStuPerClass
+router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
+  calc();
+  var obj = api.forTeacherClasses(req.user._id)
+  obj.then(classes => {
+    topAttPerStuPerClass = []
+    for (i = 0; i < classes.length; i++) {
+      max = 0
+      for (j = 0; j < classes[i].studentDetails.length; j++) {
+        var a = classes[i].studentDetails[j]
+        var b = classes[i].studentDetails[max]
+        if (parseFloat(a.percent) > parseFloat(b.percent)) {
+          max = j
+        }
+      }
+      var b = classes[i].studentDetails[max]
+      if (b) {
+        if (parseFloat(b.percent) != 0) {
+          topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name,studentRollno:b.rollnumber,studentEmail: b.email, studentCounts: b.counts,classCounts: classes[i].totLec, studentPercent: b.percent.toString() })
+        }
+      }
+    }
+    res.render('user/topAttPerStuPerClass', {
+      topAttPerStuPerClass: topAttPerStuPerClass,
+    });
+})
 });
 
 
