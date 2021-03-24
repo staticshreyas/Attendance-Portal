@@ -53,29 +53,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
     calc()
     if (req.user.who == "1") {
-      var obj = api.forUserClasses(req.user._id)
-      obj.then(ob => {
-
-        for (i = 0; i < ob.classes.length; i++) {
-          var classroom = ob.classes[i]
-          for (j = 0; j < classroom.studentDetails.length; j++) {
-            var student = classroom.studentDetails[j]
-            if (student.name == req.user.name) {
-              ob.classes[i].studentDetails = student
-              break
-            }
-          }
-        }
-        //console.log(ob.classes[0])
-        res.render('classroom/user-classes', {
-          user: req.user,
-          totClass: totalClasses,
-          classrooms: ob.classes,
-          attendance: ob.attendance,
-          totLec: ob.totalLecs,
-          totStuClass: ob.classes.length,
-        });
-      })
+      res.redirect('/classroom/userClasses')
     }
   }
   else if (req.user.who == "0") {
@@ -121,7 +99,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         var b = classes[i].studentDetails[max]
         if (b) {
           if (parseFloat(b.percent) != 0) {
-            topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, classCounts: classes[i].totLec,studentPercent: b.percent.toString() })
+            topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, classCounts: classes[i].totLec, studentPercent: b.percent.toString() })
           }
         }
       }
@@ -178,17 +156,17 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
 //classTotAttendPer
 router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
-    calc();
-    var obj = api.forTeacherClasses(req.user._id)
-    obj.then(classes => {
-      totClassAttStats = []
-      for (i = 0; i < classes.length; i++) {
-        var obj = { className: classes[i].name, classAttPer: classes[i].totalPercent.toString(), classAttLec: classes[i].totLec }
-        totClassAttStats.push(obj)
-      }
-      res.render('user/classTotAttendPer', {
-        totClassAttStats: totClassAttStats,
-      });
+  calc();
+  var obj = api.forTeacherClasses(req.user._id)
+  obj.then(classes => {
+    totClassAttStats = []
+    for (i = 0; i < classes.length; i++) {
+      var obj = { className: classes[i].name, classAttPer: classes[i].totalPercent.toString(), classAttLec: classes[i].totLec }
+      totClassAttStats.push(obj)
+    }
+    res.render('user/classTotAttendPer', {
+      totClassAttStats: totClassAttStats,
+    });
   })
 });
 
@@ -210,14 +188,14 @@ router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
       var b = classes[i].studentDetails[max]
       if (b) {
         if (parseFloat(b.percent) != 0) {
-          topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name,studentRollno:b.rollnumber,studentEmail: b.email, studentCounts: b.counts,classCounts: classes[i].totLec, studentPercent: b.percent.toString() })
+          topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentRollno: b.rollnumber, studentEmail: b.email, studentCounts: b.counts, classCounts: classes[i].totLec, studentPercent: b.percent.toString() })
         }
       }
     }
     res.render('user/topAttPerStuPerClass', {
       topAttPerStuPerClass: topAttPerStuPerClass,
     });
-})
+  })
 });
 
 
