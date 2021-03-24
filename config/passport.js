@@ -78,6 +78,10 @@ passport.use('local-register', new LocalStrategy({
             messages=validatePassword(password)
             return done(null, false, req.flash('error', messages));
         }
+        else if(!teacher && !student){
+            messages.push("Please check the tickbox")
+            return done(null, false, req.flash('error', messages));
+        }
         else {
             User.findOne({ 'email': email }, function (err, user) {
                 if (err) {
