@@ -40,7 +40,8 @@ const hbs=expressHbs.create({
       for (var i = 0;i<limit; i++) {
          items.push(options.fn(context[i]));
       }
-      return items;
+      item=items.join(' ')
+      return item;
     },
     ifEquals: function(arg1, arg2, options) {
       return (arg1 == arg2) ? options.fn(this) : options.inverse(this);

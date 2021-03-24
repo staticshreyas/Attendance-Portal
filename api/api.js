@@ -192,7 +192,7 @@ async function forUserClasses(stuId) {
                     continue
                 }
                 var classId = record.data.Class[0]
-                console.log(classId)
+                //console.log(classId)
                 var obj = forClassDeatils(classId)
                 var ob = await obj
                 var classroom = ob.classroom
@@ -223,6 +223,15 @@ async function forUserClasses(stuId) {
         else {
             totalStuRecords = 0
             attendance = 0
+            for(var i=0;i<classes.length;i++){
+                var classId=classes[i]._id
+                var obj = forClassDeatils(classId)
+                var ob = await obj
+                var classroom = ob.classroom
+                var owner = await userModel.find({ '_id': classroom.owner })
+                classroom['teacher'] = owner[0].name
+                allClasses.push(classroom)
+            }
         }
     }
     var obj = { attendance: attendance, classes: allClasses, totalLecs: totalStuRecords }
