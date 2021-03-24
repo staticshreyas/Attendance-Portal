@@ -17,7 +17,7 @@
                 {{# if login}}
                 {{# ifEquals this.session.user.who "1"}}
                 <li class="nav-item">
-                    <a href="/user/userClasses" class="nav-link">
+                    <a href="/classroom/userClasses" class="nav-link">
                         <span class="nav-link-inner--text">Classes</span>
                     </a>
                 </li>
@@ -38,7 +38,7 @@
                 {{/ifEquals}}
                 {{# ifEquals this.session.user.who "0"}}
                 <li class="nav-item">
-                    <a href="/user/teacher-classrooms" class="nav-link">
+                    <a href="/classroom/teacher-classrooms" class="nav-link">
                         <span class="nav-link-inner--text">Classrooms</span>
                     </a>
                 </li>

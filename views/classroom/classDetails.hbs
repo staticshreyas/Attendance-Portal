@@ -32,13 +32,13 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/user/teacher-classrooms">Classrooms</a></li>
+                                <li class="breadcrumb-item"><a href="/classroom/teacher-classrooms">Classrooms</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">{{this.classroom.name}}</li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/user/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
+                        <a href="/classroom/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
                                 class="ni ni-fat-add text-primary"></i>
                             Conduct a lecture</a>
                     </div>
@@ -142,11 +142,11 @@
                             <h3 class="mb-0">Students Enrolled</h3>
                         </div>
                         <div style="padding-right: 50px">
-                            <a href="/user/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take
+                            <a href="/classroom/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take
                                 Attendance</a>
                         </div>
                         <div class="col-right">
-                            <a href="/user/class-details/{{this.classroom._id}}/students/new"
+                            <a href="/classroom/class-details/{{this.classroom._id}}/students/new"
                                 class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
                                 Students</a>
                         </div>
@@ -188,7 +188,7 @@
                                 </td>
                                 <td>
                                     <div style="padding-left: 40px;">
-                                        <a href="/user/class-details/{{../this.classroom._id}}/students/remove/{{this._id}}"
+                                        <a href="/classroom/class-details/{{../this.classroom._id}}/students/remove/{{this._id}}"
                                             class="btn btn-sm btn-danger" style="font-size: 10px">
                                             <i class="fas fa-minus text-white"></i>
                                         </a>

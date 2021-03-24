@@ -16,6 +16,7 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+var classrouter = require('./routes/classroom')
 
 var app = express();
 
@@ -103,6 +104,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use('/classroom', classrouter);
 app.use('/user', userRouter);
 app.use('/', indexRouter);
 
