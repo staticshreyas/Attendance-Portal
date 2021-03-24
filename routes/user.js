@@ -121,7 +121,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
         var b = classes[i].studentDetails[max]
         if (b) {
           if (parseFloat(b.percent) != 0) {
-            topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, studentPercent: b.percent.toString() })
+            topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, classCounts: classes[i].totLec,studentPercent: b.percent.toString() })
           }
         }
       }
