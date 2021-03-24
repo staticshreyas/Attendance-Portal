@@ -260,10 +260,12 @@
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">Total attendance percent of all your classes</h3>
+                            <div class="col-xl-10">
+                                <h4 class="mb-0">Total attendance percent of all your classes</h4>
                             </div>
-
+                             <div class="col-xl-2 text-right">
+                                <a href="/user/classTotAttendPer" class="btn btn-sm btn-primary">See all</a>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -277,7 +279,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each totClassAttStats}}
+                                {{#maxItems 4 totClassAttStats}}
                                 <tr>
                                     <th scope="row">
                                         {{className}}
@@ -298,7 +300,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{/each}}
+                                {{/maxItems}}
                             </tbody>
                         </table>
                     </div>
@@ -308,8 +310,11 @@
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">Student with hightest attendance</h3>
+                            <div class="col-xl-10">
+                                <h4 class="mb-0">Student with hightest attendance</h4>
+                            </div>
+                             <div class="col-xl-2 text-right">
+                                <a href="/classroom/class-details/{{_id}}" class="btn btn-sm btn-primary">See all</a>
                             </div>
 
                         </div>
@@ -326,7 +331,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each topAttPerStuPerClass}}
+                                {{#maxItems 4 topAttPerStuPerClass}}
                                 <tr>
                                     <th scope="row">
                                         {{className}}
@@ -350,7 +355,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{/each}}
+                                {{/maxItems}}
                             </tbody>
                         </table>
                     </div>

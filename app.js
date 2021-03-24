@@ -31,12 +31,12 @@ const hbs=expressHbs.create({
 
   //create custom helpers
   helpers:{
-    maxTwoItems:function(context,options){
+    maxItems:function(arg,context,options){
       items=[]
-      if(context.length<=2)
+      if(context.length<=arg)
         limit=context.length
       else
-        limit=2
+        limit=arg
       for (var i = 0;i<limit; i++) {
          items.push(options.fn(context[i]));
       }

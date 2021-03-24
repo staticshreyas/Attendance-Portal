@@ -175,6 +175,42 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
   }
 });
 
+
+//classTotAttendPer
+router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
+    calc();
+    var obj = api.forTeacherClasses(req.user._id)
+    obj.then(classes => {
+      totClassAttStats = []
+      for (i = 0; i < classes.length; i++) {
+        var obj = { className: classes[i].name, classAttPer: classes[i].totalPercent.toString(), classAttLec: classes[i].totLec }
+        totClassAttStats.push(obj)
+      }
+      // topAttPerStuPerClass = []
+      // for (i = 0; i < classes.length; i++) {
+      //   max = 0
+      //   for (j = 0; j < classes[i].studentDetails.length; j++) {
+      //     var a = classes[i].studentDetails[j]
+      //     var b = classes[i].studentDetails[max]
+      //     if (parseFloat(a.percent) > parseFloat(b.percent)) {
+      //       max = j
+      //     }
+      //   }
+      //   var b = classes[i].studentDetails[max]
+      //   if (b) {
+      //     if (parseFloat(b.percent) != 0) {
+      //       topAttPerStuPerClass.push({ className: classes[i].name, studentName: b.name, studentCounts: b.counts, studentPercent: b.percent.toString() })
+      //     }
+      //   }
+      // }
+      res.render('user/classTotAttendPer', {
+        //topAttPerStuPerClass: topAttPerStuPerClass,
+        totClassAttStats: totClassAttStats,
+      });
+  })
+});
+
+
 //Get student profile
 router.get('/profile', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
