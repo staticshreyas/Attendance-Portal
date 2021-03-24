@@ -11,7 +11,7 @@ async function forClassDeatils(classId) {
 
     var studentPromise = classroom.students.map(async (stuId) => {
         var students = await userModel.findById(stuId)
-        console.log(students)
+        //console.log(students)
         return students
     });
 
