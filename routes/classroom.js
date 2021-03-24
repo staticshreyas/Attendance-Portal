@@ -4,6 +4,7 @@ var router = express.Router();
 var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
+const mongo = require('mongodb');
 
 var api = require('../api/api')
 
@@ -239,6 +240,37 @@ router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
         }
     });
 });
+
+
+// router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
+//     var classId = req.params.id;
+//     var studentId = new mongo.ObjectID(req.params.stuId);
+//     classModel.findOneAndUpdate({ _id: req.params.id }, { $pull: { "students": req.params.stuId } }, { new: true }, function (err, deleted) {
+//         if (err) {
+//             return done(err);
+//         }
+//         else {
+//           console.log("class",deleted);
+//           userModel.findById(studentId,(err,student)=>{
+//           if(err){
+//             return done(err);
+//           }
+//           else{
+//             console.log("student",student);
+//             recordModel.updateMany({"data.Class":classId.toString()},{$pull:{data:{Name:student.name,RollNo:student.rollnumber}}},{new:true},(err,modAttend)=>{
+//               if(err){
+//                 console.log(err);
+//               }
+//               else{
+//                 console.log("modifiedAtted",modAttend);
+//                 res.redirect('/user/class-details/' + req.params.id);
+//                  }
+//                });
+//              }
+//         });           
+//         }
+//     });
+// });
 
 //Conduct a lecture
 router.get('/add-lec/:id', (req, res, next) => {
