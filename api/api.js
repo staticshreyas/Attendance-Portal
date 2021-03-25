@@ -1,6 +1,7 @@
 var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
+const mongo = require('mongodb');
 
 const Excel = require('exceljs')
 
@@ -223,8 +224,8 @@ async function forUserClasses(stuId) {
         else {
             totalStuRecords = 0
             attendance = 0
-            for(var i=0;i<classes.length;i++){
-                var classId=classes[i]._id
+            for (var i = 0; i < classes.length; i++) {
+                var classId = classes[i]._id
                 var obj = forClassDeatils(classId)
                 var ob = await obj
                 var classroom = ob.classroom
@@ -246,4 +247,26 @@ async function allLecTeacher(ownerId) {
     return resp;
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher }
+async function removeStudent(classId, studentId) {
+
+    var students = await userModel.findById(studentId);
+    var student = JSON.parse(JSON.stringify(students))
+
+    var name = student.name;
+    var roll = parseInt(student.rollnumber)
+
+    var records = await recordModel.find({ 'data.Name': name })
+    var response = JSON.parse(JSON.stringify(records))
+    console.log(response)
+
+    for (var i = 0; i < records.length; i++) {
+        var docId= response[i]._id
+        var modify = await recordModel.findOneAndUpdate({ _id: docId }, { $set: { "a": "a" } })
+        console.log(modify)
+    }
+
+    var del = await classModel.findOneAndUpdate({ _id: classId }, { $pull: { "students": studentId } }, { new: true })
+
+}
+
+module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent }

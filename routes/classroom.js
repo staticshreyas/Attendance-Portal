@@ -4,7 +4,7 @@ var router = express.Router();
 var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
-const mongo = require('mongodb');
+
 
 var api = require('../api/api')
 
@@ -40,7 +40,7 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
                     }
                 }
             }
-           //console.log(ob.classes[0])
+            //console.log(ob.classes[0])
             res.render('classroom/user-classes', {
                 user: req.user,
                 totClass: totalClasses,
@@ -86,17 +86,19 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     obj.then(classes => {
         var totalLectures = 0
         var totalP = 0;
+        var totStu=0;
         for (i = 0; i < classes.length; i++) {
             totalLectures += classes[i].totLec
         }
         for (i = 0; i < classes.length; i++) {
             totalP = totalP + (parseInt(classes[i].totalP))
+            totStu+=parseInt(classes[i].students.length)
         }
         if (totalLectures === 0) {
             var avgPercent = 0
         }
         else {
-            var avgPercent = (((totalP) / (totalLectures * totalStudents)) * 100).toFixed(2).toString()
+            var avgPercent = (((totalP) / (totalLectures * totStu)) * 100).toFixed(2).toString()
         }
         //classes.studentDetails=classes.studentDetails.slice(0,1)
         //console.log(classes.studentDetails)
@@ -230,47 +232,30 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 });
 
 //Remove a student from a particular class
-router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
-    classModel.findOneAndUpdate({ _id: req.params.id }, { $pull: { "students": req.params.stuId } }, { new: true }, function (err, deleted) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.redirect('/classroom/class-details/' + req.params.id);
-        }
-    });
-});
-
-
 // router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
-//     var classId = req.params.id;
-//     var studentId = new mongo.ObjectID(req.params.stuId);
 //     classModel.findOneAndUpdate({ _id: req.params.id }, { $pull: { "students": req.params.stuId } }, { new: true }, function (err, deleted) {
 //         if (err) {
-//             return done(err);
+//             console.log(err);
 //         }
 //         else {
-//           console.log("class",deleted);
-//           userModel.findById(studentId,(err,student)=>{
-//           if(err){
-//             return done(err);
-//           }
-//           else{
-//             console.log("student",student);
-//             recordModel.updateMany({"data.Class":classId.toString()},{$pull:{data:{Name:student.name,RollNo:student.rollnumber}}},{new:true},(err,modAttend)=>{
-//               if(err){
-//                 console.log(err);
-//               }
-//               else{
-//                 console.log("modifiedAtted",modAttend);
-//                 res.redirect('/user/class-details/' + req.params.id);
-//                  }
-//                });
-//              }
-//         });           
+//             res.redirect('/classroom/class-details/' + req.params.id);
 //         }
 //     });
 // });
+
+
+router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
+    var classId = req.params.id;
+    var studentId = req.params.stuId;
+
+    var obj = api.removeStudent(classId, studentId)
+
+    obj.then((ob) => {
+        res.redirect('/classroom/class-details/' + req.params.id);
+    })
+
+
+});
 
 //Conduct a lecture
 router.get('/add-lec/:id', (req, res, next) => {
