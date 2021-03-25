@@ -253,17 +253,8 @@ async function removeStudent(classId, studentId) {
     var student = JSON.parse(JSON.stringify(students))
 
     var name = student.name;
-    var roll = parseInt(student.rollnumber)
 
-    var records = await recordModel.find({ 'data.Name': name })
-    var response = JSON.parse(JSON.stringify(records))
-    console.log(response)
-
-    for (var i = 0; i < records.length; i++) {
-        var docId= response[i]._id
-        var modify = await recordModel.findOneAndUpdate({ _id: docId }, { $set: { "a": "a" } })
-        console.log(modify)
-    }
+    var records = await recordModel.deleteMany({ "data.Name": name })
 
     var del = await classModel.findOneAndUpdate({ _id: classId }, { $pull: { "students": studentId } }, { new: true })
 
