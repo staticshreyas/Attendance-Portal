@@ -84,21 +84,22 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
     var obj = api.forTeacherClasses(req.user._id)
 
     obj.then(classes => {
-        var totalLectures = 0
+        var totalC = 0
         var totalP = 0;
-        var totStu=0;
+        var totalLectures = 0;
         for (i = 0; i < classes.length; i++) {
             totalLectures += classes[i].totLec
         }
         for (i = 0; i < classes.length; i++) {
-            totalP = totalP + (parseInt(classes[i].totalP))
-            totStu+=parseInt(classes[i].students.length)
+            totalP = totalP + ((parseInt(classes[i].totalPercent)) / 100)
+            if (classes[i].totalPercent)
+                totalC++;
         }
         if (totalLectures === 0) {
             var avgPercent = 0
         }
         else {
-            var avgPercent = (((totalP) / (totalLectures * totStu)) * 100).toFixed(2).toString()
+            var avgPercent = (((totalP) / (totalC)) * 100).toFixed(2).toString()
         }
         //classes.studentDetails=classes.studentDetails.slice(0,1)
         //console.log(classes.studentDetails)

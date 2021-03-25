@@ -64,19 +64,22 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
     obj.then(classes => {
       //console.log(classes)
-      var totalLectures = 0
+      var totalC = 0
       var totalP = 0;
+      var totalLectures = 0;
       for (i = 0; i < classes.length; i++) {
         totalLectures += classes[i].totLec
       }
       for (i = 0; i < classes.length; i++) {
-        totalP = totalP + (parseInt(classes[i].totalP))
+        totalP = totalP + ((parseInt(classes[i].totalPercent)) / 100)
+        if (classes[i].totalPercent)
+          totalC++;
       }
       if (totalLectures === 0) {
         var avgPercent = 0
       }
       else {
-        var avgPercent = (((totalP) / (totalLectures * totalStudents)) * 100).toFixed(2).toString()
+        var avgPercent = (((totalP) / (totalC)) * 100).toFixed(2).toString()
       }
 
       totClassAttStats = []

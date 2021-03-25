@@ -254,7 +254,7 @@ async function removeStudent(classId, studentId) {
 
     var name = student.name;
 
-    var records = await recordModel.deleteMany({ "data.Name": name })
+    //var records = await recordModel.deleteMany({ "data.Name": name })
 
     var del = await classModel.findOneAndUpdate({ _id: classId }, { $pull: { "students": studentId } }, { new: true })
 
