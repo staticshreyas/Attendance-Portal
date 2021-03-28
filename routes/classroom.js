@@ -168,6 +168,25 @@ router.post('/create-class', (req, res, next) => {
     });
 });
 
+router.post('/join-class', (req, res, next) => {
+    userModel.findById(req.user._id,(err,user)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            classModel.findOneAndUpdate({ classCode:req.body.classCode  }, { $push: { students: user._id } }, { new: true }, function (err, updatedClass) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(updatedClass)
+                    res.redirect('/classroom/userClasses');
+                }
+            });
+        }
+    })
+});
+
 //Delete particular class
 router.get('/teacher-classroom/delete/:id', async (req, res, next) => {
     var classId = req.params.id;

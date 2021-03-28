@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-7">
+                    <div class="col-lg-6 col-6">
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -37,7 +37,13 @@
                             </ol>
                         </nav>
                     </div>
-                    <div class="col-lg-6 col-5 text-right">
+                     <div class="col-lg-4 col-4 text-right">
+                        <div class="h5 d-md-inline-block text-white mb-0"><b>Class code :  </b></div>
+                        <div class="h4 d-md-inline-block text-white mb-0 mr-3">{{this.classroom.classCode}}</div>
+                        <a href="" class="btn btn-sm btn-neutral">
+                            <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a>
+                    </div>
+                    <div class="col-lg-2 col-2 text-right">
                         <a href="/classroom/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
                                 class="ni ni-fat-add text-primary"></i>
                             Conduct a lecture</a>
