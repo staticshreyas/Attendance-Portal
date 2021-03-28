@@ -120,18 +120,18 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
     calc()
     var create = api.creatXl(req.params.id)
     create.then(() => {
-        var obj = api.forClassDeatils(req.params.id)
-        obj.then((ob) => {
-            //console.log(ob)
-            res.render('classroom/classDetails', {
-                user: req.user,
-                classroom: ob.classroom,
-                students: ob.stuArray,
-                totClass: totalClasses,
-                totStu: ob.stuArray.length,
-                totP: ob.totalPercent
-            });
-        })
+    })
+    var obj = api.forClassDeatils(req.params.id)
+    obj.then((ob) => {
+        //console.log(ob)
+        res.render('classroom/classDetails', {
+            user: req.user,
+            classroom: ob.classroom,
+            students: ob.stuArray,
+            totClass: totalClasses,
+            totStu: ob.stuArray.length,
+            totP: ob.totalPercent
+        });
     })
 
 });

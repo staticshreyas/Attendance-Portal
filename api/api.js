@@ -21,9 +21,6 @@ async function forClassDeatils(classId) {
     var resp = await recordModel.find({ 'data.Class': classId.toString() })
 
     var response = JSON.parse(JSON.stringify(resp))
-
-    //console.log(stuArray)
-
     var totalP = 0
     for (i = 0; i < stuArray.length; i++) {
         var k = 0;
@@ -93,7 +90,7 @@ async function creatXl(classId) {
     ]
 
     var data = await classModel.findById({ _id: classId })
-    console.log(data)
+    //console.log(data)
     var l=data.students.length
     var stu=data.students
 
@@ -104,7 +101,7 @@ async function creatXl(classId) {
         obj["name"] = student.name
         obj["image"] = student.rollnumber + ".jpg"
         obj["roll_no"] = student.rollnumber
-        obj["classid"] = data._id
+        obj["classid"] = JSON.parse(JSON.stringify(data._id))
     
         worksheet.addRow(obj)
         workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
