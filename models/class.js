@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 let alphabets = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
 
+
 const classSchema = new mongoose.Schema({
   name: {
     type: String,
