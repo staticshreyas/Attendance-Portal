@@ -39,7 +39,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
         }
       }
     }
-    console.log(defaultersList);
+    //console.log(defaultersList);
 
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,

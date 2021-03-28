@@ -92,20 +92,20 @@ async function creatXl(classId) {
         { header: 'classid', key: 'classid' }
     ]
 
-    var data = await classModel.find({ _id: classId }).select({ "students": 1, "_id": 1 })
+    var data = await classModel.findById({ _id: classId })
+    console.log(data)
+    var l=data.students.length
+    var stu=data.students
 
-    for (i = 0; i < data[0].students.length; i++) {
-        var a = data[0].students[i]
-        //console.log(a)
+    for (i = 0; i <l; i++) {
+        var a = stu[i]
         var student = await userModel.findById(a)
-        //console.log(student)
         var obj = {}
         obj["name"] = student.name
         obj["image"] = student.rollnumber + ".jpg"
         obj["roll_no"] = student.rollnumber
-        obj["classid"] = data[0].id
-        //console.log(obj)
-
+        obj["classid"] = data._id
+    
         worksheet.addRow(obj)
         workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
     }
