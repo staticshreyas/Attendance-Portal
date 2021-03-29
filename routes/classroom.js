@@ -4,6 +4,7 @@ var router = express.Router();
 var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
+const clipboardy = require('clipboardy');
 
 
 var api = require('../api/api')
@@ -168,29 +169,20 @@ router.post('/create-class', (req, res, next) => {
     });
 });
 
-async function forJoinClass(classCode,user) {
-    var classroom = await classModel.findOne({classCode:classCode})
-    let flag=0
-    if(classroom){
-        classroom.students.map((stuId) => {
-            if (stuId.equals(user._id)) {
-                flag = 1
-            }
-        });
-    }
-    else{
-        flag=2
-    }   
-    return flag
-}
+//copy class code
+router.get('/:id/copyCode/:code', isLoggedIn, (req, res) => {
+    clipboardy.write(req.params.code);
+    res.redirect('/classroom/class-details/' + req.params.id);
+});
 
+//student can join class with class code 
 router.post('/join-class', (req, res, next) => {
     userModel.findById(req.user._id,(err,user)=>{
         if(err){
             console.log(err)
         }
         else{
-            var obj = forJoinClass(req.body.classCode, user)
+            var obj = api.forJoinClass(req.body.classCode, user)
             obj.then((ob) => {
                 if(ob==1){
                     console.log("You are already part of entered class code")

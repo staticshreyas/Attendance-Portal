@@ -257,4 +257,21 @@ async function removeStudent(classId, studentId) {
 
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent }
+//function to check if student is already a part of class or if class with that code exists
+async function forJoinClass(classCode,user) {
+    var classroom = await classModel.findOne({classCode:classCode})
+    let flag=0
+    if(classroom){
+        classroom.students.map((stuId) => {
+            if (stuId.equals(user._id)) {
+                flag = 1
+            }
+        });
+    }
+    else{
+        flag=2
+    }   
+    return flag
+}
+
+module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent,forJoinClass }

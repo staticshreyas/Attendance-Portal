@@ -37,10 +37,10 @@
                             </ol>
                         </nav>
                     </div>
-                     <div class="col-lg-4 col-4 text-right">
-                        <div class="h5 d-md-inline-block text-white mb-0"><b>Class code :  </b></div>
+                    <div class="col-lg-4 col-4 text-right">
+                        <div class="h5 d-md-inline-block text-white mb-0"><b>Class code : </b></div>
                         <div class="h4 d-md-inline-block text-white mb-0 mr-3">{{this.classroom.classCode}}</div>
-                        <a href="" class="btn btn-sm btn-neutral">
+                        <a href="/classroom/{{this.classroom._id}}/copyCode/{{this.classroom.classCode}}" class="btn btn-sm btn-neutral">
                             <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a>
                     </div>
                     <div class="col-lg-2 col-2 text-right">
@@ -148,7 +148,8 @@
                             <h3 class="mb-0">Students Enrolled</h3>
                         </div>
                         <div style="padding-right: 50px">
-                            <a href="/classroom/take_attendance/{{this.classroom._id}}" class="btn btn-sm btn-primary">Take
+                            <a href="/classroom/take_attendance/{{this.classroom._id}}"
+                                class="btn btn-sm btn-primary">Take
                                 Attendance</a>
                         </div>
                         <div class="col-right">
