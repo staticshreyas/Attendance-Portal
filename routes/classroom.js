@@ -168,21 +168,52 @@ router.post('/create-class', (req, res, next) => {
     });
 });
 
+async function forJoinClass(classCode,user) {
+    var classroom = await classModel.findOne({classCode:classCode})
+    let flag=0
+    if(classroom){
+        classroom.students.map((stuId) => {
+            if (stuId.equals(user._id)) {
+                flag = 1
+            }
+        });
+    }
+    else{
+        flag=2
+    }   
+    return flag
+}
+
 router.post('/join-class', (req, res, next) => {
     userModel.findById(req.user._id,(err,user)=>{
         if(err){
             console.log(err)
         }
         else{
-            classModel.findOneAndUpdate({ classCode:req.body.classCode  }, { $push: { students: user._id } }, { new: true }, function (err, updatedClass) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    console.log(updatedClass)
+            var obj = forJoinClass(req.body.classCode, user)
+            obj.then((ob) => {
+                if(ob==1){
+                    console.log("You are already part of entered class code")
                     res.redirect('/classroom/userClasses');
                 }
-            });
+                else if(ob==0){
+                    classModel.findOneAndUpdate({ classCode:req.body.classCode  }, { $push: { students: user._id } }, { new: true }, function (err, updatedClass) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            console.log("You are added to entered class code")
+                            console.log(updatedClass)
+                            res.redirect('/classroom/userClasses');
+                        }
+                    });
+                }
+                else{
+                    console.log("You entered wrong class code!")
+                    res.redirect('/classroom/userClasses');
+                }
+                
+            })
         }
     })
 });
