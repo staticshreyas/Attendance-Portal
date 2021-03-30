@@ -5,7 +5,7 @@ var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
 const clipboardy = require('clipboardy');
-
+const MailSender = require('../mail')
 
 var api = require('../api/api')
 
@@ -272,7 +272,18 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
             console.log(err);
         }
         else {
-            res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
+            userModel.findById(req.params.stuId,(err,student)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    var msg = 'Hey '+student.name+ '! You\'re added to a new class '+ '\''+updatedClass.name+ '\' - '+updatedClass.description  
+                    console.log(msg)
+                    let class_mail = new MailSender(student.email,'You\'re added to new class',msg)
+                    class_mail.send();
+                    res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
+                }
+            });
         }
     });
 });
