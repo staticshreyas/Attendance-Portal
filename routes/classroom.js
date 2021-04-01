@@ -177,19 +177,19 @@ router.get('/:id/copyCode/:code', isLoggedIn, (req, res) => {
 
 //student can join class with class code 
 router.post('/join-class', (req, res, next) => {
-    userModel.findById(req.user._id,(err,user)=>{
-        if(err){
+    userModel.findById(req.user._id, (err, user) => {
+        if (err) {
             console.log(err)
         }
-        else{
+        else {
             var obj = api.forJoinClass(req.body.classCode, user)
             obj.then((ob) => {
-                if(ob==1){
+                if (ob == 1) {
                     console.log("You are already part of entered class code")
                     res.redirect('/classroom/userClasses');
                 }
-                else if(ob==0){
-                    classModel.findOneAndUpdate({ classCode:req.body.classCode  }, { $push: { students: user._id } }, { new: true }, function (err, updatedClass) {
+                else if (ob == 0) {
+                    classModel.findOneAndUpdate({ classCode: req.body.classCode }, { $push: { students: user._id } }, { new: true }, function (err, updatedClass) {
                         if (err) {
                             console.log(err);
                         }
@@ -200,11 +200,11 @@ router.post('/join-class', (req, res, next) => {
                         }
                     });
                 }
-                else{
+                else {
                     console.log("You entered wrong class code!")
                     res.redirect('/classroom/userClasses');
                 }
-                
+
             })
         }
     })
@@ -272,16 +272,20 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
             console.log(err);
         }
         else {
-            userModel.findById(req.params.stuId,(err,student)=>{
-                if(err){
+            userModel.findById(req.params.stuId, (err, student) => {
+                if (err) {
                     console.log(err);
                 }
-                else{
-                    var msg = 'Hey '+student.name+ '! You\'re added to a new class '+ '\''+updatedClass.name+ '\' - '+updatedClass.description  
-                    console.log(msg)
-                    let class_mail = new MailSender(student.email,'You\'re added to new class',msg)
-                    class_mail.send();
-                    res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
+                else {
+                    var obj = api.getOwner(updatedClass.owner)
+                    obj.then((ob) => {
+                        var msg = 'Hey ' + student.name + '! You\'re added to a new class ' + '\'' + updatedClass.name + '\' - ' + updatedClass.description + ' by ' + ob.name
+                        //console.log(msg)
+                        let class_mail = new MailSender(student.email, 'You\'re added to new class', msg)
+                        class_mail.send();
+                        res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
+                    })
+
                 }
             });
         }

@@ -238,6 +238,12 @@ async function forUserClasses(stuId) {
 
 }
 
+async function getOwner(id){
+    var owner = await userModel.find({'_id': id})
+    var obj = {name: owner[0].name}
+    return obj
+}
+
 // Function to get all lectures taken by the teacher
 async function allLecTeacher(ownerId) {
     var resp = await recordModel.find({ 'owner': ownerId.toString() }); // get all attendance for this teacher
@@ -274,4 +280,4 @@ async function forJoinClass(classCode,user) {
     return flag
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent,forJoinClass }
+module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent,forJoinClass, getOwner }
