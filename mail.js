@@ -28,7 +28,7 @@ class MailSender{
         from: this.mailfrom,
         to: this.tomail,
         subject: this.sub,
-        text: this.message,
+        html: this.message,
         //html: "<b>From Capture It</b>", // html body
       };
       

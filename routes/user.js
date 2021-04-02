@@ -6,6 +6,8 @@ var imgModel = require('../models/image');
 var classModel = require('../models/class');
 var multer = require('multer');
 
+const MailSender = require('../mail')
+
 var api = require('../api/api')
 
 var fs = require('fs');
@@ -280,6 +282,31 @@ router.use('/', notLoggedIn, function (req, res, next) {
   next();
 });
 
+//Fuctions for OTP
+router.get('/otp', function (req, res, next) {
+  var messages = req.flash('error');
+  res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
+});
+router.post('/otp', function (req, res, next) {
+  var messages = req.flash('error');
+  var otp = generateOTP();
+  req.session.otp=otp
+  var msg = "<h2>OTP for account verification is </h2>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+  let otp_mail = new MailSender(req.body.email, "Otp for registration is: ", msg)
+  otp_mail.send();
+
+  res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 })
+});
+router.post('/verify', function (req, res) {
+
+  if (req.body.otp == req.session.otp) {
+    res.render('user/register');
+  }
+  else {
+    res.render('user/otp', { msg: 'OTP entered is incorrect' });
+  }
+});
+
 //Functions for logging in 
 router.get('/login', function (req, res, next) {
   var messages = req.flash('error');
@@ -376,4 +403,12 @@ function notLoggedIn(req, res, next) {
     return next();
   }
   res.redirect('/user/login');
+}
+
+function generateOTP() {
+  var otp = Math.random();
+  otp = otp * 1000000;
+  otp = parseInt(otp);
+  console.log(otp);
+  return otp
 }

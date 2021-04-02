@@ -1,5 +1,6 @@
 var passport = require('passport');
 var User = require('../models/user');
+const MailSender = require('../mail')
 
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -29,10 +30,10 @@ function validatePassword(password) {
     var p = password
     errors = [];
     if (p.length < 6) {
-        errors.push("Your password must be at least 6 characters."); 
+        errors.push("Your password must be at least 6 characters.");
     }
     if (p.length > 15) {
-        errors.push("Your password must be atmost 15 characters."); 
+        errors.push("Your password must be atmost 15 characters.");
     }
     if (p.search(/[A-Z]/i) < 0) {
         errors.push("Your password must contain at least one upercase letter.");
@@ -41,10 +42,10 @@ function validatePassword(password) {
         errors.push("Your password must contain at least one lowercase letter.");
     }
     if (p.search(/[0-9]/) < 0) {
-        errors.push("Your password must contain at least one digit."); 
+        errors.push("Your password must contain at least one digit.");
     }
     if (p.search(/[!@#$%^&*]/) < 0) {
-        errors.push("Your password must contain at least one special character."); 
+        errors.push("Your password must contain at least one special character.");
     }
     return errors;
 }
@@ -74,11 +75,11 @@ passport.use('local-register', new LocalStrategy({
             messages.push("Email Domain: @somaiya.edu required")
             return done(null, false, req.flash('error', messages));
         }
-        else if((validatePassword(password)).length!=0) {
-            messages=validatePassword(password)
+        else if ((validatePassword(password)).length != 0) {
+            messages = validatePassword(password)
             return done(null, false, req.flash('error', messages));
         }
-        else if(!teacher && !student){
+        else if (!teacher && !student) {
             messages.push("Please check the tickbox")
             return done(null, false, req.flash('error', messages));
         }
