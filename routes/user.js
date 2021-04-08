@@ -310,7 +310,7 @@ router.post('/otp', function (req, res, next) {
         var msg = "<h2>OTP for account verification is </h2>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         let otp_mail = new MailSender(req.body.email, "Otp for registration is: ", msg)
         otp_mail.send();   
-        res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 })     
+        res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 ,verifyEmail: req.body.email})     
       }
     });
   }

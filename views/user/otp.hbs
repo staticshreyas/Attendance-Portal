@@ -31,7 +31,9 @@
                 <div class="card bg-secondary border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">
-                            <h4>Enter your OTP</h4>
+                            <h4>OTP Verification</h4>
+                            <h6><mark style="background-color:lawngreen;">We've sent a OTP to your email : {{verifyEmail}} </h6>
+                            <br>
                             {{#if msg}}
                             <div class="alert alert-danger">
                                 {{msg}}
@@ -44,7 +46,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control" name="otp" placeholder="OTP" type="text">
+                                    <input class="form-control" name="otp" placeholder="Enter OTP" type="text">
                                 </div>
                             </div>
                             <div class="text-center">
