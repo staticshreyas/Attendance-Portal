@@ -288,19 +288,42 @@ router.get('/otp', function (req, res, next) {
   res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
 });
 router.post('/otp', function (req, res, next) {
-  var messages = req.flash('error');
-  var otp = generateOTP();
-  req.session.otp=otp
-  var msg = "<h2>OTP for account verification is </h2>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
-  let otp_mail = new MailSender(req.body.email, "Otp for registration is: ", msg)
-  otp_mail.send();
-
-  res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 })
+  var messages = [];
+  if (!validateEmail(req.body.email)) {
+    messages.push("Email Domain: @somaiya.edu required")
+    res.render('user/otpRegistration', { messages: messages,hasErrors: messages.length > 0 });
+  }
+  else{
+    userModel.findOne({ 'email': req.body.email }, function (err, user) {
+      if (err) {
+          console.log(err)
+      }
+      if (user) {
+        messages.push("Email already in use ! Enter different email id");
+        res.render('user/otpRegistration', { messages: messages,hasErrors: messages.length > 0 });
+      }
+      else {
+        messages = req.flash('error');
+        var otp = generateOTP();
+        req.session.otp=otp
+        req.session.verifiedEmail = req.body.email;
+        var msg = "<h2>OTP for account verification is </h2>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+        let otp_mail = new MailSender(req.body.email, "Otp for registration is: ", msg)
+        otp_mail.send();   
+        res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 })     
+      }
+    });
+  }
 });
-router.post('/verify', function (req, res) {
 
+router.post('/verify', function (req, res) {
+  var input = {
+    'emailInput': req.session.verifiedEmail,
+  }
+  req.session.filledformdata = input;
+  var filledformdata = req.session.filledformdata;
   if (req.body.otp == req.session.otp) {
-    res.render('user/register');
+    res.render('user/register',{filledformdata:filledformdata});
   }
   else {
     res.render('user/otp', { msg: 'OTP entered is incorrect' });
@@ -363,6 +386,7 @@ function check(req, res, next) {
     'emailInput': req.body.email,
   }
   req.session.filledformdata = input;
+  
   next();
 }
 //Functions for registering a new teacher
@@ -411,4 +435,13 @@ function generateOTP() {
   otp = parseInt(otp);
   console.log(otp);
   return otp
+}
+
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (re.test(email)) {
+      if (email.indexOf("@somaiya.edu", email.length - "@somaiya.edu".length) !== -1) {
+          return 1
+      }
+  }
 }
