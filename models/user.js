@@ -9,7 +9,7 @@ var userschema = new Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
     who:{type: String, required:true},
-    year:{type: String, required:true}
+    year:{type: String, required:false}
 });
 
 userschema.methods.encryptPassword = function(password){

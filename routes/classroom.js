@@ -331,7 +331,8 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
-                            classroom: classroom
+                            classroom: classroom,
+                            filterActive: true
                         });
                     }
                 });
@@ -365,7 +366,8 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
-                            classroom: classroom
+                            classroom: classroom,
+                            filterActive: true
                         });
                     }
                 });
@@ -398,7 +400,8 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
-                            classroom: classroom
+                            classroom: classroom,
+                            filterActive: true
                         });
                     }
                 });
