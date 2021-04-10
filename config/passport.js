@@ -62,6 +62,7 @@ passport.use('local-register', new LocalStrategy({
         var teacher = req.body.teacher
         var student = req.body.student
         var messages = [];
+        var year = req.body.year
         req.checkBody('email', 'Invalid email').notEmpty().isEmail();
         req.checkBody('password', 'Invalid password').notEmpty();
         var errors = req.validationErrors();
@@ -103,6 +104,13 @@ passport.use('local-register', new LocalStrategy({
                     }
                     else if (student) {
                         newUser.who = student
+                        if (!year) {
+                            messages.push("Please enter all details")
+                            return done(null, false, req.flash('error', messages));
+                        }
+                        else {
+                            newUser.year = year
+                        }
                     }
                     else {
                         newUser.who = ""

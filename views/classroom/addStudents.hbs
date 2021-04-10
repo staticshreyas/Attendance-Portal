@@ -32,6 +32,9 @@
                         <div class="col" style="padding-left:455px">
                             <h3 class="mb-0">All Students</h3>
                         </div>
+                        <div class="col text-right">
+                            <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary">Filters</a>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -42,6 +45,8 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Roll no</th>
+                                <th scope="col">Class</th>
+                                <th scope="col">Year</th>
                                 <th scope="col">Add a student</th>
                             </tr>
                         </thead>
@@ -51,6 +56,8 @@
                                 <th scope="row">{{this.name}}</th>
                                 <td>{{this.email}}</td>
                                 <td>{{this.rollnumber}}</td>
+                                <td style="padding-left: 30px;">{{this.class}}</td>
+                                <td style="padding-left: 30px;">{{this.year}}</td>
                                 <td>
                                     <div style="padding-left: 25px;">
                                         <a href="/classroom/class-details/{{../this.classroom._id}}/students/new/{{this._id}}"

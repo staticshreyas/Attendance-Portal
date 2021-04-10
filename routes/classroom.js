@@ -233,6 +233,7 @@ router.get('/teacher-classroom/delete/:id', async (req, res, next) => {
 
 //Add new student in particular class
 router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
+    req.session.classId=req.params.id
     userModel.find({ 'who': "1" }, function (err, users) {
         if (err) {
             return done(err);
@@ -292,19 +293,123 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
     });
 });
 
-//Remove a student from a particular class
-// router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
-//     classModel.findOneAndUpdate({ _id: req.params.id }, { $pull: { "students": req.params.stuId } }, { new: true }, function (err, deleted) {
-//         if (err) {
-//             console.log(err);
-//         }
-//         else {
-//             res.redirect('/classroom/class-details/' + req.params.id);
-//         }
-//     });
-// });
+router.get('/addStuFilter', function (req, res, next) {
+    res.render('classroom/addStuFilter');
+});
+router.post('/addStuFilter', function (req, res, next) {
+    var year = req.body.year
+    var batch = req.body.batch
+    var classId=req.session.classId
+    var message = ""
+    if (batch == "Batch" && year == "Year") {
+        message = "Please select at least one filter"
+    }
+    else if (batch == "Batch") {
+        batch = ""
+        userModel.find({ 'year': year }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else if (year == "Year") {
+        year = ""
+        userModel.find({ 'class': batch }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else {
+        userModel.find({ 'year': year, 'class': batch }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom
+                        });
+                    }
+                });
+            }
+        });
+    }
+    if (message)
+        res.render('classroom/addStuFilter', { message: message });
+})
 
-
+//Remove a student
 router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
     var classId = req.params.id;
     var studentId = req.params.stuId;

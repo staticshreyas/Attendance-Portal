@@ -26,6 +26,58 @@ function calc() {
   })
 }
 
+router.get('/filter', isLoggedIn, function (req, res, next) {
+  res.render('user/filter');
+});
+router.post('/filter', isLoggedIn, function (req, res, next) {
+  var year = req.body.year
+  var batch = req.body.batch
+  var message = ""
+  if (batch == "Batch" && year == "Year") {
+    message = "Please select at least one filter"
+  }
+  else if (batch == "Batch") {
+    batch = ""
+    userModel.find({ 'year': year }, function (err, users) {
+      if (err) {
+        return done(err);
+      }
+      else {
+        res.render('user/allStudents', {
+          users: users,
+        });
+      }
+    });
+  }
+  else if (year == "Year") {
+    year = ""
+    userModel.find({ 'class': batch }, function (err, users) {
+      if (err) {
+        return done(err);
+      }
+      else {
+        res.render('user/allStudents', {
+          users: users,
+        });
+      }
+    });
+  }
+  else {
+    userModel.find({ 'class': batch, 'year': year }, function (err, users) {
+      if (err) {
+        return done(err);
+      }
+      else {
+        res.render('user/allStudents', {
+          users: users,
+        });
+      }
+    });
+  }
+  if (message)
+    res.render('user/filter', { message: message });
+})
+
 //Get defaulter list
 router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
   //console.log(req.user.who)
@@ -291,26 +343,26 @@ router.post('/otp', function (req, res, next) {
   var messages = [];
   if (!validateEmail(req.body.email)) {
     messages.push("Email Domain: @somaiya.edu required")
-    res.render('user/otpRegistration', { messages: messages,hasErrors: messages.length > 0 });
+    res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
   }
-  else{
+  else {
     userModel.findOne({ 'email': req.body.email }, function (err, user) {
       if (err) {
-          console.log(err)
+        console.log(err)
       }
       if (user) {
         messages.push("Email already in use ! Enter different email id");
-        res.render('user/otpRegistration', { messages: messages,hasErrors: messages.length > 0 });
+        res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
       }
       else {
         messages = req.flash('error');
         var otp = generateOTP();
-        req.session.otp=otp
+        req.session.otp = otp
         req.session.verifiedEmail = req.body.email;
         var msg = "<h2>OTP for account verification is </h2>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         let otp_mail = new MailSender(req.body.email, "Otp for registration is: ", msg)
-        otp_mail.send();   
-        res.render('user/otp', { messages: messages, hasErrors: messages.length > 0 ,verifyEmail: req.body.email})     
+        otp_mail.send();
+        res.render('user/otp', { messages: messages, hasErrors: messages.length > 0, verifyEmail: req.body.email })
       }
     });
   }
@@ -323,7 +375,7 @@ router.post('/verify', function (req, res) {
   req.session.filledformdata = input;
   var filledformdata = req.session.filledformdata;
   if (req.body.otp == req.session.otp) {
-    res.render('user/register',{filledformdata:filledformdata});
+    res.render('user/register', { filledformdata: filledformdata });
   }
   else {
     res.render('user/otp', { msg: 'OTP entered is incorrect' });
@@ -386,7 +438,7 @@ function check(req, res, next) {
     'emailInput': req.body.email,
   }
   req.session.filledformdata = input;
-  
+
   next();
 }
 //Functions for registering a new teacher
@@ -440,8 +492,8 @@ function generateOTP() {
 function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (re.test(email)) {
-      if (email.indexOf("@somaiya.edu", email.length - "@somaiya.edu".length) !== -1) {
-          return 1
-      }
+    if (email.indexOf("@somaiya.edu", email.length - "@somaiya.edu".length) !== -1) {
+      return 1
+    }
   }
 }

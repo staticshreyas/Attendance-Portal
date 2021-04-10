@@ -33,6 +33,9 @@
                         <div class="col" style="padding-left:355px">
                             <h3 class="mb-0">View The List Of Students</h3>
                         </div>
+                        <div class="col text-right">
+                            <a href="/user/filter" class="btn btn-sm btn-primary">Filters</a>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -42,9 +45,11 @@
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Roll number</th>
-                                <th scope="col"><div style="padding-left: 35px;">Email</div></th>
+                                <th scope="col">
+                                    <div style="padding-left: 35px;">Email</div>
+                                </th>
                                 <th scope="col">Class</th>
-
+                                <th scope="col">Year</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,7 +58,13 @@
                                 <th scope="row">{{this.name}}</th>
                                 <td>{{this.rollnumber}}</td>
                                 <td>{{this.email}}</td>
-                                <td><div style="padding-left: 10px;">{{this.class}}</div></td>
+                                <td>
+                                    <div style="padding-left: 10px;">{{this.class}}</div>
+                                </td>
+                                <td>
+                                    <div style="padding-left: 10px;">{{this.year}}</div>
+                                </td>
+
                             </tr>
                             {{/each}}
                         </tbody>

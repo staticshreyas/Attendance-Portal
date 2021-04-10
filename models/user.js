@@ -8,7 +8,8 @@ var userschema = new Schema({
     rollnumber: {type: String, required: false},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    who:{type: String, required:true}
+    who:{type: String, required:true},
+    year:{type: String, required:true}
 });
 
 userschema.methods.encryptPassword = function(password){
