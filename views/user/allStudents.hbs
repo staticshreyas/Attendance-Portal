@@ -35,6 +35,10 @@
                         </div>
                         <div class="col text-right">
                             <a href="/user/filter" class="btn btn-sm btn-primary">Filters</a>
+                            {{#if filterActive}}
+                            <a href="/user/allStudents"
+                                class="btn btn-sm btn-danger">Remove Filter</a>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

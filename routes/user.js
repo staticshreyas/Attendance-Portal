@@ -45,6 +45,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       else {
         res.render('user/allStudents', {
           users: users,
+          filterActive: true
         });
       }
     });
@@ -58,6 +59,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       else {
         res.render('user/allStudents', {
           users: users,
+          filterActive: true
         });
       }
     });
@@ -70,6 +72,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       else {
         res.render('user/allStudents', {
           users: users,
+          filterActive: true
         });
       }
     });
