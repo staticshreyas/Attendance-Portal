@@ -76,13 +76,29 @@
                             </div>
 
                             <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-books"></i></span>
+                                    </div>
+                                    <select class="form-control" name="year">
+                                        <option>Year</option>
+                                        <option>FY</option>
+                                        <option>SY</option>
+                                        <option>TY</option>
+                                        <option>LY</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="input-group input-group-merge input-group-alternative mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
                                     <input class="form-control" name="email" placeholder="Email" type="email"
                                         value="{{filledformdata.emailInput}}"
-                                        style="{{#if filledformdata.emailInput}}background-color: rgb(232, 240, 254);{{/if}}" readonly>
+                                        style="{{#if filledformdata.emailInput}}background-color: rgb(232, 240, 254);{{/if}}"
+                                        readonly>
                                 </div>
                             </div>
 
