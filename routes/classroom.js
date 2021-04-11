@@ -233,7 +233,7 @@ router.get('/teacher-classroom/delete/:id', async (req, res, next) => {
 
 //Add new student in particular class
 router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
-    req.session.classId=req.params.id
+    req.session.classId = req.params.id
     userModel.find({ 'who': "1" }, function (err, users) {
         if (err) {
             return done(err);
@@ -299,12 +299,13 @@ router.get('/addStuFilter', function (req, res, next) {
 router.post('/addStuFilter', function (req, res, next) {
     var year = req.body.year
     var batch = req.body.batch
-    var classId=req.session.classId
+    var classId = req.session.classId
+    var roll = req.body.rollnumber
     var message = ""
-    if (batch == "Batch" && year == "Year") {
+    if (batch == "Batch" && year == "Year" && roll == "") {
         message = "Please select at least one filter"
     }
-    else if (batch == "Batch") {
+    else if (batch == "Batch" && roll == "") {
         batch = ""
         userModel.find({ 'year': year }, function (err, users) {
             if (err) {
@@ -339,7 +340,7 @@ router.post('/addStuFilter', function (req, res, next) {
             }
         });
     }
-    else if (year == "Year") {
+    else if (year == "Year" && roll == "") {
         year = ""
         userModel.find({ 'class': batch }, function (err, users) {
             if (err) {
@@ -374,8 +375,146 @@ router.post('/addStuFilter', function (req, res, next) {
             }
         });
     }
+    else if (batch == "Batch" && year == "Year") {
+        userModel.find({ 'rollnumber': parseInt(roll) }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom,
+                            filterActive: true
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else if (batch == "Batch") {
+        batch = ""
+        userModel.find({ 'year': year, 'rollnumber': parseInt(roll) }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom,
+                            filterActive: true
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else if (year == "Year") {
+        year = ""
+        userModel.find({ 'class': batch, 'rollnumber': parseInt(roll) }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom,
+                            filterActive: true
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else if (roll == "") {
+        userModel.find({ 'class': batch, 'year': year }, function (err, users) {
+            if (err) {
+                return done(err);
+            }
+            else {
+                //console.log(users);
+                classModel.findById(classId, function (err, classroom) {
+                    if (err) {
+                        return done(err);
+                    }
+                    else {
+                        let notInClassStudents = [];
+                        users.map((user) => {
+                            flag = 0
+                            classroom.students.map((stuId) => {
+                                if (stuId.equals(user._id)) {
+                                    flag = 1
+                                }
+                            });
+                            if (flag === 0) {
+                                notInClassStudents.push(user);
+                            }
+                        });
+                        res.render('classroom/addStudents', {
+                            users: notInClassStudents,
+                            classroom: classroom,
+                            filterActive: true
+                        });
+                    }
+                });
+            }
+        });
+    }
     else {
-        userModel.find({ 'year': year, 'class': batch }, function (err, users) {
+        userModel.find({ 'class': batch, 'year': year, 'rollnumber':parseInt(roll) }, function (err, users) {
             if (err) {
                 return done(err);
             }
