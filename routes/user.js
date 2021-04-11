@@ -312,16 +312,18 @@ router.get('/upload', isLoggedIn, (req, res) => {
   res.render('user/upload', { messages: messages, hasErrors: messages.length > 0 });
 
 });
-router.post('/upload', upload.single('photo'), (req, res, next) => {
-
+router.post('/upload', upload.single('photo'), async function(req, res, next) {
+  let data=  await fs.readFileSync(path.join(__dirname + '../../public/assets/uploads/' + req.file.filename))
+  let base64 = data.toString('base64');
+  let image = new Buffer(base64, 'base64');
   var obj = {
     user: req.user,
     img: {
-      data: fs.readFileSync(path.join(__dirname + '../../public/assets/uploads/' + req.file.filename)),
-      contentType: 'image/png'
+      data: image,
+      contentType: 'image/png'  
     }
   }
-  imgModel.create(obj, (err, item) => {
+  await imgModel.create(obj, (err, item) => {
     if (err) {
       console.log(err);
     }
