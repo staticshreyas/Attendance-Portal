@@ -32,12 +32,22 @@
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">
                             <h4>OTP Verification</h4>
-                            <h6><mark style="background-color:lawngreen;">We've sent a OTP to your email : {{verifyEmail}} </h6>
-                            <br>
+
                             {{#if msg}}
                             <div class="alert alert-danger">
                                 {{msg}}
                             </div>
+                            {{else}}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                                <span class="alert-text"><strong>Success!</strong> We've sent a OTP to your email :
+                                    {{verifyEmail}}
+                                </span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <br>
                             {{/if}}
                         </div>
                         <form method="POST" action="../user/verify">
