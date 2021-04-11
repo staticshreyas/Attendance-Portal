@@ -92,7 +92,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
       for (j = 0; j < classes[i].studentDetails.length; j++) {
         var a = classes[i].studentDetails[j]
         if (parseFloat(a.percent) < 75) {
-          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),  })
+          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), })
         }
       }
     }
@@ -100,7 +100,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
 
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,
-      classes:classes
+      classes: classes
     });
   })
 });
@@ -108,25 +108,60 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
 router.get('/defaulterStudents/filter/:name', isLoggedIn, function (req, res, next) {
   //console.log(req.user.who)
   var obj = api.forTeacherClasses(req.user._id)
-  var className=req.params.name
+  var className = req.params.name
   obj.then(classes => {
     defaultersList = []
     for (i = 0; i < classes.length; i++) {
       for (j = 0; j < classes[i].studentDetails.length; j++) {
         var a = classes[i].studentDetails[j]
-        if (parseFloat(a.percent) < 75 && classes[i].name==className) {
-          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),  })
+        if (parseFloat(a.percent) < 75 && classes[i].name == className) {
+          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), })
         }
       }
     }
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,
-      classes:classes,
+      classes: classes,
       filterActive: true,
       activeClassname: className.toString()
     });
   })
 });
+
+router.get('/sendDefaulterMail/:name/:email/:percentage/:classname', function (req, res, next) {
+  var stuName = req.params.name
+  var stuEmail = req.params.email
+  var stuPercent = req.params.percentage
+  var className = req.params.classname
+
+  var msg = "<h2>Dear "  + stuName + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + className + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + stuPercent + "%</span> which is below the 75% mark.</div>"
+  let otp_mail = new MailSender(stuEmail, "Attendance Warning: ", msg)
+  otp_mail.send();
+
+  var obj = api.forTeacherClasses(req.user._id)
+
+  obj.then(classes => {
+    defaultersList = []
+    for (i = 0; i < classes.length; i++) {
+      for (j = 0; j < classes[i].studentDetails.length; j++) {
+        var a = classes[i].studentDetails[j]
+        if (parseFloat(a.percent) < 75) {
+          if (a.name == stuName)
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: true })
+          else {
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: false })
+
+          }
+        }
+      }
+    }
+    res.render('user/defaulterStudents', {
+      defaulterStudents: defaultersList,
+      classes: classes,
+    });
+  })
+
+})
 
 //Get dashboard
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
@@ -336,15 +371,15 @@ router.get('/upload', isLoggedIn, (req, res) => {
   res.render('user/upload', { messages: messages, hasErrors: messages.length > 0 });
 
 });
-router.post('/upload', upload.single('photo'), async function(req, res, next) {
-  let data=  await fs.readFileSync(path.join(__dirname + '../../public/assets/uploads/' + req.file.filename))
+router.post('/upload', upload.single('photo'), async function (req, res, next) {
+  let data = await fs.readFileSync(path.join(__dirname + '../../public/assets/uploads/' + req.file.filename))
   let base64 = data.toString('base64');
   let image = new Buffer(base64, 'base64');
   var obj = {
     user: req.user,
     img: {
       data: image,
-      contentType: 'image/png'  
+      contentType: 'image/png'
     }
   }
   await imgModel.create(obj, (err, item) => {

@@ -48,7 +48,8 @@
                                     {{#ifCond this.name '==' activeClassname}}
                                     <div></div>
                                     {{else}}
-                                    <a class="dropdown-item" href="/user/defaulterStudents/filter/{{name}}">{{this.name}}</a>
+                                    <a class="dropdown-item"
+                                        href="/user/defaulterStudents/filter/{{name}}">{{this.name}}</a>
                                     {{/ifCond}}
                                     {{/each}}
                                 </div>
@@ -69,6 +70,7 @@
                                 <th scope="col">
                                     <div style="padding-left: 50px;">Attendance</div>
                                 </th>
+                                <th scope="col">Send Mail</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +97,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                </td>
+                                <td style="padding-left: 45px;"> <a
+                                        href="/user/sendDefaulterMail/{{studentName}}/{{studentEmail}}/{{studentPercent}}/{{className}}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fas fa-send text-white"></i>
+
+                                    </a>
+                                    {{#if sent}}
+                                    <span><i class="ni ni-check-bold"></i></span>
+                                    {{/if}}
                                 </td>
                             </tr>
                             {{/ifCond}}
