@@ -92,7 +92,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
       for (j = 0; j < classes[i].studentDetails.length; j++) {
         var a = classes[i].studentDetails[j]
         if (parseFloat(a.percent) < 75) {
-          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString() })
+          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),  })
         }
       }
     }
@@ -100,6 +100,30 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
 
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,
+      classes:classes
+    });
+  })
+});
+
+router.get('/defaulterStudents/filter/:name', isLoggedIn, function (req, res, next) {
+  //console.log(req.user.who)
+  var obj = api.forTeacherClasses(req.user._id)
+  var className=req.params.name
+  obj.then(classes => {
+    defaultersList = []
+    for (i = 0; i < classes.length; i++) {
+      for (j = 0; j < classes[i].studentDetails.length; j++) {
+        var a = classes[i].studentDetails[j]
+        if (parseFloat(a.percent) < 75 && classes[i].name==className) {
+          defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),  })
+        }
+      }
+    }
+    res.render('user/defaulterStudents', {
+      defaulterStudents: defaultersList,
+      classes:classes,
+      filterActive: true,
+      activeClassname: className.toString()
     });
   })
 });

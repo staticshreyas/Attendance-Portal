@@ -30,9 +30,30 @@
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col" style="padding-left:355px">
-                            <h3 class="mb-0">View The List Of Defaulter Students</h3>
+                        <div class="col" style="padding-left: 320px;">
+                            <h3 class="mb-0">List Of Defaulter Students</h3>
                         </div>
+                        <ul class="navbar-nav ml-lg-auto">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-sm btn-primary" href="#" id="navbar-default_dropdown_1" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filter
+                                </a>
+                                {{#if filterActive}}
+                                <a href="/user/defaulterStudents" class="btn btn-sm btn-danger">Remove Filter</a>
+                                {{/if}}
+                                <div class="dropdown-menu dropdown-menu-down"
+                                    aria-labelledby="navbar-default_dropdown_1">
+                                    {{#each classes}}
+                                    {{#ifCond this.name '==' activeClassname}}
+                                    <div></div>
+                                    {{else}}
+                                    <a class="dropdown-item" href="/user/defaulterStudents/filter/{{name}}">{{this.name}}</a>
+                                    {{/ifCond}}
+                                    {{/each}}
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -69,8 +90,8 @@
                                         <div>
                                             <div class="progress">
                                                 <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                    aria-valuenow="{{studentPercent}}" aria-valuemin="0" aria-valuemax="100"
-                                                    style="width: {{studentPercent}}%;"></div>
+                                                    aria-valuenow="{{studentPercent}}" aria-valuemin="0"
+                                                    aria-valuemax="100" style="width: {{studentPercent}}%;"></div>
                                             </div>
                                         </div>
                                     </div>
