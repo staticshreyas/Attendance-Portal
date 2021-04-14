@@ -30,31 +30,41 @@
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col" style="padding-left: 320px;">
+                        <div class="col">
                             <h3 class="mb-0">List Of Defaulter Students</h3>
                         </div>
-                        <ul class="navbar-nav ml-lg-auto">
-                            <li class="nav-item dropdown">
-                                <a class="btn btn-sm btn-primary" href="#" id="navbar-default_dropdown_1" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Filter
-                                </a>
-                                {{#if filterActive}}
-                                <a href="/user/defaulterStudents" class="btn btn-sm btn-danger">Remove Filter</a>
-                                {{/if}}
-                                <div class="dropdown-menu dropdown-menu-down"
-                                    aria-labelledby="navbar-default_dropdown_1">
-                                    {{#each classes}}
-                                    {{#ifCond this.name '==' activeClassname}}
-                                    <div></div>
-                                    {{else}}
-                                    <a class="dropdown-item"
-                                        href="/user/defaulterStudents/filter/{{name}}">{{this.name}}</a>
-                                    {{/ifCond}}
-                                    {{/each}}
-                                </div>
-                            </li>
-                        </ul>
+                        <div style="padding-right: 50px">
+                            {{#if filterActive}}
+                            <a href="/user/sendDefaulterMail/{{activeClassname}}" class="btn btn-sm btn-primary">Send
+                                Mail</a>
+                            {{else}}
+                            <a href="/user/sendDefaulterMail/all" class="btn btn-sm btn-primary">Send Mail</a>
+                            {{/if}}
+                        </div>
+                        <div class="col-right">
+                            <ul class="navbar-nav ml-lg-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="btn btn-sm btn-primary" href="#" id="navbar-default_dropdown_1"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Filter
+                                    </a>
+                                    {{#if filterActive}}
+                                    <a href="/user/defaulterStudents" class="btn btn-sm btn-danger">Remove Filter</a>
+                                    {{/if}}
+                                    <div class="dropdown-menu dropdown-menu-down"
+                                        aria-labelledby="navbar-default_dropdown_1">
+                                        {{#each classes}}
+                                        {{#ifCond this.name '==' activeClassname}}
+                                        <div></div>
+                                        {{else}}
+                                        <a class="dropdown-item"
+                                            href="/user/defaulterStudents/filter/{{name}}">{{this.name}}</a>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -70,7 +80,7 @@
                                 <th scope="col">
                                     <div style="padding-left: 50px;">Attendance</div>
                                 </th>
-                                <th scope="col">Send Mail</th>
+                                <th style="padding-left: 0px;"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,16 +108,18 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="padding-left: 45px;"> <a
-                                        href="/user/sendDefaulterMail/{{studentName}}/{{studentEmail}}/{{studentPercent}}/{{className}}"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fas fa-send text-white"></i>
-
-                                    </a>
+                                <td >
                                     {{#if sent}}
                                     <span><i class="ni ni-check-bold"></i></span>
                                     {{/if}}
                                 </td>
+                                {{!-- <td style="padding-left: 45px;">
+                                    <input name="student" id="student" type="checkbox" value="1" checked>
+                                    <a href="/user/sendDefaulterMail/{{studentName}}/{{studentEmail}}/{{studentPercent}}/{{className}}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fas fa-send text-white"></i>
+                                    </a>
+                                </td> --}}
                             </tr>
                             {{/ifCond}}
                             {{/each}}

@@ -128,29 +128,29 @@ router.get('/defaulterStudents/filter/:name', isLoggedIn, function (req, res, ne
   })
 });
 
-router.get('/sendDefaulterMail/:name/:email/:percentage/:classname', function (req, res, next) {
-  var stuName = req.params.name
-  var stuEmail = req.params.email
-  var stuPercent = req.params.percentage
-  var className = req.params.classname
-
-  var msg = "<h2>Dear "  + stuName + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + className + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + stuPercent + "%</span> which is below the 75% mark.</div>"
-  let otp_mail = new MailSender(stuEmail, "Attendance Warning: ", msg)
-  otp_mail.send();
-
+router.get('/sendDefaulterMail/:name', function (req, res, next) {
+  console.log(req.params.name)
   var obj = api.forTeacherClasses(req.user._id)
-
+  var className = req.params.name
   obj.then(classes => {
     defaultersList = []
     for (i = 0; i < classes.length; i++) {
       for (j = 0; j < classes[i].studentDetails.length; j++) {
         var a = classes[i].studentDetails[j]
-        if (parseFloat(a.percent) < 75) {
-          if (a.name == stuName)
-            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: true })
-          else {
-            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: false })
-
+        if(parseFloat(a.percent) < 75){
+          if(className=="all"){
+            console.log("all",a.name," ",a.email)
+            var msg = "<h2>Dear "  + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
+            let otp_mail = new MailSender(a.email, "Attendance Warning: ", msg)
+            otp_mail.send();
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),sent:true,})
+          }
+          else if(classes[i].name == className){
+            console.log(a.name," ",a.email)
+            var msg = "<h2>Dear "  + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
+            let otp_mail = new MailSender(a.email, "Attendance Warning: ", msg)
+            otp_mail.send();
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent:true,})
           }
         }
       }
@@ -158,9 +158,10 @@ router.get('/sendDefaulterMail/:name/:email/:percentage/:classname', function (r
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,
       classes: classes,
+      filterActive: true,
+      activeClassname: className.toString(),
     });
   })
-
 })
 
 //Get dashboard
