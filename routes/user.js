@@ -132,6 +132,12 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
   console.log(req.params.name)
   var obj = api.forTeacherClasses(req.user._id)
   var className = req.params.name
+  if(className=="all"){
+    filterActive=false
+  }
+  else{
+    filterActive=true
+  }
   obj.then(classes => {
     defaultersList = []
     for (i = 0; i < classes.length; i++) {
@@ -158,7 +164,7 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
     res.render('user/defaulterStudents', {
       defaulterStudents: defaultersList,
       classes: classes,
-      filterActive: true,
+      filterActive: filterActive,
       activeClassname: className.toString(),
     });
   })
