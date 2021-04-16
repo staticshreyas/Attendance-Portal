@@ -35,10 +35,11 @@
                         </div>
                         <div style="padding-right: 50px">
                             {{#if filterActive}}
-                            <a href="/user/sendDefaulterMail/{{activeClassname}}" class="btn btn-sm btn-primary">Send
-                                Mail</a>
+                            <a href="/user/sendDefaulterMail/{{activeClassname}}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-send text-white mr-2"></i>SendMail</a>
                             {{else}}
-                            <a href="/user/sendDefaulterMail/all" class="btn btn-sm btn-primary">Send Mail</a>
+                            <a href="/user/sendDefaulterMail/all" class="btn btn-sm btn-primary">
+                            <i class="fas fa-send text-white mr-2"></i>Send Mail</a>
                             {{/if}}
                         </div>
                         <div class="col-right">
@@ -46,6 +47,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="btn btn-sm btn-primary" href="#" id="navbar-default_dropdown_1"
                                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-filter text-white mr-2"></i>
                                         Filter
                                     </a>
                                     {{#if filterActive}}

@@ -33,12 +33,12 @@
                             <h3 class="mb-0">All Students</h3>
                         </div>
                         {{#if users}}
-                        <div >
-                            <a href="/classroom/class-details/{{this.classroom._id}}/students/addAll" class="btn btn-sm btn-primary">Add all students</a>
+                        <div style="padding-right: 50px">
+                            <a href="/classroom/class-details/{{this.classroom._id}}/students/addAll" class="btn btn-sm btn-primary"><i class="ni ni-fat-add text-white"></i> Add all students</a>
                         </div>
                         {{/if}}
-                        <div class="col text-right">
-                            <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary">Filters</a>
+                        <div class="col-right">
+                            <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary"><i class="fas fa-filter text-white mr-2"></i>Filters</a>
                             {{#if filterActive}}
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/new"
                                 class="btn btn-sm btn-danger">Remove Filter</a>

@@ -338,9 +338,6 @@ router.get('/addStuFilter', function (req, res, next) {
     res.render('classroom/addStuFilter');
 });
 router.post('/addStuFilter', function (req, res, next) {
-    //req.session.filterYear = req.body.year
-    //req.session.filterBatch = req.body.batch
-   // req.session.filterRoll = req.body.rollnumber
     var year = req.body.year
     var batch = req.body.batch
     var classId = req.session.classId
