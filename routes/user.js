@@ -406,7 +406,9 @@ router.use('/', notLoggedIn, function (req, res, next) {
 });
 
 //Fuctions for OTP
-router.get('/otp', function (req, res, next) {
+router.get('/otp/:role', function (req, res, next) {
+  req.session.role=req.params.role
+  console.log(req.session.role)
   var messages = req.flash('error');
   res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
 });
@@ -446,7 +448,11 @@ router.post('/verify', function (req, res) {
   req.session.filledformdata = input;
   var filledformdata = req.session.filledformdata;
   if (req.body.otp == req.session.otp) {
-    res.render('user/register', { filledformdata: filledformdata });
+    console.log(req.session.role)
+    if(req.session.role=="student")
+      res.render('user/register', { filledformdata: filledformdata });
+    else
+      res.render('user/teacher-register', { filledformdata: filledformdata });
   }
   else {
     res.render('user/otp', { msg: 'OTP entered is incorrect' });
