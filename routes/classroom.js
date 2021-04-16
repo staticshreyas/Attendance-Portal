@@ -198,8 +198,7 @@ router.post('/join-class', (req, res, next) => {
             var obj = api.forJoinClass(req.body.classCode, user)
             obj.then((ob) => {
                 if (ob == 1) {
-                    req.session.errorMsg="You are already a part of entered code class"
-                    console.log("You are already part of entered class code")
+                    req.session.errorMsg="You are already a part of the class!"
                     res.redirect('/classroom/userClasses');
                 }
                 else if (ob == 0) {
@@ -208,8 +207,7 @@ router.post('/join-class', (req, res, next) => {
                             console.log(err);
                         }
                         else {
-                            req.session.successMsg="You are added to new class : "+ updatedClass.name
-                            console.log("You are added to entered class code")
+                            req.session.successMsg="You are added to new class : "+ updatedClass.name+"!"
                             res.redirect('/classroom/userClasses');
                         }
                     });
