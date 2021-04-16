@@ -32,6 +32,11 @@
                         <div class="col" style="padding-left:455px">
                             <h3 class="mb-0">All Students</h3>
                         </div>
+                        {{#if users}}
+                        <div >
+                            <a href="/classroom/class-details/{{this.classroom._id}}/students/addAll" class="btn btn-sm btn-primary">Add all students</a>
+                        </div>
+                        {{/if}}
                         <div class="col text-right">
                             <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary">Filters</a>
                             {{#if filterActive}}

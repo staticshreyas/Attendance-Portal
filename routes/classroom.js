@@ -272,6 +272,7 @@ router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
                             notInClassStudents.push(user);
                         }
                     });
+                    req.session.addStudents=notInClassStudents
                     res.render('classroom/addStudents', {
                         users: notInClassStudents,
                         classroom: classroom
@@ -308,10 +309,40 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
     });
 });
 
+
+router.get('/class-details/:id/students/addAll', (req, res, next) => {
+    console.log(req.session.addStudents)
+    var studentsArr=req.session.addStudents
+    var stuIds=[]
+    for(var i=0;i<studentsArr.length;i++){
+        stuIds.push(studentsArr[i]._id)
+    }
+    classModel.findOneAndUpdate({ _id: req.params.id }, { $push: { students:{$each: stuIds }} }, { new: true }, function (err, updatedClass) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var obj = api.getOwner(updatedClass.owner)
+            obj.then((ob) => {
+                for(var i=0;i<studentsArr.length;i++){
+                    var msg = 'Hey ' + studentsArr[i].name + '! You\'re added to a new class ' + '\'' + updatedClass.name + '\' - ' + updatedClass.description + ' by ' + ob.name
+                    let class_mail = new MailSender(studentsArr[i].email, 'You\'re added to new class', msg)
+                    class_mail.send();
+                }
+                res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
+            })
+        }
+    });
+
+});
+
 router.get('/addStuFilter', function (req, res, next) {
     res.render('classroom/addStuFilter');
 });
 router.post('/addStuFilter', function (req, res, next) {
+    //req.session.filterYear = req.body.year
+    //req.session.filterBatch = req.body.batch
+   // req.session.filterRoll = req.body.rollnumber
     var year = req.body.year
     var batch = req.body.batch
     var classId = req.session.classId
@@ -345,6 +376,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -380,6 +412,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -414,6 +447,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -449,6 +483,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -484,6 +519,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -518,6 +554,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
@@ -552,6 +589,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
+                        req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents,
                             classroom: classroom,
