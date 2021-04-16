@@ -10,6 +10,7 @@ const MailSender = require('../mail')
 var api = require('../api/api')
 
 const request = require('request');
+const session = require('express-session');
 
 let totalClasses = 0
 let totalStudents = 0
@@ -26,11 +27,18 @@ function calc() {
 
 //Get classrooms of a student
 router.get('/userClasses', isLoggedIn, function (req, res, next) {
+    errorMsg=""
+    successMsg=""
+    if(req.session.errorMsg || req.session.successMsg){
+        errorMsg=req.session.errorMsg 
+        successMsg=req.session.successMsg
+        req.session.errorMsg=undefined
+        req.session.successMsg=undefined
+    }
     calc()
     if (req.user.who == "1") {
         var obj = api.forUserClasses(req.user._id)
         obj.then(ob => {
-
             for (i = 0; i < ob.classes.length; i++) {
                 var classroom = ob.classes[i]
                 for (j = 0; j < classroom.studentDetails.length; j++) {
@@ -41,7 +49,6 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
                     }
                 }
             }
-            //console.log(ob.classes[0])
             res.render('classroom/user-classes', {
                 user: req.user,
                 totClass: totalClasses,
@@ -49,6 +56,8 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
                 attendance: ob.attendance,
                 totLec: ob.totalLecs,
                 totStuClass: ob.classes.length,
+                errorMsg:errorMsg,
+                successMsg:successMsg,
             });
         })
     }
@@ -177,6 +186,10 @@ router.get('/:id/copyCode/:code', isLoggedIn, (req, res) => {
 
 //student can join class with class code 
 router.post('/join-class', (req, res, next) => {
+    if(req.session.errorMsg || req.session.successMsg){
+        req.session.errorMsg=undefined
+        req.session.successMsg=undefined
+    }
     userModel.findById(req.user._id, (err, user) => {
         if (err) {
             console.log(err)
@@ -185,6 +198,7 @@ router.post('/join-class', (req, res, next) => {
             var obj = api.forJoinClass(req.body.classCode, user)
             obj.then((ob) => {
                 if (ob == 1) {
+                    req.session.errorMsg="You are already a part of entered code class"
                     console.log("You are already part of entered class code")
                     res.redirect('/classroom/userClasses');
                 }
@@ -194,13 +208,14 @@ router.post('/join-class', (req, res, next) => {
                             console.log(err);
                         }
                         else {
+                            req.session.successMsg="You are added to new class : "+ updatedClass.name
                             console.log("You are added to entered class code")
-                            console.log(updatedClass)
                             res.redirect('/classroom/userClasses');
                         }
                     });
                 }
                 else {
+                    req.session.errorMsg="Couldn't join the class.You entered wrong class code!"
                     console.log("You entered wrong class code!")
                     res.redirect('/classroom/userClasses');
                 }
