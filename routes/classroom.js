@@ -130,7 +130,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
     calc()
     var create = api.creatXl(req.params.id)
     create.then(() => {
-    })
+    
     var obj = api.forClassDeatils(req.params.id)
     obj.then((ob) => {
         //console.log(ob)
@@ -143,6 +143,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
             totP: ob.totalPercent
         });
     })
+})
 
 });
 
