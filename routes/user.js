@@ -132,31 +132,31 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
   console.log(req.params.name)
   var obj = api.forTeacherClasses(req.user._id)
   var className = req.params.name
-  if(className=="all"){
-    filterActive=false
+  if (className == "all") {
+    filterActive = false
   }
-  else{
-    filterActive=true
+  else {
+    filterActive = true
   }
   obj.then(classes => {
     defaultersList = []
     for (i = 0; i < classes.length; i++) {
       for (j = 0; j < classes[i].studentDetails.length; j++) {
         var a = classes[i].studentDetails[j]
-        if(parseFloat(a.percent) < 75){
-          if(className=="all"){
-            console.log("all",a.name," ",a.email)
-            var msg = "<h2>Dear "  + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
+        if (parseFloat(a.percent) < 75) {
+          if (className == "all") {
+            console.log("all", a.name, " ", a.email)
+            var msg = "<h2>Dear " + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
             let otp_mail = new MailSender(a.email, "Attendance Warning: ", msg)
             otp_mail.send();
-            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(),sent:true,})
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: true, })
           }
-          else if(classes[i].name == className){
-            console.log(a.name," ",a.email)
-            var msg = "<h2>Dear "  + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
+          else if (classes[i].name == className) {
+            console.log(a.name, " ", a.email)
+            var msg = "<h2>Dear " + a.name + ",</h2>" + " <div style='font-size: 20px'>Your attendance in class <strong>" + classes[i].name + "</strong> is <span style='font-weight:bold;background-color:tomato;'>" + a.percent.toString() + "%</span> which is below the 75% mark.</div>"
             let otp_mail = new MailSender(a.email, "Attendance Warning: ", msg)
             otp_mail.send();
-            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent:true,})
+            defaultersList.push({ studentName: a.name, studentRollno: a.rollnumber, studentEmail: a.email, className: classes[i].name, studentCounts: a.counts, classCounts: classes[i].totLec, studentPercent: a.percent.toString(), sent: true, })
           }
         }
       }
@@ -407,12 +407,12 @@ router.use('/', notLoggedIn, function (req, res, next) {
 
 //Fuctions for OTP
 router.get('/otp/:role', function (req, res, next) {
-  req.session.role=req.params.role
+  req.session.role = req.params.role
   console.log(req.session.role)
   var messages = req.flash('error');
   res.render('user/otpRegistration', { messages: messages, hasErrors: messages.length > 0 });
 });
-router.post('/otp', function (req, res, next) {
+router.post('/otp/:role', function (req, res, next) {
   var messages = [];
   if (!validateEmail(req.body.email)) {
     messages.push("Email Domain: @somaiya.edu required")
@@ -449,7 +449,7 @@ router.post('/verify', function (req, res) {
   var filledformdata = req.session.filledformdata;
   if (req.body.otp == req.session.otp) {
     console.log(req.session.role)
-    if(req.session.role=="student")
+    if (req.session.role == "student")
       res.render('user/register', { filledformdata: filledformdata });
     else
       res.render('user/teacher-register', { filledformdata: filledformdata });
