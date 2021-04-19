@@ -441,7 +441,7 @@ router.post('/otp/:role', function (req, res, next) {
   }
 });
 
-router.post('/verify', function (req, res) {
+router.post('/verify/:role', function (req, res) {
   var input = {
     'emailInput': req.session.verifiedEmail,
   }
