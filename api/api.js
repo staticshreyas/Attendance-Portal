@@ -302,15 +302,15 @@ async function compare(query) {
         }
 
         var a = findDeselectedItem(studentName, studentPresent)
-       //console.log(a)
-       if(a.length==0){
-           continue
-       }
+        //console.log(a)
+        if (a.length == 0) {
+            continue
+        }
         if (a.length == studentName.length) {
             var ob = { 'class': data.classroom.name, 'absentees': ['Mass Bunk'], "date": query }
             absentees.push(ob)
         }
-   
+
         else {
             var ob = { 'class': data.classroom.name, 'absentees': a, "date": query }
             absentees.push(ob)
@@ -327,4 +327,30 @@ function findDeselectedItem(a1, a2) {
     return absent
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare }
+async function downloadXL(data) {
+    
+    let workbook = new Excel.Workbook()
+    let worksheet = workbook.addWorksheet('students_db')
+
+    worksheet.columns = [
+        { header: 'name', key: 'name' },
+        { header: 'class', key: 'class' },
+        { header: 'date', key: 'date' },
+    ]
+    var l = data.length
+
+    for (i = 0; i < l; i++) {
+        var students = data[i].absentees
+        for (j = 0; j < students.length; j++) {
+            var obj = {}
+            obj["name"] = students[j]
+            obj["class"] = data[i].class
+            obj["date"] = data[i].date
+            worksheet.addRow(obj)
+            var filename="./XLS_FILES/absent/absent-"+data[i].date+".xlsx"
+            workbook.xlsx.writeFile(filename)
+        }
+    }
+}
+
+module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }

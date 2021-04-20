@@ -55,7 +55,8 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
     }
 
     var query = dayName + " " + monthname + " " + date
-    console.log(query)
+    //console.log(query)
+    req.session.absentQuery = query
     var ob = api.compare(query)
     ob.then(absentees => {
       //console.log(absentees)
@@ -65,6 +66,20 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
   if (message)
     res.render('user/absentFilter', { message: message });
 })
+
+
+router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
+  var query = String(req.session.absentQuery)
+  //console.log(query)
+  var ob = api.compare(query)
+  ob.then(absentees => {
+    //console.log(absentees)
+    api.downloadXL(absentees)
+    var filePath = "./XLS_FILES/absent/absent-" + query + ".xlsx"
+    res.download(filePath)
+  })
+})
+
 
 router.get('/filter', isLoggedIn, function (req, res, next) {
   res.render('user/filter');

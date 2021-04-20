@@ -13,7 +13,20 @@
                         <p class="text-lead text-white">Check out all the absentees!
                         </p>
                     </div>
+                    {{#if success}}
+                    <div class="alert alert-success fade show " role="alert">
+                        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                        <span class="alert-text mr-2"><strong>Success!</strong>
+                            Your donwload will start shortly!
+                        </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <br>
+                    {{/if}}
                 </div>
+
             </div>
         </div>
         <div class="separator separator-bottom separator-skew zindex-100">
@@ -31,7 +44,12 @@
                 <div class="card-header border-0">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="mb-0" style="padding-left:380px">List of absent Students</h3>
+                            <h3 class="mb-0" style="padding-left:450px">Absentees</h3>
+                        </div>
+                        <div class="col text-right">
+                            <a href="/user/downloadAbsent" class="btn btn-sm btn-primary"> <i
+                                    class="ni ni-cloud-download-95"></i>
+                                Download XLS File</a>
                         </div>
                     </div>
                 </div>
