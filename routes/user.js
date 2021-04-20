@@ -4,6 +4,7 @@ var passport = require('passport');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
+var recordModel = require('../models/record');
 var multer = require('multer');
 
 const MailSender = require('../mail')
@@ -25,6 +26,45 @@ function calc() {
     totalStudents = count
   })
 }
+
+router.get('/absentFilter', isLoggedIn, function (req, res, next) {
+  res.render('user/absentFilter');
+});
+router.post('/absentFilter', isLoggedIn, function (req, res, next) {
+  var reqDate = req.body.date
+  var message = ""
+
+  if (reqDate == "Date") {
+    message = "Please select a date"
+  }
+  else {
+    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    var d = new Date(reqDate);
+    var dayName = days[d.getDay()];
+
+    var months = { "01": 'Jan', "02": 'Feb', "03": 'March', "04": 'Apr', "05": 'May', "06": 'Jun', "07": 'Jul', "08": 'Aug', "09": 'Sept', "10": 'Oct', "11": 'Nov', "12": 'Dec' }
+    var month = reqDate.slice(0, 2)
+    var monthname = months[month]
+
+    var dates = { "01": '1', "02": '2', "03": '3', "04": '4', "05": '5', "06": '6', "07": '7', "08": '8', "09": '9' }
+    if (reqDate.slice(3, 5) == "01" || reqDate.slice(3, 5) == "02" || reqDate.slice(3, 5) == "03" || reqDate.slice(3, 5) == "04" || reqDate.slice(3, 5) == "05" || reqDate.slice(3, 5) == "06" || reqDate.slice(3, 5) == "07" || reqDate.slice(3, 5) == "08" || reqDate.slice(3, 5) == "09") {
+      var date = dates[reqDate.slice(3, 5)]
+    }
+    else {
+      var date = reqDate.slice(3, 5)
+    }
+
+    var query = dayName + " " + monthname + " " + date
+    console.log(query)
+    var ob = api.compare(query)
+    ob.then(absentees => {
+      //console.log(absentees)
+      res.render('user/absentees', { absent: absentees });
+    })
+  }
+  if (message)
+    res.render('user/absentFilter', { message: message });
+})
 
 router.get('/filter', isLoggedIn, function (req, res, next) {
   res.render('user/filter');

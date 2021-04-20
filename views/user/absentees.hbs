@@ -1,0 +1,64 @@
+{{> header}}
+
+
+<!-- Main content -->
+<div class="main-content">
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-6 py-lg-7 pt-lg-8">
+        <div class="container">
+            <div class="header-body text-center mb-4">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-8 col-md-8 px-10">
+                        <h1 class="text-white">Absent Students</h1>
+                        <p class="text-lead text-white">Check out all the absentees!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separator separator-bottom separator-skew zindex-100">
+            <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--6 ">
+        <div class="col-xl-10" style="padding-left: 250px;">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="mb-0" style="padding-left:380px">List of absent Students</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <!-- Projects table -->
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Classroom</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each absent}}
+                            {{#each absentees}}
+                            <tr>
+                                <th scope="row">{{this}}</th>
+                                <td style="padding-left: 35px;">{{../this.class}}</td>
+                                <td>{{../this.date}} 2021</td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

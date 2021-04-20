@@ -91,10 +91,10 @@ async function creatXl(classId) {
 
     var data = await classModel.findById({ _id: classId })
     //console.log(data)
-    var l=data.students.length
-    var stu=data.students
+    var l = data.students.length
+    var stu = data.students
 
-    for (i = 0; i <l; i++) {
+    for (i = 0; i < l; i++) {
         var a = stu[i]
         var student = await userModel.findById(a)
         var obj = {}
@@ -102,7 +102,7 @@ async function creatXl(classId) {
         obj["image"] = student.rollnumber + ".jpg"
         obj["roll_no"] = student.rollnumber
         obj["classid"] = JSON.parse(JSON.stringify(data._id))
-    
+
         worksheet.addRow(obj)
         workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
     }
@@ -238,9 +238,9 @@ async function forUserClasses(stuId) {
 
 }
 
-async function getOwner(id){
-    var owner = await userModel.find({'_id': id})
-    var obj = {name: owner[0].name}
+async function getOwner(id) {
+    var owner = await userModel.find({ '_id': id })
+    var obj = { name: owner[0].name }
     return obj
 }
 
@@ -264,20 +264,67 @@ async function removeStudent(classId, studentId) {
 }
 
 //function to check if student is already a part of class or if class with that code exists
-async function forJoinClass(classCode,user) {
-    var classroom = await classModel.findOne({classCode:classCode})
-    let flag=0
-    if(classroom){
+async function forJoinClass(classCode, user) {
+    var classroom = await classModel.findOne({ classCode: classCode })
+    let flag = 0
+    if (classroom) {
         classroom.students.map((stuId) => {
             if (stuId.equals(user._id)) {
                 flag = 1
             }
         });
     }
-    else{
-        flag=2
-    }   
+    else {
+        flag = 2
+    }
     return flag
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent,forJoinClass, getOwner }
+async function compare(query) {
+
+    var records = await recordModel.find({ 'AttendanceRecord': { "$regex": query, "$options": "i" } })
+    var response = JSON.parse(JSON.stringify(records))
+    var absentees = []
+
+    for (record of response) {
+        var classID = record.data.Class[0]
+        var studentPresent = record.data.Name
+
+        var obj = forClassDeatils(String(classID))
+        var data = await obj
+        //console.log(data.classroom.name)
+
+        var students = data.stuArray
+        var studentName = []
+
+        for (j = 0; j < students.length; j++) {
+            studentName.push(students[j].name)
+        }
+
+        var a = findDeselectedItem(studentName, studentPresent)
+       //console.log(a)
+       if(a.length==0){
+           continue
+       }
+        if (a.length == studentName.length) {
+            var ob = { 'class': data.classroom.name, 'absentees': ['Mass Bunk'], "date": query }
+            absentees.push(ob)
+        }
+   
+        else {
+            var ob = { 'class': data.classroom.name, 'absentees': a, "date": query }
+            absentees.push(ob)
+        }
+
+    }
+
+    return absentees
+}
+
+function findDeselectedItem(a1, a2) {
+
+    var absent = a1.filter(e => !a2.includes(e));
+    return absent
+}
+
+module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare }
