@@ -141,13 +141,9 @@ async function creatXl(classId) {
 async function createXlAttSheet(classes) {
     
     let workbook = new Excel.Workbook()
-    // workbook.views = [
-    //     {
-    //       x: 0, y: 0, width: 10000, height: 20000,
-    //       firstSheet: 0, activeTab: 1, visibility: 'visible'
-    //     }
-    //   ]
+  
     let worksheet = workbook.addWorksheet('attendance_sheet')
+
     var columns=[
         { header: 'SrNo',key:'SrNo'},
         { header: 'Rollno',key: 'Rollno',width: 10},
@@ -156,6 +152,7 @@ async function createXlAttSheet(classes) {
     for(i=0;i<classes.length;i++){
         columns.push({header: classes[i].name,key:classes[i].name,width: 15})
     }
+    colSize=columns.length;
     worksheet.columns = columns
     var users = await myClassStudents(classes,classes[0].owner);
 
@@ -183,11 +180,45 @@ async function createXlAttSheet(classes) {
             worksheet.addRow(object)
             const row = worksheet.getRow(k+2);
             for(classroom of classes){
-                if(row.getCell(classroom.name).value==null){
-                    row.getCell(classroom.name).value="Not a part"
+                cellVal=row.getCell(classroom.name).value
+                if(cellVal==null){
+                    row.getCell(classroom.name).value="Not a part of class"
+                    row.getCell(classroom.name).border = {
+                        top: {style:'thin'},
+                        left: {style:'thin'},
+                        bottom: {style:'thin'},
+                        right: {style:'thin'}
+                      };
+                    row.getCell(classroom.name).font = {
+                        name: 'Arial',
+                        family: 2,
+                        size: 10,
+                      };
+                }
+                else{
+                    if(cellVal<=35)
+                        row.getCell(classroom.name).fill = {
+                            type: 'pattern',
+                            pattern:'solid',
+                            fgColor:{argb:'FFF73131'},
+                          };
+                          
+                    else if(cellVal<=50)
+                        row.getCell(classroom.name).fill = {
+                            type: 'pattern',
+                            pattern:'solid',
+                            fgColor:{argb:'FFFF8C00'},
+                          };
+                    else if(cellVal<=75)
+                        row.getCell(classroom.name).fill = {
+                            type: 'pattern',
+                            pattern:'solid',
+                            fgColor:{argb:'FFFCEA28'},
+                          };
                 }
             }
         });
+
         let today = new Date().toDateString();
         var filename="./XLS_FILES/attendance_sheet/attendance_sheet - "+today+".xlsx";
         workbook.xlsx.writeFile(filename);
