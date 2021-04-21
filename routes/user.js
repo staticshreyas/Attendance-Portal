@@ -74,11 +74,8 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var ob = api.compare(query)
   ob.then(absentees => {
     //console.log(absentees)
-    api.downloadXL(absentees)
+    api.downloadXL(absentees,res)
     var filePath = path.join(__dirname +"../../XLS_FILES/absent/absent-" + query + ".xlsx")
-    console.log(filePath)
-    const data =  fs.readFileSync(filePath, 'utf-8');
-    console.log(`the data is ${data}`)
     res.download(filePath)
   })
 })
@@ -87,7 +84,7 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
 router.get('/download-attendance',isLoggedIn,function (req,res,next) {
   var obj = api.forTeacherClasses(req.user._id)
   obj.then((classes)=>{
-    ob=api.createXlAttSheet(classes)
+    ob=api.createXlAttSheet(classes,res)
     ob.then(()=>{
       console.log("Attendance sheet downloaded");
       let today = new Date().toDateString();
