@@ -80,6 +80,23 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   })
 })
 
+//Download attendance sheet of their students for a teacher
+router.get('/download-attendance',isLoggedIn,function (req,res,next) {
+  var obj = api.forTeacherClasses(req.user._id)
+  obj.then((classes)=>{
+    ob=api.createXlAttSheet(classes)
+    ob.then(()=>{
+      console.log("Attendance sheet downloaded");
+      let today = new Date().toDateString();
+      var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - "+today+".xlsx";    
+      res.download(filePath, function(error){
+        if(error){
+          console.log("Error : ", error)
+        }
+      });
+    });
+  }); 
+});
 
 router.get('/filter', isLoggedIn, function (req, res, next) {
   res.render('user/filter');

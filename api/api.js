@@ -76,6 +76,35 @@ async function forTeacherClasses(teacherId) {
     return allClasses
 }
 
+//students of a teacher i.e part of aleast one class
+async function myClassStudents(classes,teacherId){
+
+    var classrooms = classes;
+    var users = await userModel.find({ 'who': "1" });
+
+    //let notInMyClassStudents = [];
+    let InMyClassStudents = [];
+    for(classroom of classrooms){ 
+        users.map((user) => {
+            classroom.students.map((stuId) => {
+                if (stuId.equals(user._id) ) {
+                    flag = 0
+                    for(myStudent of InMyClassStudents){
+                        if(myStudent._id.equals(stuId)){
+                            flag=1
+                            break;
+                        }
+                    }
+                    if(flag==0){
+                        InMyClassStudents.push(user);
+                    }
+                }
+            });
+        });
+    }
+    return InMyClassStudents;
+}
+
 //Function that creates a XL file for the face recognition model
 async function creatXl(classId) {
 
@@ -105,6 +134,63 @@ async function creatXl(classId) {
 
         worksheet.addRow(obj)
         workbook.xlsx.writeFile('./Py-Scripts/students/students_db.xlsx')
+    }
+}
+
+//Function that creates a XL file for the attendance 
+async function createXlAttSheet(classes) {
+    
+    let workbook = new Excel.Workbook()
+    // workbook.views = [
+    //     {
+    //       x: 0, y: 0, width: 10000, height: 20000,
+    //       firstSheet: 0, activeTab: 1, visibility: 'visible'
+    //     }
+    //   ]
+    let worksheet = workbook.addWorksheet('attendance_sheet')
+    var columns=[
+        { header: 'SrNo',key:'SrNo'},
+        { header: 'Rollno',key: 'Rollno',width: 10},
+        { header: 'Name',key: 'Name',width: 15},
+    ]
+    for(i=0;i<classes.length;i++){
+        columns.push({header: classes[i].name,key:classes[i].name,width: 15})
+    }
+    worksheet.columns = columns
+    var users = await myClassStudents(classes,classes[0].owner);
+
+    for(k=0;k<users.length;k++){
+        var obj = forUserClasses(users[k]._id)
+        await obj.then(ob => {
+            for (i = 0; i < ob.classes.length; i++) {
+                var classroom = ob.classes[i]
+                for (j = 0; j < classroom.studentDetails.length; j++) {
+                    var student = classroom.studentDetails[j]
+                    if (student.name == users[k].name) {
+                        ob.classes[i].studentDetails = student
+                        break
+                    }
+                }
+            }
+            var object = {}
+            object["SrNo"]=k+1
+            object["Rollno"]=users[k].rollnumber
+            object["Name"]=users[k].name
+            for(z=0;z<ob.classes.length;z++){
+                var classroom=ob.classes[z]
+                object[classroom.name] = classroom.studentDetails.percent
+            }
+            worksheet.addRow(object)
+            const row = worksheet.getRow(k+2);
+            for(classroom of classes){
+                if(row.getCell(classroom.name).value==null){
+                    row.getCell(classroom.name).value="Not a part"
+                }
+            }
+        });
+        let today = new Date().toDateString();
+        var filename="./XLS_FILES/attendance_sheet/attendance_sheet - "+today+".xlsx";
+        workbook.xlsx.writeFile(filename);
     }
 }
 
@@ -353,4 +439,4 @@ async function downloadXL(data) {
     }
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
+module.exports = { forClassDeatils, forTeacherClasses, creatXl,createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
