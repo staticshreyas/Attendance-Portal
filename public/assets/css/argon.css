@@ -22264,7 +22264,7 @@ textarea[resize='horizontal']
 
 @media (max-width: 1199.98px)
 {
-    .sidenav
+    #sidenav-main
     {
         transform: translateX(-250px);
     }
