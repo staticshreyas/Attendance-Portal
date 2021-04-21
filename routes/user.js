@@ -74,28 +74,54 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var ob = api.compare(query)
   ob.then(absentees => {
     //console.log(absentees)
-    api.downloadXL(absentees,res)
-    var filePath = path.join(__dirname +"../../XLS_FILES/absent/absent-" + query + ".xlsx")
-    res.download(filePath)
+    var t = api.downloadXL(absentees, res)
+    t.then(ab => {
+      if (ab) {
+        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+        res.download(filePath)
+      } else {
+        var t1 = api.downloadXL(absentees, res)
+        t1.then(abc => {
+          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+          res.download(filePath)
+        })
+
+      }
+    })
   })
 })
 
 //Download attendance sheet of their students for a teacher
-router.get('/download-attendance',isLoggedIn,function (req,res,next) {
+router.get('/download-attendance', isLoggedIn, function (req, res, next) {
   var obj = api.forTeacherClasses(req.user._id)
-  obj.then((classes)=>{
-    ob=api.createXlAttSheet(classes,res)
-    ob.then(()=>{
-      console.log("Attendance sheet downloaded");
-      let today = new Date().toDateString();
-      var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - "+today+".xlsx";    
-      res.download(filePath, function(error){
-        if(error){
-          console.log("Error : ", error)
-        }
-      });
+  obj.then((classes) => {
+    ob = api.createXlAttSheet(classes, res)
+    ob.then(ab => {
+      if (ab) {
+        console.log("Attendance sheet downloaded");
+        let today = new Date().toDateString();
+        var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + ".xlsx";
+        res.download(filePath, function (error) {
+          if (error) {
+            console.log("Error : ", error)
+          }
+        });
+      } else {
+        var t1 = api.createXlAttSheet(classes, res)
+        t1.then(abc => {
+          console.log("Attendance sheet downloaded");
+          let today = new Date().toDateString();
+          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + ".xlsx";
+          res.download(filePath, function (error) {
+            if (error) {
+              console.log("Error : ", error)
+            }
+          });
+        })
+      }
+
     });
-  }); 
+  });
 });
 
 router.get('/filter', isLoggedIn, function (req, res, next) {

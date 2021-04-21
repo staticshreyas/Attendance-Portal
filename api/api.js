@@ -1,7 +1,7 @@
 var userModel = require('../models/user');
 var classModel = require('../models/class');
 var recordModel = require('../models/record');
-const mongo = require('mongodb');
+var fs = require('fs')
 
 const Excel = require('exceljs')
 
@@ -138,7 +138,7 @@ async function creatXl(classId) {
 }
 
 //Function that creates a XL file for the attendance 
-async function createXlAttSheet(classes,response) {
+async function createXlAttSheet(classes, response) {
 
     let workbook = new Excel.Workbook()
 
@@ -261,9 +261,18 @@ async function createXlAttSheet(classes,response) {
     }
     let today = new Date().toDateString();
     var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + ".xlsx";
-    response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-    await workbook.xlsx.writeFile(filename);
+    if (fs.existsSync(filename)) {
+        response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        return 1
+    }else{
+        response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        await workbook.xlsx.writeFile(filename);
+        return 0       
+    }
+
+
 }
 
 //Function which calculates the attendance of a student 
@@ -509,9 +518,17 @@ async function downloadXL(data, response) {
         }
     }
     var filename = "./XLS_FILES/absent/absent-" + data[0].date + ".xlsx"
-    response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-    await workbook.xlsx.writeFile(filename)
+    if (fs.existsSync(filename)) {
+        response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        return 1
+    }
+    else {
+        response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        await workbook.xlsx.writeFile(filename)
+        return 0;
+    }
 }
 
 module.exports = { forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
