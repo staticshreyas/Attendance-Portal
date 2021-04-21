@@ -219,6 +219,36 @@ async function createXlAttSheet(classes) {
             }
         });
 
+        worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber){
+            row.eachCell(function(cell, colNumber){
+             cell.font = {
+               name: 'Arial',
+               family: 2,
+               bold: false,
+               size: 10,
+             };
+             cell.alignment = {
+               vertical: 'middle', horizontal: 'center'
+             };
+             if (rowNumber==1) {
+               row.height = 20;
+               cell.font = {
+                 bold: true,
+                 size:12
+               };
+              }
+              else{
+               for (var i = 1; i < colSize; i++) {
+                 row.getCell(i).border = {
+                 top: {style:'thin'},
+                 left: {style:'thin'},
+                 bottom: {style:'thin'},
+                 right: {style:'thin'}
+               };
+             }
+            }
+           });
+          });
         let today = new Date().toDateString();
         var filename="./XLS_FILES/attendance_sheet/attendance_sheet - "+today+".xlsx";
         workbook.xlsx.writeFile(filename);
