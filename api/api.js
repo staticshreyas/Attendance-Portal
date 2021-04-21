@@ -177,7 +177,16 @@ async function createXlAttSheet(classes) {
                 var classroom=ob.classes[z]
                 object[classroom.name] = classroom.studentDetails.percent
             }
-            worksheet.addRow(object)
+            worksheet.addRow(object);
+            
+            for (var i = 1; i < colSize; i++) {
+                worksheet.getRow(1).getCell(i).border = {
+                top: {style:'thin'},
+                left: {style:'thin'},
+                bottom: {style:'thin'},
+                right: {style:'thin'}
+              }
+            };
             const row = worksheet.getRow(k+2);
             for(classroom of classes){
                 cellVal=row.getCell(classroom.name).value
