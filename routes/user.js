@@ -75,7 +75,10 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   ob.then(absentees => {
     //console.log(absentees)
     api.downloadXL(absentees)
-    var filePath = "./XLS_FILES/absent/absent-" + query + ".xlsx"
+    var filePath = path.join(__dirname +"../../XLS_FILES/absent/absent-" + query + ".xlsx")
+    console.log(filePath)
+    const data =  fs.readFileSync(filePath, 'utf-8');
+    console.log(`the data is ${data}`)
     res.download(filePath)
   })
 })
