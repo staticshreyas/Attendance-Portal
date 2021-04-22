@@ -273,7 +273,7 @@ router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
                     });
                     req.session.addStudents=notInClassStudents
                     res.render('classroom/addStudents', {
-                        users: notInClassStudents,
+                        users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                         classroom: classroom
                     });
                 }
@@ -374,7 +374,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -410,7 +410,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -445,7 +445,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -481,7 +481,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -517,7 +517,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -552,7 +552,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
@@ -587,7 +587,7 @@ router.post('/addStuFilter', function (req, res, next) {
                         });
                         req.session.addStudents=notInClassStudents
                         res.render('classroom/addStudents', {
-                            users: notInClassStudents,
+                            users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
                             filterActive: true
                         });
