@@ -93,47 +93,58 @@ passport.use('local-register', new LocalStrategy({
             return done(null, false, req.flash('error', messages));
         }
         else {
-            User.findOne({ 'email': email }, function (err, user) {
+            User.findOne({ 'rollnumber': rollnumber }, function (err, user) {
                 if (err) {
-                    return done(err);
+                    return done(err)
                 }
                 if (user) {
-                    return done(null, false, { message: 'Email already in use.' });
+                    return done(null, false, { message: 'Roll number already in use.' });
                 }
                 else {
-                    var newUser = new User();
-                    newUser.name = name;
-                    newUser.email = email;
-                    newUser.password = newUser.encryptPassword(password);
-                    newUser.class = classs
-                    newUser.rollnumber = rollnumber
-                    if (teacher == "0") {
-                        newUser.who = teacher
-                    }
-                    else if (student) {
-                        newUser.who = student
-                        if (!year) {
-                            messages.push("Please enter all details")
-                            return done(null, false, req.flash('error', messages));
+                    User.findOne({ 'email': email }, function (err, user) {
+                        if (err) {
+                            return done(err);
+                        }
+                        if (user) {
+                            return done(null, false, { message: 'Email already in use.' });
                         }
                         else {
-                            newUser.year = year
+                            var newUser = new User();
+                            newUser.name = name;
+                            newUser.email = email;
+                            newUser.password = newUser.encryptPassword(password);
+                            newUser.class = classs
+                            newUser.rollnumber = rollnumber
+                            if (teacher == "0") {
+                                newUser.who = teacher
+                            }
+                            else if (student) {
+                                newUser.who = student
+                                if (!year) {
+                                    messages.push("Please enter all details")
+                                    return done(null, false, req.flash('error', messages));
+                                }
+                                else {
+                                    newUser.year = year
+                                }
+                            }
+                            else {
+                                newUser.who = ""
+                            }
+                            newUser.save(function (err, result) {
+                                if (err) {
+                                    throw err;
+                                }
+                                return done(null, newUser);
+                            });
                         }
-                    }
-                    else {
-                        newUser.who = ""
-                    }
-                    newUser.save(function (err, result) {
-                        if (err) {
-                            throw err;
-                        }
-                        return done(null, newUser);
+
+
+
                     });
                 }
+            })
 
-
-
-            });
         }
 
     }));

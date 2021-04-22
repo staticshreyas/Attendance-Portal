@@ -38,7 +38,7 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
     message = "Please select a date"
   }
   else {
-    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var d = new Date(reqDate);
     var dayName = days[d.getDay()];
 
@@ -579,7 +579,7 @@ router.post('/login', passport.authenticate('local-login', {
 });
 
 //Fuctions for registering a new student
-router.get('/register', function (req, res, next) {
+router.get('/register/:role', function (req, res, next) {
   var messages = req.flash('error');
   if (req.session.filledformdata) {
     var filledformdata = req.session.filledformdata;
@@ -587,8 +587,8 @@ router.get('/register', function (req, res, next) {
   }
   res.render('user/register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
-router.post('/register', check, passport.authenticate('local-register', {
-  failureRedirect: '/user/register',
+router.post('/register/:role', check, passport.authenticate('local-register', {
+  failureRedirect: '/user/register/:role',
   failureFlash: true
 
 }), function (req, res, next) {
@@ -617,7 +617,7 @@ function check(req, res, next) {
   next();
 }
 //Functions for registering a new teacher
-router.get('/teacher-register', function (req, res, next) {
+router.get('/teacher-register/:role', function (req, res, next) {
   var messages = req.flash('error');
   if (req.session.filledformdata) {
     var filledformdata = req.session.filledformdata;
@@ -625,8 +625,8 @@ router.get('/teacher-register', function (req, res, next) {
   }
   res.render('user/teacher-register', { messages: messages, hasErrors: messages.length > 0, filledformdata: filledformdata });
 });
-router.post('/teacher-register', check, passport.authenticate('local-register', {
-  failureRedirect: '/user/teacher-register',
+router.post('/teacher-register/:role', check, passport.authenticate('local-register', {
+  failureRedirect: '/user/teacher-register/:role',
   failureFlash: true
 
 }), function (req, res, next) {
