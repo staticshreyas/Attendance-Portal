@@ -142,7 +142,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -156,7 +156,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -169,7 +169,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -260,7 +260,7 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
       }
     }
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("rollnumber")),
       classes: classes,
       filterActive: filterActive,
       activeClassname: className.toString(),
@@ -449,7 +449,7 @@ router.get('/allStudents', (req, res, next) => {
     }
     else {
       res.render('user/allStudents', {
-        users: users,
+        users: users.sort(api.dynamicSort("rollnumber")),
       });
     }
   });

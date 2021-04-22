@@ -499,7 +499,7 @@ async function compare(query) {
         }
 
     }
-    absentees.sort(dynamicSort("rollnumber"));
+    //absentees.sort(dynamicSort("rollnumber"));
     return absentees
 }
 
@@ -546,4 +546,4 @@ async function downloadXL(data, response) {
     }
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
+module.exports = { dynamicSort,forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
