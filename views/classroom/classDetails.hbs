@@ -140,7 +140,7 @@
 
     <!-- Page content -->
     <div class="container-fluid mt--6 ">
-        <div class="col-xl-10" style="padding-left: 250px;">
+        <div class="col-xl-10" style="padding-left: 150px;">
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
@@ -164,6 +164,7 @@
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                             <tr>
+                                <th scope="col">Roll number</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Lectures</th>
@@ -176,6 +177,7 @@
                         <tbody>
                             {{#each students}}
                             <tr>
+                                <th scope="row">{{rollnumber}}</th>
                                 <th scope="row">{{name}}</th>
                                 <td>{{email}}</td>
                                 <td>

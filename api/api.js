@@ -17,6 +17,7 @@ async function forClassDeatils(classId) {
     });
 
     var stuArray = await Promise.all(studentPromise)
+    stuArray.sort(dynamicSort("rollnumber"));
 
     var resp = await recordModel.find({ 'data.Class': classId.toString() })
 
@@ -498,7 +499,7 @@ async function compare(query) {
         }
 
     }
-
+    absentees.sort(dynamicSort("rollnumber"));
     return absentees
 }
 
