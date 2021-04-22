@@ -197,7 +197,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
     //console.log(defaultersList);
 
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes
     });
   })
@@ -218,7 +218,7 @@ router.get('/defaulterStudents/filter/:name', isLoggedIn, function (req, res, ne
       }
     }
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes,
       filterActive: true,
       activeClassname: className.toString()
@@ -260,7 +260,7 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
       }
     }
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList.sort(api.dynamicSort("rollnumber")),
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes,
       filterActive: filterActive,
       activeClassname: className.toString(),
