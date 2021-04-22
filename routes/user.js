@@ -417,7 +417,7 @@ router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
       }
     }
     res.render('user/topAttPerStuPerClass', {
-      topAttPerStuPerClass: topAttPerStuPerClass,
+      topAttPerStuPerClass: topAttPerStuPerClass.sort(api.dynamicSort("studentRollno")),
     });
   })
 });
