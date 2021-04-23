@@ -26,14 +26,14 @@
 
     <!-- Page content -->
     <div class="container-fluid mt--6 ">
-        <div class="col-xl-10" style="padding-left: 250px;">
+        <div class="col-sm-8 offset-sm-2">
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col">
+                        <div class="col-sm-auto text-center">
                             <h3 class="mb-0">List Of Defaulter Students</h3>
                         </div>
-                        <div style="padding-right: 50px">
+                        <div class="col-right ml-auto mr-2">
                             {{#if filterActive}}
                             <a href="/user/sendDefaulterMail/{{activeClassname}}" class="btn btn-sm btn-primary">
                             <i class="fas fa-send text-white mr-2"></i>SendMail</a>
