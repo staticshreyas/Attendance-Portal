@@ -60,6 +60,7 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
     var ob = api.compare(query)
     ob.then(absentees => {
       //console.log(absentees)
+      absentees.sort(api.dynamicSort("rollnumber"));
       res.render('user/absentees', { absent: absentees });
     })
   }
@@ -74,6 +75,7 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var ob = api.compare(query)
   ob.then(absentees => {
     //console.log(absentees)
+    absentees.sort(api.dynamicSort("rollnumber"));
     var t = api.downloadXL(absentees, res)
     t.then(ab => {
       if (ab) {

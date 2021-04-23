@@ -472,6 +472,7 @@ async function compare(query) {
         var classID = record.data.Class[0]
         var studentPresent = record.data.Name
 
+
         var obj = forClassDeatils(String(classID))
         var data = await obj
         //console.log(data.classroom.name)
@@ -485,16 +486,28 @@ async function compare(query) {
 
         var a = findDeselectedItem(studentName, studentPresent)
         //console.log(a)
+        var b=[]
+        var c=[]
+        for(j=0;j<students.length;j++){
+            var stu=students[j]
+            for(z=0;z<a.length;z++){
+                if(a[z]==stu.name){
+                    b.push(stu.rollnumber)
+                    c.push(stu.email)
+                    break
+                }
+            }
+        }
         if (a.length == 0) {
             continue
         }
         if (a.length == studentName.length) {
-            var ob = { 'class': data.classroom.name, 'absentees': ['Mass Bunk'], "date": query }
+            var ob = { 'class': data.classroom.name, 'absentees': ['Mass Bunk'],'email':'-','rollnumber':'-', "date": query }
             absentees.push(ob)
         }
 
         else {
-            var ob = { 'class': data.classroom.name, 'absentees': a, "date": query }
+            var ob = { 'class': data.classroom.name, 'absentees': a,'email':c,'rollnumber':b, "date": query }
             absentees.push(ob)
         }
 
@@ -515,19 +528,27 @@ async function downloadXL(data, response) {
     let worksheet = workbook.addWorksheet('students_db')
 
     worksheet.columns = [
-        { header: 'name', key: 'name' },
-        { header: 'class', key: 'class' },
-        { header: 'date', key: 'date' },
+        { header: 'Name', key: 'name', width: 10 },
+        { header: 'Roll', key: 'roll' ,width: 10},
+        { header: 'Class', key: 'class',width: 5 },
+        { header: 'Date', key: 'date',width: 15 },
+        {header: 'Email', key: 'email', width:30}
     ]
     var l = data.length
+    
 
     for (i = 0; i < l; i++) {
         var students = data[i].absentees
+        var email=data[i].email
+        var rollnumber=data[i].rollnumber
         for (j = 0; j < students.length; j++) {
             var obj = {}
             obj["name"] = students[j]
+            obj["roll"]=String(rollnumber[j])
             obj["class"] = data[i].class
             obj["date"] = data[i].date
+            obj["email"]=String(email[j])
+            //console.log(obj)
             worksheet.addRow(obj)
 
         }

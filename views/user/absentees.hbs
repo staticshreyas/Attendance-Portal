@@ -59,8 +59,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
+                                <th scope="col">Roll Number</th>
                                 <th scope="col">Classroom</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Email</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,8 +70,11 @@
                             {{#each absentees}}
                             <tr>
                                 <th scope="row">{{this}}</th>
+                                <th scope="row">{{lookup ../rollnumber @index}}</th>
                                 <td style="padding-left: 35px;">{{../this.class}}</td>
                                 <td>{{../this.date}} 2021</td>
+                                <th scope="row">{{lookup ../email @index}}</th>
+
                             </tr>
                             {{/each}}
                             {{/each}}
