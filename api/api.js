@@ -528,11 +528,19 @@ async function downloadXL(data, response) {
     let worksheet = workbook.addWorksheet('students_db')
 
     worksheet.columns = [
+<<<<<<< HEAD
         { header: 'Name', key: 'name', width: 10 },
         { header: 'Roll', key: 'roll', width: 10 },
         { header: 'Class', key: 'class', width: 5 },
         { header: 'Date', key: 'date', width: 15 },
         { header: 'Email', key: 'email', width: 30 }
+=======
+        { header: 'Name', key: 'name', width: 15 },
+        { header: 'Roll', key: 'roll' ,width: 12},
+        { header: 'Class', key: 'class',width: 15 },
+        { header: 'Date', key: 'date',width: 15 },
+        {header: 'Email', key: 'email', width:30}
+>>>>>>> 31c8f4cd5b5fdba85ea9c70698a249aa9f90dce1
     ]
     var l = data.length
 
@@ -553,6 +561,43 @@ async function downloadXL(data, response) {
 
         }
     }
+
+    worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+        row.eachCell(function (cell, colNumber) {
+            cell.font = {
+                name: 'Arial',
+                family: 2,
+                bold: false,
+                size: 10,
+            };
+            cell.alignment = {
+                vertical: 'middle', horizontal: 'center'
+            };
+            if (rowNumber == 1) {
+                row.height = 20;
+                cell.font = {
+                    bold: true,
+                    size: 12
+                };
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            }
+            else {
+                for (var i = 1; i < colNumber+1; i++) {
+                    row.getCell(i).border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                }
+            }
+        });
+    });
     var filename = "./XLS_FILES/absent/absent-" + data[0].date + ".xlsx"
     if (fs.existsSync(filename)) {
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
