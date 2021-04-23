@@ -25,23 +25,23 @@
 
     <!-- Page content -->
     <div class="container-fluid mt--6 ">
-        <div class="col-xl-10" style="padding-left: 250px;">
+        <div class="col-sm-10 offset-sm-1">
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col" style="padding-left:455px">
-                            <h3 class="mb-0">All Students</h3>
+                        <div class="col mx-auto mx-sm-0 text-center">
+                            <h3 class="mb-2">All Students</h3>
                         </div>
                         {{#if users}}
-                        <div style="padding-right: 50px">
+                        <div class="col-right mx-auto mr-sm-2 mb-2">
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/addAll" class="btn btn-sm btn-primary"><i class="fas fa-plus text-white mr-2"></i> Add all students</a>
                         </div>
                         {{/if}}
-                        <div class="col-right">
-                            <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary"><i class="fas fa-filter text-white mr-2"></i>Filters</a>
+                        <div class="col-right mx-auto">
+                            <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary mb-2"><i class="fas fa-filter text-white mr-2"></i>Filters</a>
                             {{#if filterActive}}
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/new"
-                                class="btn btn-sm btn-danger">Remove Filter</a>
+                                class="btn btn-sm btn-danger mb-2">Remove Filter</a>
                             {{/if}}
                         </div>
                     </div>
