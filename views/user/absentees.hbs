@@ -13,18 +13,7 @@
                         <p class="text-lead text-white">Check out all the absentees!
                         </p>
                     </div>
-                    {{#if success}}
-                    <div class="alert alert-success fade show " role="alert">
-                        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                        <span class="alert-text mr-2"><strong>Success!</strong>
-                            Your donwload will start shortly!
-                        </span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <br>
-                    {{/if}}
+
                 </div>
 
             </div>
@@ -59,8 +48,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
+                                <th scope="col">Roll Number</th>
                                 <th scope="col">Classroom</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Email</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,8 +59,11 @@
                             {{#each absentees}}
                             <tr>
                                 <th scope="row">{{this}}</th>
+                                <th scope="row">{{lookup ../rollnumber @index}}</th>
                                 <td style="padding-left: 35px;">{{../this.class}}</td>
                                 <td>{{../this.date}} 2021</td>
+                                <th scope="row">{{lookup ../email @index}}</th>
+
                             </tr>
                             {{/each}}
                             {{/each}}

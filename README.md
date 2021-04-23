@@ -494,7 +494,7 @@ Akshit - akshit.gs@somaiya.edu
 [stars-url]: https://github.com/staticshreyas/Attendance-Portal/stargazers
 [issues-shield]: https://img.shields.io/github/issues/staticshreyas/Attendance-Portal.svg?style=for-the-badge
 [issues-url]: https://github.com/staticshreyas/Attendance-Portal/issues
-[license-shield]: https://img.shields.io/github/license/staticshreyas/Attendance-Portal.svg?style=for-the-badge
-[license-url]: https://github.com/staticshreyas/Attendance-Portal/blob/master/LICENSE.txt
+[license-shield]:https://img.shields.io/github/license/staticshreyas/Attendance-Portal.svg?style=for-the-badge
+[license-url]: https://github.com/staticshreyas/Attendance-Portal/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/staticshreyas

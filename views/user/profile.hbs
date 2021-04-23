@@ -11,7 +11,25 @@
           <div class="col-xl-5 col-lg-6 col-md-8 px-5">
             <h1 class="text-white">Take a look at your profile!</h1>
             <p class="text-lead text-white">A short descrption of your account.</p>
+            {{#if success}}
+            <div class="alert alert-success fade show " role="alert">
+              <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+              <span class="alert-text mr-2"><strong>Successfully updated!</strong>
+              </span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <br>
+            {{/if}}
+
+            {{#if msg}}
+            <div class="alert alert-danger">
+              {{msg}}
+            </div>
+            {{/if}}
           </div>
+
         </div>
       </div>
     </div>
@@ -30,9 +48,9 @@
           <div class="row justify-content-center">
             <div class="col-lg-3 order-lg-2">
               <div class="card-profile-image">
-                <a href="javascript:;">
+                <button type="button" data-toggle="modal" data-target="#profilePhotoModal">
                   <img src="/assets/uploads/{{this.user.rollnumber}}.jpg" class="rounded-circle">
-                </a>
+                </button>
               </div>
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
@@ -56,7 +74,17 @@
             </div>
           </div>
           <div class="text-center mt-5">
-            <h3>{{this.user.name}}<span class="font-weight-light">, {{this.user.class}}</span></h3>
+
+
+            <div><span>
+                <h3>{{this.user.name}}<span class="font-weight-light">, {{this.user.class}} <span
+                      style="font-size: 17px;"> <button type="button"
+                        style="background-color: Transparent;border: none;background-repeat:no-repeat;overflow: hidden;outline:none;"
+                        data-toggle="modal" data-target="#editProfileModal">
+                        <i class="ni ni-ruler-pencil"></i> </span></span></h3>
+              </span></div>
+            </button>
+
             <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i>{{this.user.rollnumber}}</div>
             <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i>{{this.user.year}}</div>
             <div class="h6 mt-4"><i class="ni business_briefcase-24 mr-2"></i> CSE Student</div>
@@ -80,6 +108,129 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile photo Modal -->
+<div class="modal fade" id="profilePhotoModal" tabindex="-1" role="dialog" aria-labelledby="profilePhotoModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="" id="exampleModalLabel">Change your profile photo</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-header">
+        1. The filename must be of the format 'YOUR_ROLLNUMBER.jpg'
+        <br>
+        2. This profile photo will be used for face recognition so make sure your face is clearly visible.
+      </div>
+      <div class="modal-body">
+
+        <form method="POST" enctype="multipart/form-data" action="../user/upload">
+          <div class="form-group">
+            <div class="input-group input-group-merge input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-cloud-upload-96"></i></span>
+              </div>
+              <input class="form-control" name="photo" placeholder="photo" type="file">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit class info Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h4 class="" id="exampleModalLabel">Change your personal details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form method="POST" action="/user/editUserInfo">
+
+          <div class="form-group">
+            <div class="input-group input-group-merge input-group-alternative mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+              </div>
+              <input class="form-control" name="name" placeholder="Name" type="text" value="{{this.user.name}}"
+                style="{{#if this.user.name}}background-color: rgb(232, 240, 254);{{/if}}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group input-group-merge input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-books"></i></span>
+              </div>
+              <input class="form-control" name="rollnumber" placeholder="Roll Number" type="text"
+                value="{{this.user.rollnumber}}"
+                style="{{#if this.user.rollnumber}}background-color: rgb(232, 240, 254);{{/if}}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group input-group-merge input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+              </div>
+              <select style="{{#if this.user.class}}background-color: rgb(232, 240, 254);{{/if}}" class="form-control"
+                name="class">
+                <option>{{this.user.class}}</option>
+                <option>A1</option>
+                <option>A2</option>
+                <option>A3</option>
+                <option>A4</option>
+                <option>B1</option>
+                <option>B2</option>
+                <option>B3</option>
+                <option>B4</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group input-group-merge input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+              </div>
+              <select style="{{#if this.user.year}}background-color: rgb(232, 240, 254);{{/if}}" class="form-control"
+                name="year">
+                <option>{{this.user.year}}</option>
+                <option>FY</option>
+                <option>SY</option>
+                <option>TY</option>
+                <option>LY</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+          </div>
+        </form>
+
+      </div>
+
     </div>
   </div>
 </div>
