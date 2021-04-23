@@ -30,12 +30,9 @@
 
 
 <!-- PROJECT LOGO -->
+![INTRO](./images/captureGIF.gif)
 <br />
 <p align="center">
-  <a href="https://github.com/staticshreyas/Attendance-Portal">
-    <img src="images/logo.png" alt="Logo" width="" height="80">
-  </a>
-
   <h3 align="center">Capture It !</h3>
 
   <p align="center">
