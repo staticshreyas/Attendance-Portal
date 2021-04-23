@@ -142,7 +142,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -156,7 +156,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -169,7 +169,7 @@ router.post('/filter', isLoggedIn, function (req, res, next) {
       }
       else {
         res.render('user/allStudents', {
-          users: users,
+          users: users.sort(api.dynamicSort("rollnumber")),
           filterActive: true
         });
       }
@@ -197,7 +197,7 @@ router.get('/defaulterStudents', isLoggedIn, function (req, res, next) {
     //console.log(defaultersList);
 
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes
     });
   })
@@ -218,7 +218,7 @@ router.get('/defaulterStudents/filter/:name', isLoggedIn, function (req, res, ne
       }
     }
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes,
       filterActive: true,
       activeClassname: className.toString()
@@ -260,7 +260,7 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
       }
     }
     res.render('user/defaulterStudents', {
-      defaulterStudents: defaultersList,
+      defaulterStudents: defaultersList.sort(api.dynamicSort("studentRollno")),
       classes: classes,
       filterActive: filterActive,
       activeClassname: className.toString(),
@@ -417,7 +417,7 @@ router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
       }
     }
     res.render('user/topAttPerStuPerClass', {
-      topAttPerStuPerClass: topAttPerStuPerClass,
+      topAttPerStuPerClass: topAttPerStuPerClass.sort(api.dynamicSort("studentRollno")),
     });
   })
 });
@@ -449,7 +449,7 @@ router.get('/allStudents', (req, res, next) => {
     }
     else {
       res.render('user/allStudents', {
-        users: users,
+        users: users.sort(api.dynamicSort("rollnumber")),
       });
     }
   });

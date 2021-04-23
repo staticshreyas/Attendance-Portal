@@ -17,6 +17,7 @@ async function forClassDeatils(classId) {
     });
 
     var stuArray = await Promise.all(studentPromise)
+    stuArray.sort(dynamicSort("rollnumber"));
 
     var resp = await recordModel.find({ 'data.Class': classId.toString() })
 
@@ -76,6 +77,18 @@ async function forTeacherClasses(teacherId) {
     return allClasses
 }
 
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
 //students of a teacher i.e part of aleast one class
 async function myClassStudents(classes, teacherId) {
 
@@ -102,6 +115,8 @@ async function myClassStudents(classes, teacherId) {
             });
         });
     }
+    InMyClassStudents.sort(dynamicSort("rollnumber"));
+    //console.log(InMyClassStudents)
     return InMyClassStudents;
 }
 
@@ -484,7 +499,7 @@ async function compare(query) {
         }
 
     }
-
+    //absentees.sort(dynamicSort("rollnumber"));
     return absentees
 }
 
@@ -531,4 +546,4 @@ async function downloadXL(data, response) {
     }
 }
 
-module.exports = { forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
+module.exports = { dynamicSort,forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL }
