@@ -4,7 +4,7 @@ var passport = require('passport');
 var userModel = require('../models/user');
 var imgModel = require('../models/image');
 var classModel = require('../models/class');
-var recordModel = require('../models/record');
+var User = require('../models/user');
 var multer = require('multer');
 
 const MailSender = require('../mail')
@@ -26,6 +26,57 @@ function calc() {
     totalStudents = count
   })
 }
+router.post('/editUserInfo', function (req, res, next) {
+  var name = req.body.name
+  var rollnumber = req.body.rollnumber
+  var classs = req.body.class
+  var year = req.body.year
+  if (rollnumber != req.user.rollnumber) {
+    User.findOne({ 'rollnumber': rollnumber }, function (err, user) {
+      if (err) {
+        console.log(err)
+      }
+      if (user) {
+        var obj = api.studentAttendance(req.user.id)
+        obj.then(attendance => {
+          res.render('user/profile', {
+            user: req.user,
+            attendance: attendance,
+            msg: 'Roll number already in use.'
+          });
+        })
+      }
+      else {
+        var editedUser = {
+          name: name,
+          rollnumber: rollnumber,
+          class: classs,
+          year: year
+        }
+
+        var ob = api.updatestudent(editedUser, req.user.id)
+        ob.then(() => {
+          var string = encodeURIComponent("1")
+          res.redirect("/user/profile/?success=" + string)
+        })
+      }
+    })
+  }
+  else {
+    var editedUser = {
+      name: name,
+      rollnumber: rollnumber,
+      class: classs,
+      year: year
+    }
+
+    var ob = api.updatestudent(editedUser, req.user.id)
+    ob.then(() => {
+      var string = encodeURIComponent("1")
+      res.redirect("/user/profile/?success=" + string)
+    })
+  }
+})
 
 router.get('/absentFilter', isLoggedIn, function (req, res, next) {
   res.render('user/absentFilter');
@@ -428,11 +479,14 @@ router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
 //Get student profile
 router.get('/profile', isLoggedIn, function (req, res, next) {
   if (req.user.who == "1") {
+    var success = req.query.success
+    console.log(success)
     var obj = api.studentAttendance(req.user.id)
     obj.then(attendance => {
       res.render('user/profile', {
         user: req.user,
-        attendance: attendance
+        attendance: attendance,
+        success: parseInt(success)
       });
     })
   }
@@ -495,7 +549,14 @@ router.post('/upload', upload.single('photo'), async function (req, res, next) {
     }
     else {
       item.save();
-      res.redirect('/user/dashboard');
+      var obj = api.studentAttendance(req.user.id)
+      obj.then(attendance => {
+        res.render('user/profile', {
+          user: req.user,
+          attendance: attendance,
+          success: 1
+        });
+      })
     }
   });
 });
