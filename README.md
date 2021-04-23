@@ -33,7 +33,6 @@
 ![INTRO](./images/captureGIF.gif)
 <br />
 <p align="center">
-  <h3 align="center">Capture It !</h3>
   <p align="center">
     <a href="https://github.com/staticshreyas/Attendance-Portal"><strong>Explore the docs »</strong></a>
     <br />
