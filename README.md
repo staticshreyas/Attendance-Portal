@@ -34,10 +34,7 @@
 <br />
 <p align="center">
   <h3 align="center">Capture It !</h3>
-
-  <p align="center">
-    We have built a state of the art attendance recorder. Using face recognition, record attendance hassle free and get access to in depth analysis and wide range of functionalities.
-    <br />
+  <p>
     <a href="https://github.com/staticshreyas/Attendance-Portal"><strong>Explore the docs »</strong></a>
     <br />
     <br />
