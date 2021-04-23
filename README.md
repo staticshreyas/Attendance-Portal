@@ -34,7 +34,7 @@
 <br />
 <p align="center">
   <h3 align="center">Capture It !</h3>
-  <p>
+  <p align="center">
     <a href="https://github.com/staticshreyas/Attendance-Portal"><strong>Explore the docs »</strong></a>
     <br />
     <br />
