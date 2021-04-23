@@ -528,12 +528,11 @@ async function downloadXL(data, response) {
     let worksheet = workbook.addWorksheet('students_db')
 
     worksheet.columns = [
-
-        { header: 'Name', key: 'name', width: 10 },
-        { header: 'Roll', key: 'roll', width: 10 },
-        { header: 'Class', key: 'class', width: 5 },
-        { header: 'Date', key: 'date', width: 15 },
-        { header: 'Email', key: 'email', width: 30 }
+        { header: 'Name', key: 'name', width: 15 },
+        { header: 'Roll', key: 'roll' ,width: 12},
+        { header: 'Class', key: 'class',width: 15 },
+        { header: 'Date', key: 'date',width: 15 },
+        {header: 'Email', key: 'email', width:30}
     ]
     var l = data.length
 
