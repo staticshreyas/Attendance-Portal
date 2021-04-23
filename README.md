@@ -30,11 +30,11 @@
 
 
 <!-- PROJECT LOGO -->
-    ![INTRO](./images/captureGIF.gif)
+   ![INTRO](./images/captureGIF.gif)
+
 <br />
 <p align="center">
   <p align="center">
-
     <a href="https://github.com/staticshreyas/Attendance-Portal"><strong>Explore the docs »</strong></a>
     <br />
     <br />
