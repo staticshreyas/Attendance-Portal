@@ -147,7 +147,7 @@ Update to the latest version of npm
 ## Usage
 
 
-#### **Home Page**: Lets take a dive into out portal!
+#### **Home Page**: Lets take a dive into our portal!
 
 ![product-home](./images/home.png)
 
