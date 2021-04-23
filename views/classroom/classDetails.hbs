@@ -140,21 +140,21 @@
 
     <!-- Page content -->
     <div class="container-fluid mt--6 ">
-        <div class="col-xl-10" style="padding-left: 150px;">
+        <div class="col-xl-10 offset-xl-1">
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
                         <div class="col">
                             <h3 class="mb-0">Students Enrolled</h3>
                         </div>
-                        <div style="padding-right: 50px">
+                        <div class="col-right mr-2">
                             <a href="/classroom/take_attendance/{{this.classroom._id}}"
-                                class="btn btn-sm btn-primary">Take
+                                class="btn btn-sm btn-primary"> <i class="fas fa-camera text-white mr-2"></i>Take
                                 Attendance</a>
                         </div>
                         <div class="col-right">
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/new"
-                                class="btn btn-sm btn-primary"> <i class="ni ni-fat-add text-white"></i>Add
+                                class="btn btn-sm btn-primary"> <i class="fas fa-plus text-white mr-2"></i>Add
                                 Students</a>
                         </div>
                     </div>
