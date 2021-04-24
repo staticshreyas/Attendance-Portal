@@ -3,49 +3,50 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">
+    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+        <div class="row align-items-center">
+            <div class="col text-center text-sm-left">
+                <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">
                     {{this.classroom.name}} - {{this.classroom.description}}
-                </h6>
-                <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
-                    <li class="nav-item">
-                        <div class="media align-items-center">
-                            <div class="media-body  ml-2  d-none d-lg-block">
-                                <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
-                                    <b>{{this.user.name}}</b>
-                                </h4>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                </h5>
+            </div>
+            <div class="col-right mr-3 d-none d-sm-block">
+                <div class="media align-items-center">
+                    <div class="media-body  ml-2">
+                        <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
+                            <b>{{this.user.name}}</b>
+                        </h4>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
     <!-- Header -->
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-6">
-                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <div class="col-sm-auto">
+                        <nav aria-label="breadcrumb" class="">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark p-2 bg-white">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="/classroom/teacher-classrooms">Classrooms</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">{{this.classroom.name}}</li>
                             </ol>
                         </nav>
                     </div>
-                    <div class="col-lg-4 col-4 text-right">
-                        <div class="h5 d-md-inline-block text-white mb-0"><b>Class code : </b></div>
-                        <div class="h4 d-md-inline-block text-white mb-0 mr-3">{{this.classroom.classCode}}</div>
+                    <div class="col text-center text-sm-right" style="margin-bottom: 1.4rem;">
+                        {{!-- <div class="h5  text-white mb-0"><b>Class code : </b></div>
+                        <div class="h4 text-white mb-0 mr-2">{{this.classroom.classCode}}</div> --}}
+                        <div style="color: white; font-size:1.5rem">
+                            <b style="font-size:1.2rem;">Class code :</b> {{this.classroom.classCode}}
+                        </div>
                         <a href="/classroom/{{this.classroom._id}}/copyCode/{{this.classroom.classCode}}" class="btn btn-sm btn-neutral">
                             <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a>
                     </div>
-                    <div class="col-lg-2 col-2 text-right">
+                    <div class="col-auto mx-auto text-right" style="margin-bottom: 1rem;">
                         <a href="/classroom/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
-                                class="ni ni-fat-add text-primary"></i>
+                                class="fas fa-plus text-primary"></i>
                             Conduct a lecture</a>
                     </div>
                 </div>
@@ -144,7 +145,7 @@
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col">
+                        <div class="col text-center text-sm-left">
                             <h3 class="mb-2">Students Enrolled</h3>
                         </div>
                         <div class="col-right mx-auto mr-sm-2 mb-2">

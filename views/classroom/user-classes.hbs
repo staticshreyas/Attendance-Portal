@@ -3,76 +3,72 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <h6 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 mr-9">Classrooms</h6>
-            
-                <div class="d-inline-block mb-0 ml-9"> 
-                    {{#if errorMsg}}
-                     <div class="alert alert-danger fade show " role="alert">
-                        <span class="alert-text mr-2">
-                            {{errorMsg}}
-                        </span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    {{else if successMsg}}
-                    <div class="alert alert-success fade show " role="alert">
-                        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                        <span class="alert-text mr-2"><strong>Success!</strong>
-                            {{successMsg}}
-                        </span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <br>
-                    {{/if}}
+    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+        <div class="row align-items-center">
+            <div class="col text-center text-sm-left">
+                <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">Classrooms</h5>
+            </div>
+            <div class="d-inline-block mb-0 ml-9"> 
+                {{#if errorMsg}}
+                    <div class="alert alert-danger fade show " role="alert">
+                    <span class="alert-text mr-2">
+                        {{errorMsg}}
+                    </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                
-                <ul class="navbar-nav align-items-center  ml-auto  ">
-                    <li class="nav-item">
-                        <div class="media align-items-center">
-                            <span class="avatar avatar-sm rounded-circle">
-                                <img alt="" src="/assets/uploads/{{this.user.rollnumber}}.jpg">
-                            </span>
-                            <div class="media-body  ml-2  d-none d-lg-block">
-                                <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
-                                    <b>{{this.user.name}}</b>
-                                </h4>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                {{else if successMsg}}
+                <div class="alert alert-success fade show " role="alert">
+                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                    <span class="alert-text mr-2"><strong>Success!</strong>
+                        {{successMsg}}
+                    </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <br>
+                {{/if}}
+            </div>
+            <div class="col-right mr-3  d-sm-block">
+                <div class="media align-items-center">
+                    <span class="avatar avatar-sm rounded-circle">
+                        <img alt="" src="/assets/uploads/{{this.user.rollnumber}}.jpg">
+                    </span>
+                    <div class="media-body  ml-2  d-none d-lg-block">
+                        <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
+                            <b>{{this.user.name}}</b>
+                        </h4>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
     <!-- Header -->
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-7">
-                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <div class="col-sm-auto">
+                        <nav aria-label="breadcrumb" class="">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark p-2 bg-white">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Classrooms</li>
                             </ol>
                         </nav>
                     </div>
-                    <div class="col-lg-6 col-5 text-right">
+                    <div class="col text-center text-sm-right">
                         <form method="POST" action="../classroom/join-class">
                             <div class="form-group d-md-inline-block">
-                                <div style="width:155px;" class="input-group">
+                                <div style="width:155px;" class="input-group mx-auto">
                                     <input style="height:30px" class="form-control" name="classCode" type="text">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-sm btn-neutral"
                                 style="background-color: white;color:#5E72E4"><i
-                                    class="ni ni-fat-add text-primary"></i>Join classroom</button>
+                                    class="fas fa-plus text-primary mr-2"></i>Join classroom</button>
                         </form>
                     </div>
                 </div>

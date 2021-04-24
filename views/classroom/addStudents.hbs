@@ -29,7 +29,7 @@
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col mx-auto mx-sm-0 text-center">
+                        <div class="col mx-auto mx-sm-0 text-center text-md-left">
                             <h3 class="mb-2">All Students</h3>
                         </div>
                         {{#if users}}
@@ -37,7 +37,7 @@
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/addAll" class="btn btn-sm btn-primary"><i class="fas fa-plus text-white mr-2"></i> Add all students</a>
                         </div>
                         {{/if}}
-                        <div class="col-right mx-auto">
+                        <div class="col-right mx-auto mr-md-2">
                             <a href="/classroom/addStuFilter" class="btn btn-sm btn-primary mb-2"><i class="fas fa-filter text-white mr-2"></i>Filters</a>
                             {{#if filterActive}}
                             <a href="/classroom/class-details/{{this.classroom._id}}/students/new"

@@ -3,30 +3,31 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+        <div class="row align-items-center">
+            <div class="col text-center text-sm-left">
                 <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0">Dashboard</h5>
-
-                <ul class="navbar-nav align-items-center  ml-auto  ">
-                    <li class="nav-item">
-                        <div class="media align-items-center">
-                            <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
-                                <b>{{this.user.name}}</b></h4>
-                        </div>
-                    </li>
-                </ul>
+            </div>
+            <div class="col-right mr-3 d-none d-sm-block">
+                <div class="media align-items-center">
+                    <div class="media-body  ml-2">
+                        <h4 class="mb-0  " style="color: white;font-family:'Lobster', cursive;">Welcome
+                            <b>{{this.user.name}}</b>
+                        </h4>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
+
     <!-- Header -->
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-7">
-                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <div class="col-sm-auto">
+                        <nav aria-label="breadcrumb" class="">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark p-2 bg-white">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="/classroom/teacher-classrooms">Classrooms</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
