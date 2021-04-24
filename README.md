@@ -2,6 +2,7 @@
   
 [![](https://img.shields.io/badge/Made_with-Nodejs-red?style=for-the-badge&logo=node.js)](https://nodejs.org/en/)
 [![](https://img.shields.io/badge/IDE-Visual_Studio_Code-purple?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/  "Visual Studio Code")
+[![](https://img.shields.io/badge/Made_with-Python-blue?style=for-the-badge&logo=python)](https://www.python.org/)
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -12,8 +13,6 @@
 ![INTRO](./images/captureGIF.gif)
 
 </div>
-
-<br />
 <p align="center">
   <p align="center">
     <br />
@@ -24,8 +23,6 @@
     <a href="https://github.com/staticshreyas/Attendance-Portal/issues">Request Feature</a>
   </p>
 </p>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
