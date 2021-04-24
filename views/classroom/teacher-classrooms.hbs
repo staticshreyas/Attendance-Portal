@@ -130,9 +130,9 @@
 
 
     <!-- Page content -->
-    <div class="container-fluid mt--6">
+    <div class="container-fluid">
         <div class="row">
-            {{#each classrooms}}
+            {{#classrooms}}
             <div class="col-xl-4">
                 <div class="card">
                     <div class="card-header border-0">
@@ -141,9 +141,18 @@
                                 <h3 class="mb-0">{{name}}</h3>
                             </div>
                             <div class="col text-right">
-                                <a href="/classroom/class-details/{{_id}}" class="btn btn-sm btn-primary mb-2">See all</a>
+                                <a href="/classroom/class-details/{{_id}}"
+                                    class="btn btn-sm btn-primary mb-auto mr-auto ">See
+                                    all</a>
+
                                 <a href="/classroom/teacher-classroom/delete/{{_id}}"
-                                    class="btn btn-sm btn-danger mb-2 mr-2">Delete</a>
+                                    class="btn btn-sm btn-danger mb-auto mr-auto">Delete</a>
+
+                                <button value={{this}} data-toggle="modal" data-target="#editClassModal" type="button"
+                                    class="btn btn-sm btn-light mb-auto mr-auto"><i
+                                        class="ni ni-settings-gear-65"></i></button>
+
+
                             </div>
                         </div>
                     </div>
@@ -184,7 +193,61 @@
                     </div>
                 </div>
             </div>
-            {{/each}}
+
+            <div class="modal fade" id="editClassModal" tabindex="-1" role="dialog" aria-labelledby="editClassModal"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 class="" id="exampleModalLabel">Change your class details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form method="POST" action="/classroom/teacher-classroom/edit/{{_id}}">
+
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                        </div>
+                                        <input value="{{name}}" class="form-control" name="name" placeholder="Name"
+                                            type="text" style="{{#if name}}background-color: rgb(232, 240, 254);{{/if}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-books"></i></span>
+                                        </div>
+                                        <input value="{{description}}" class="form-control" name="description"
+                                            placeholder="Description" type="textarea" style="{{#if description}}background-color: rgb(232, 240, 254);{{/if}}">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {{/classrooms}}
         </div>
+
+
     </div>
+
 </div>

@@ -27,13 +27,13 @@ function calc() {
 
 //Get classrooms of a student
 router.get('/userClasses', isLoggedIn, function (req, res, next) {
-    errorMsg=""
-    successMsg=""
-    if(req.session.errorMsg || req.session.successMsg){
-        errorMsg=req.session.errorMsg 
-        successMsg=req.session.successMsg
-        req.session.errorMsg=undefined
-        req.session.successMsg=undefined
+    errorMsg = ""
+    successMsg = ""
+    if (req.session.errorMsg || req.session.successMsg) {
+        errorMsg = req.session.errorMsg
+        successMsg = req.session.successMsg
+        req.session.errorMsg = undefined
+        req.session.successMsg = undefined
     }
     calc()
     if (req.user.who == "1") {
@@ -56,8 +56,8 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
                 attendance: ob.attendance,
                 totLec: ob.totalLecs,
                 totStuClass: ob.classes.length,
-                errorMsg:errorMsg,
-                successMsg:successMsg,
+                errorMsg: errorMsg,
+                successMsg: successMsg,
             });
         })
     }
@@ -130,20 +130,20 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
     calc()
     var create = api.creatXl(req.params.id)
     create.then(() => {
-    
-    var obj = api.forClassDeatils(req.params.id)
-    obj.then((ob) => {
-        //console.log(ob)
-        res.render('classroom/classDetails', {
-            user: req.user,
-            classroom: ob.classroom,
-            students: ob.stuArray,
-            totClass: totalClasses,
-            totStu: ob.stuArray.length,
-            totP: ob.totalPercent
-        });
+
+        var obj = api.forClassDeatils(req.params.id)
+        obj.then((ob) => {
+            //console.log(ob)
+            res.render('classroom/classDetails', {
+                user: req.user,
+                classroom: ob.classroom,
+                students: ob.stuArray,
+                totClass: totalClasses,
+                totStu: ob.stuArray.length,
+                totP: ob.totalPercent
+            });
+        })
     })
-})
 
 });
 
@@ -187,9 +187,9 @@ router.get('/:id/copyCode/:code', isLoggedIn, (req, res) => {
 
 //student can join class with class code 
 router.post('/join-class', (req, res, next) => {
-    if(req.session.errorMsg || req.session.successMsg){
-        req.session.errorMsg=undefined
-        req.session.successMsg=undefined
+    if (req.session.errorMsg || req.session.successMsg) {
+        req.session.errorMsg = undefined
+        req.session.successMsg = undefined
     }
     userModel.findById(req.user._id, (err, user) => {
         if (err) {
@@ -199,7 +199,7 @@ router.post('/join-class', (req, res, next) => {
             var obj = api.forJoinClass(req.body.classCode, user)
             obj.then((ob) => {
                 if (ob == 1) {
-                    req.session.errorMsg="You are already a part of the class!"
+                    req.session.errorMsg = "You are already a part of the class!"
                     res.redirect('/classroom/userClasses');
                 }
                 else if (ob == 0) {
@@ -208,13 +208,13 @@ router.post('/join-class', (req, res, next) => {
                             console.log(err);
                         }
                         else {
-                            req.session.successMsg="You are added to new class : "+ updatedClass.name+"!"
+                            req.session.successMsg = "You are added to new class : " + updatedClass.name + "!"
                             res.redirect('/classroom/userClasses');
                         }
                     });
                 }
                 else {
-                    req.session.errorMsg="Couldn't join the class.You entered wrong class code!"
+                    req.session.errorMsg = "Couldn't join the class.You entered wrong class code!"
                     console.log("You entered wrong class code!")
                     res.redirect('/classroom/userClasses');
                 }
@@ -245,6 +245,16 @@ router.get('/teacher-classroom/delete/:id', async (req, res, next) => {
     });
 });
 
+router.post('/teacher-classroom/edit/:id', async (req, res, next) => {
+    var classId = req.params.id;
+    var newClass = {
+        name: req.body.name,
+        description: req.body.description
+    }
+    await classModel.findOneAndUpdate(classId, newClass)
+    res.redirect('/classroom/teacher-classrooms');
+});
+
 //Add new student in particular class
 router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
     req.session.classId = req.params.id
@@ -271,7 +281,7 @@ router.get('/class-details/:id/students/new', isLoggedIn, (req, res) => {
                             notInClassStudents.push(user);
                         }
                     });
-                    req.session.addStudents=notInClassStudents
+                    req.session.addStudents = notInClassStudents
                     res.render('classroom/addStudents', {
                         users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                         classroom: classroom
@@ -311,19 +321,19 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
 
 router.get('/class-details/:id/students/addAll', (req, res, next) => {
     console.log(req.session.addStudents)
-    var studentsArr=req.session.addStudents
-    var stuIds=[]
-    for(var i=0;i<studentsArr.length;i++){
+    var studentsArr = req.session.addStudents
+    var stuIds = []
+    for (var i = 0; i < studentsArr.length; i++) {
         stuIds.push(studentsArr[i]._id)
     }
-    classModel.findOneAndUpdate({ _id: req.params.id }, { $push: { students:{$each: stuIds }} }, { new: true }, function (err, updatedClass) {
+    classModel.findOneAndUpdate({ _id: req.params.id }, { $push: { students: { $each: stuIds } } }, { new: true }, function (err, updatedClass) {
         if (err) {
             console.log(err);
         }
         else {
             var obj = api.getOwner(updatedClass.owner)
             obj.then((ob) => {
-                for(var i=0;i<studentsArr.length;i++){
+                for (var i = 0; i < studentsArr.length; i++) {
                     var msg = 'Hey ' + studentsArr[i].name + '! You\'re added to a new class ' + '\'' + updatedClass.name + '\' - ' + updatedClass.description + ' by ' + ob.name
                     let class_mail = new MailSender(studentsArr[i].email, 'You\'re added to new class', msg)
                     class_mail.send();
@@ -372,7 +382,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -408,7 +418,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -443,7 +453,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -479,7 +489,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -515,7 +525,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -550,7 +560,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
@@ -562,7 +572,7 @@ router.post('/addStuFilter', function (req, res, next) {
         });
     }
     else {
-        userModel.find({ 'class': batch, 'year': year, 'rollnumber':parseInt(roll) }, function (err, users) {
+        userModel.find({ 'class': batch, 'year': year, 'rollnumber': parseInt(roll) }, function (err, users) {
             if (err) {
                 return done(err);
             }
@@ -585,7 +595,7 @@ router.post('/addStuFilter', function (req, res, next) {
                                 notInClassStudents.push(user);
                             }
                         });
-                        req.session.addStudents=notInClassStudents
+                        req.session.addStudents = notInClassStudents
                         res.render('classroom/addStudents', {
                             users: notInClassStudents.sort(api.dynamicSort("rollnumber")),
                             classroom: classroom,
