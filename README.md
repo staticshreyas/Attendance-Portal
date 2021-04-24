@@ -1,36 +1,17 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** staticshreyas, Attendance-Portal, twitter_handle, email, project_title, project_description
--->
+<div align="center">
+[![](https://img.shields.io/badge/Made_with-Flutter-red?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
+[![](https://img.shields.io/badge/Database-MongoDB-blue?style=for-the-badge&logo=mongodb)]( "Firestore")
+[![](https://img.shields.io/badge/Made_with-Nodejs-red?style=for-the-badge&logo=node.js)](https://nodejs.org/en/)
+[![](https://img.shields.io/badge/IDE-Visual_Studio_Code-purple?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/  "Visual Studio Code")
 
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![License][license-shield]][license-url]
 
-
-
-
-<!-- PROJECT LOGO -->
-   ![INTRO](./images/captureGIF.gif)
+![INTRO](./images/captureGIF.gif)
+</div>
 
 <br />
 <p align="center">
