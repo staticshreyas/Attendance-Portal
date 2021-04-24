@@ -452,7 +452,7 @@ Log in to your teacher's account.
 
 ## License
 
-Distributed under the MIT License. 
+Distributed under the GPL - 3.0 License. 
 
 
 
