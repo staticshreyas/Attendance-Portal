@@ -3,12 +3,12 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+    <div class="container-fluid py-3 bg-primary top-padding" style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
         <div class="row align-items-center">
             <div class="col text-center text-sm-left">
                 <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 custom-heading">Classrooms</h5>
             </div>
-            <div class="d-inline-block mb-0 ml-9"> 
+            <div class="d-inline-block mb-0 ml-6"> 
                 {{#if errorMsg}}
                     <div class="alert alert-danger fade show " role="alert">
                     <span class="alert-text mr-2">
@@ -61,8 +61,8 @@
                     </div>
                     <div class="col text-center text-sm-right">
                         <form method="POST" action="../classroom/join-class">
-                            <div class="form-group d-md-inline-block">
-                                <div style="width:155px;" class="input-group mx-auto ml-sm-auto mr-sm-1">
+                            <div class="form-group d-inline-block mr-2 mr-sm-0">
+                                <div style="width:155px;" class="input-group mx-auto mr-sm-1">
                                     <input style="height:30px" class="form-control" name="classCode" type="text">
                                 </div>
                             </div>

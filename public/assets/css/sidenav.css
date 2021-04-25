@@ -15,8 +15,30 @@
     left: 250px;
 }
 
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    z-index: 2;
+    opacity: .4;
+    display: none;
+}
+
+.overlay.active{
+    display: block;
+}
+
 @media (min-width: 1199.98px){
     #sidebarCollapse {
         display: none;
+    }
+}
+
+@media (max-width: 500px){
+    .top-padding {
+       padding-top: 80px !important;
     }
 }
