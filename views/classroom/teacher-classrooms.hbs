@@ -3,10 +3,11 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;">
         <div class="row align-items-center">
             <div class="col text-center text-sm-left">
-                <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 custom-heading">Classrooms</h5>
+                <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 custom-heading">
+                    Classrooms</h5>
             </div>
             <div class="col-right mr-3 d-none d-sm-block">
                 <div class="media align-items-center">
@@ -127,25 +128,25 @@
 
 
     <!-- Page content -->
-    <div class="container-fluid" style="margin-top: -1.9rem;">
+    <div class="container-fluid">
         <div class="row">
-            {{#classrooms}}
+            {{#each classrooms as |class i|}}
             <div class="col-xl-4">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 class="mb-1">{{name}}</h3>
+                                <h3 class="mb-1">{{class.name}}</h3>
                             </div>
                             <div class="col text-right">
-                                <a href="/classroom/class-details/{{_id}}"
+                                <a href="/classroom/class-details/{{class._id}}"
                                     class="btn btn-sm btn-primary mb-1 mr-auto ">See
                                     all</a>
 
-                                <a href="/classroom/teacher-classroom/delete/{{_id}}"
+                                <a href="/classroom/teacher-classroom/delete/{{class._id}}"
                                     class="btn btn-sm btn-danger mb-1 mr-auto">Delete</a>
 
-                                <button value={{this}} data-toggle="modal" data-target="#editClassModal" type="button"
+                                <button data-toggle="modal" data-target="#editClassModal{{i}}" type="button"
                                     class="btn btn-sm btn-light mb-1 mr-auto"><i
                                         class="ni ni-settings-gear-65"></i></button>
 
@@ -190,8 +191,9 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="editClassModal" tabindex="-1" role="dialog" aria-labelledby="editClassModal"
-                aria-hidden="true">
+
+            <div class="modal fade" id="editClassModal{{i}}" tabindex="-1" role="dialog"
+                aria-labelledby="editClassModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -201,18 +203,18 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-
                         <div class="modal-body">
-
-                            <form method="POST" action="/classroom/teacher-classroom/edit/{{_id}}">
+                            <form method="POST" action="/classroom/teacher-classroom/edit/{{class._id}}">
+                            
 
                                 <div class="form-group">
                                     <div class="input-group input-group-merge input-group-alternative mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                                         </div>
-                                        <input value="{{name}}" class="form-control" name="name" placeholder="Name"
-                                            type="text" style="{{#if name}}background-color: rgb(232, 240, 254);{{/if}}">
+                                        <input value="{{class.name}}" class="form-control" name="name"
+                                            placeholder="Name" type="text"
+                                            style="{{#if class.name}}background-color: rgb(232, 240, 254);{{/if}}">
                                     </div>
                                 </div>
 
@@ -221,8 +223,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-books"></i></span>
                                         </div>
-                                        <input value="{{description}}" class="form-control" name="description"
-                                            placeholder="Description" type="textarea" style="{{#if description}}background-color: rgb(232, 240, 254);{{/if}}">
+                                        <input value="{{class.description}}" class="form-control" name="description"
+                                            placeholder="Description" type="textarea"
+                                            style="{{#if class.description}}background-color: rgb(232, 240, 254);{{/if}}">
                                     </div>
                                 </div>
 
@@ -235,11 +238,10 @@
                             </form>
 
                         </div>
-
                     </div>
                 </div>
             </div>
-            {{/classrooms}}
+            {{/each}}
         </div>
     </div>
 

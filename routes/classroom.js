@@ -247,11 +247,12 @@ router.get('/teacher-classroom/delete/:id', async (req, res, next) => {
 
 router.post('/teacher-classroom/edit/:id', async (req, res, next) => {
     var classId = req.params.id;
+    console.log(classId)
     var newClass = {
         name: req.body.name,
         description: req.body.description
     }
-    await classModel.findOneAndUpdate(classId, newClass)
+    await classModel.findOneAndUpdate({_id:classId}, newClass)
     res.redirect('/classroom/teacher-classrooms');
 });
 
