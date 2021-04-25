@@ -24324,3 +24324,15 @@ pre>code.highlight {
     margin-left: auto !important;
   }
 }
+
+@media screen and (max-width: 1199.98px) {
+    .custom-heading{
+      padding-left: 50px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+  .custom-heading{
+    padding-left: 0px;
+  }
+}

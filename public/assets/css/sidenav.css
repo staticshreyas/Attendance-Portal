@@ -1,0 +1,22 @@
+#sidenav-main{
+    margin-left: 0px;
+    overflow-y: visible;
+    box-shadow: 2px 2px 3px #999;
+}
+
+#sidenav-main.active {
+    margin-left: 250px;
+}
+
+
+#sidebarCollapse{
+    position:fixed;
+    top: 17px;
+    left: 250px;
+}
+
+@media (min-width: 1199.98px){
+    #sidebarCollapse {
+        display: none;
+    }
+}
