@@ -1,4 +1,9 @@
+<div align="center">
+  ![INTRO](./images/captureGIF.gif)
+</div>
+ 
 <h1 align="center">Capture It!</h1>
+
 <div align="center">
   
 [![](https://img.shields.io/badge/Made_with-Nodejs-red?style=for-the-badge&logo=node.js)](https://nodejs.org/en/)
@@ -11,9 +16,8 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 
-![INTRO](./images/captureGIF.gif)
-
 </div>
+
 <p align="center">
   <p align="center">
     <br />
