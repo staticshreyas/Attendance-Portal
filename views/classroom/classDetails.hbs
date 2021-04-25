@@ -3,7 +3,7 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <div class="container-fluid py-3 bg-primary " style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
+    <div class="container-fluid py-3 bg-primary top-padding" style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
         <div class="row align-items-center">
             <div class="col text-center text-sm-left">
                 <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 custom-heading">
@@ -35,16 +35,16 @@
                             </ol>
                         </nav>
                     </div>
-                    <div class="col text-center text-sm-right" style="margin-bottom: 1.4rem;">
+                    <div class="col text-center text-sm-right" style="margin-bottom: 0.5rem;">
                         {{!-- <div class="h5  text-white mb-0"><b>Class code : </b></div>
                         <div class="h4 text-white mb-0 mr-2">{{this.classroom.classCode}}</div> --}}
-                        <div style="color: white; font-size:1.5rem">
+                        <div style="color: white; font-size:1.5rem;display:inline">
                             <b style="font-size:1.2rem;">Class code :</b> {{this.classroom.classCode}}
                         </div>
                         <a href="/classroom/{{this.classroom._id}}/copyCode/{{this.classroom.classCode}}" class="btn btn-sm btn-neutral">
                             <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a>
                     </div>
-                    <div class="col-auto mx-auto text-right" style="margin-bottom: 1rem;">
+                    <div class="col-auto mx-auto text-right" style="">
                         <a href="/classroom/add-lec/{{this.classroom._id}}" class="btn btn-sm btn-neutral"> <i
                                 class="fas fa-plus text-primary"></i>
                             Conduct a lecture</a>
