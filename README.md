@@ -1,6 +1,9 @@
-<h1 align="center">Capture It!</h1>
 <div align="center">
-  
+ 
+![INTRO](./images/captureGIF.gif)
+
+<h1 align="center">Capture It!</h1>
+
 [![](https://img.shields.io/badge/Made_with-Nodejs-red?style=for-the-badge&logo=node.js)](https://nodejs.org/en/)
 [![](https://img.shields.io/badge/IDE-Visual_Studio_Code-purple?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/  "Visual Studio Code")
 [![](https://img.shields.io/badge/Made_with-Python-blue?style=for-the-badge&logo=python)](https://www.python.org/)
@@ -11,9 +14,8 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 
-![INTRO](./images/captureGIF.gif)
-
 </div>
+
 <p align="center">
   <p align="center">
     <br />

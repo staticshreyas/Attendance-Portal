@@ -3,7 +3,8 @@ var classModel = require('../models/class');
 var recordModel = require('../models/record');
 var fs = require('fs')
 
-const Excel = require('exceljs')
+const Excel = require('exceljs');
+const record = require('../models/record');
 
 //Function that returns the details of each class
 async function forClassDeatils(classId) {
@@ -438,9 +439,6 @@ async function removeStudent(classId, studentId) {
     var student = JSON.parse(JSON.stringify(students))
 
     var name = student.name;
-
-    //var records = await recordModel.deleteMany({ "data.Name": name })
-
     var del = await classModel.findOneAndUpdate({ _id: classId }, { $pull: { "students": studentId } }, { new: true })
 
 }
