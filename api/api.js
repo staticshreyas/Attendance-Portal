@@ -263,7 +263,7 @@ async function createXlAttSheet(classes, response) {
                     };
                 }
                 else {
-                    for (var i = 1; i < colSize; i++) {
+                    for (var i = 1; i < colSize+1; i++) {
                         row.getCell(i).border = {
                             top: { style: 'thin' },
                             left: { style: 'thin' },
@@ -466,7 +466,7 @@ async function compare(query) {
     var response = JSON.parse(JSON.stringify(records))
     var absentees = []
 
-    for (record of response) {
+    for (var record of response) {
         var classID = record.data.Class[0]
         var studentPresent = record.data.Name
 
