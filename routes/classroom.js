@@ -306,8 +306,7 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
                 else {
                     var obj = api.getOwner(updatedClass.owner)
                     obj.then((ob) => {
-                        var msg = 'Hey ' + student.name + '! You\'re added to a new class ' + '\'' + updatedClass.name + '\' - ' + updatedClass.description + ' by ' + ob.name
-                        //console.log(msg)
+                        var msg ="<h2>Hey " + student.name + ",</h2>" + " <div style='font-size: 16px'>You\'re added to a new class " + "\'" + updatedClass.name + "\' - " + updatedClass.description + " by " + ob.name+".</div>"
                         let class_mail = new MailSender(student.email, 'You\'re added to new class', msg)
                         class_mail.send();
                         res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
