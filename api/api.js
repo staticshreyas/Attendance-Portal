@@ -360,7 +360,7 @@ async function forUserClasses(stuId) {
 
         var totalStuRecords = resp.length
         var totalStuLecs = 0
-        for (record of response) {
+        for (var record of response) {
             if (allClasses.length > 0) {
                 var found = false
                 for (var i = 0; i < allClasses.length; i++) {
