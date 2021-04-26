@@ -263,7 +263,7 @@ async function createXlAttSheet(classes, response) {
                     };
                 }
                 else {
-                    for (var i = 1; i < colSize+1; i++) {
+                    for (var i = 1; i < colSize + 1; i++) {
                         row.getCell(i).border = {
                             top: { style: 'thin' },
                             left: { style: 'thin' },
@@ -303,7 +303,7 @@ async function studentAttendance(stuId) {
         var totalStuRecords = resp.length
         var totalStuLecs = 0
         var mark = []
-        for (record of response) {
+        for (var record of response) {
             if (mark.length > 0) {
                 var found = false
                 for (var i = 0; i < mark.length; i++) {
@@ -527,10 +527,10 @@ async function downloadXL(data, response) {
 
     worksheet.columns = [
         { header: 'Name', key: 'name', width: 15 },
-        { header: 'Roll', key: 'roll' ,width: 12},
-        { header: 'Class', key: 'class',width: 15 },
-        { header: 'Date', key: 'date',width: 15 },
-        {header: 'Email', key: 'email', width:30}
+        { header: 'Roll', key: 'roll', width: 12 },
+        { header: 'Class', key: 'class', width: 15 },
+        { header: 'Date', key: 'date', width: 15 },
+        { header: 'Email', key: 'email', width: 30 }
     ]
     var l = data.length
 
@@ -577,7 +577,7 @@ async function downloadXL(data, response) {
                 };
             }
             else {
-                for (var i = 1; i < colNumber+1; i++) {
+                for (var i = 1; i < colNumber + 1; i++) {
                     row.getCell(i).border = {
                         top: { style: 'thin' },
                         left: { style: 'thin' },
