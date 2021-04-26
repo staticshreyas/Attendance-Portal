@@ -1,0 +1,36 @@
+#back-button{
+    display: none;
+    right: 16px;
+}
+
+@media (max-width: 992px){
+    #back-button{
+       display: inline-block;
+    }
+}
+
+/* header_index css */
+.small-screen-nav{
+    display: none;
+    z-index: 20;
+    position: absolute;
+    width: 100%;
+}
+
+.custom-nav-item{
+    border-bottom:0.0625rem solid #e9ecef33 !important;
+}
+
+@media (max-width: 992px){
+    .small-screen-nav{
+       display: inline-block;
+    }
+
+    .custom-nav{
+        display: none;
+    }
+
+    .custom-padding{
+        padding-top: 3rem;
+    }
+}
