@@ -402,7 +402,7 @@ Log in to your teacher's account.
 
     ![product](./images/updateProfile2.png)
 
-    ![product](./images/updateProfile3.png)
+    ![product](./images/updateProfile3.PNG)
     
 
 #### **Exporting to XLSX:** 
