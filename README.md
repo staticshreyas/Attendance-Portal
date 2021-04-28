@@ -396,13 +396,43 @@ Log in to your teacher's account.
 
     ![product](./images/profileAttend.png)
 
-    - Update Profile picture 
+5. Update Details
+
+    #### **Update Profile picture**
+
+    - Click on the profile photo to open the form. A modal will appear and then you can select the photo of your choice.
 
     ![product](./images/updateProfile1.png)
 
     ![product](./images/updateProfile2.png)
 
+    - Once the photo is updated, you will be notified and the change will reflect on your profile.
+
     ![product](./images/updateProfile3.PNG)
+
+    #### **Update Profile details**
+
+    - Click on the settings button to open the form. A modal will appear and then you can change the details of your choice
+
+    ![product](./images/updateStudentDetails1.png)
+
+    ![product](./images/updateStudentDetails2.PNG)
+
+    - After submitting the form, the profile will be updated.
+
+    ![product](./images/updateStudentDetails3.PNG)
+
+    #### **Update Class details**
+
+    - Click on the settings button of the required class to open the form. A modal will appear and then you can change the class details of your choice
+
+    ![product](./images/updateClassDetails1.png)
+
+    - After submitting the form, the class details will be updated.
+
+    ![product](./images/updateClassDetails2.PNG)
+
+
     
 
 #### **Exporting to XLSX:** 
