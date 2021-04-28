@@ -430,7 +430,7 @@ Log in to your teacher's account.
 
     - After submitting the form, the class details will be updated.
 
-    ![product](./images/updateClassDetails2.PNG)
+    ![product](./images/updateClassDetails2.png)
 
 
     
