@@ -396,7 +396,14 @@ Log in to your teacher's account.
 
     ![product](./images/profileAttend.png)
 
-    ![product](./images/safeStuAttend.png)
+    - Update Profile picture 
+
+    ![product](./images/updateProfile1.png)
+
+    ![product](./images/updateProfile2.png)
+
+    ![product](./images/updateProfile3.png)
+    
 
 #### **Exporting to XLSX:** 
 
