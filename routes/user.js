@@ -118,7 +118,6 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
             classes.push({name:absentee.class})
           }
       }
-      console.log("classes list1:",classes)
       res.render('user/absentees', { absent: absentees,classes:classes });
     })
   }
@@ -166,7 +165,6 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   console.log(className)
   var ob = api.compare(query)
   ob.then(absentees => {
-    //console.log(absentees)
     absentees.sort(api.dynamicSort("rollnumber"));
     if(className!="all"){
       absentees=absentees.filter(function (obj) {
