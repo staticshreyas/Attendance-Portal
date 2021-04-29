@@ -126,7 +126,7 @@ app.use(function(err, req, res, next) {
 });
 
 port=3000
-app.listen(port,function(err){
+app.listen(port, '0.0.0.0',function(err){
   if(err){
     console.log(err)
   }

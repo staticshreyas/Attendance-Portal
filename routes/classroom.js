@@ -149,11 +149,22 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 
 //Take attendance of students in class
 router.get('/take_attendance/:id', function (req, res, next) {
-    var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()
-    request(url, function (error, response, body) {
-        //console.log(body)
+    classModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { totLec: 1 } }, function (err, updatedClass) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()
+            request(url, function (error, response, body) {
+
+                //console.log(body)
+            });
+            res.render('classroom/cameraOn');
+        }
     });
-    res.render('classroom/cameraOn');
+
+
+
 });
 
 //Add new class
@@ -252,7 +263,7 @@ router.post('/teacher-classroom/edit/:id', async (req, res, next) => {
         name: req.body.name,
         description: req.body.description
     }
-    await classModel.findOneAndUpdate({_id:classId}, newClass)
+    await classModel.findOneAndUpdate({ _id: classId }, newClass)
     res.redirect('/classroom/teacher-classrooms');
 });
 
@@ -306,7 +317,7 @@ router.get('/class-details/:id/students/new/:stuId', (req, res, next) => {
                 else {
                     var obj = api.getOwner(updatedClass.owner)
                     obj.then((ob) => {
-                        var msg ="<h2>Hey " + student.name + ",</h2>" + " <div style='font-size: 16px'>You\'re added to a new class " + "\'" + updatedClass.name + "\' - " + updatedClass.description + " by " + ob.name+".</div>"
+                        var msg = "<h2>Hey " + student.name + ",</h2>" + " <div style='font-size: 16px'>You\'re added to a new class " + "\'" + updatedClass.name + "\' - " + updatedClass.description + " by " + ob.name + ".</div>"
                         let class_mail = new MailSender(student.email, 'You\'re added to new class', msg)
                         class_mail.send();
                         res.redirect('/classroom/class-details/' + req.params.id + '/students/new');
@@ -624,18 +635,6 @@ router.get('/class-details/:id/students/remove/:stuId', (req, res, next) => {
 
 });
 
-//Conduct a lecture
-router.get('/add-lec/:id', (req, res, next) => {
-
-    classModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { totLec: 1 } }, function (err, updatedClass) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.redirect('/classroom/class-details/' + req.params.id);
-        }
-    });
-});
 
 module.exports = router;
 
