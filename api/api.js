@@ -154,7 +154,7 @@ async function creatXl(classId) {
 }
 
 //Function that creates a XL file for the attendance 
-async function createXlAttSheet(classes, response) {
+async function createXlAttSheet(classes, response, owner) {
 
     let workbook = new Excel.Workbook()
 
@@ -276,7 +276,7 @@ async function createXlAttSheet(classes, response) {
         });
     }
     let today = new Date().toDateString();
-    var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + ".xlsx";
+    var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner + ".xlsx";
     if (fs.existsSync(filename)) {
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         response.setHeader("Content-Disposition", "attachment; filename=" + filename);
