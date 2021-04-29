@@ -18,8 +18,8 @@ let totalClasses = 0
 let totalStudents = 0
 
 //Function that calculates the total classes and total students in the portal
-function calc() {
-  classModel.count({}, function (err, count) {
+function calc(id) {
+  classModel.count({"owner":id}, function (err, count) {
     totalClasses = count
   })
   userModel.count({ who: "1" }, function (err, count) {
@@ -370,14 +370,14 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
   //console.log(req.user.who)
   if (req.user.who == "1") {
-    calc()
+    calc(req.user.id)
     if (req.user.who == "1") {
       res.redirect('/classroom/userClasses')
     }
   }
   else if (req.user.who == "0") {
 
-    calc();
+    calc(req.user.id);
     var obj = api.forTeacherClasses(req.user._id)
     var all_lectures_conducted = api.allLecTeacher(req.user._id) // array of all lectures taken by this teacher
 
@@ -478,7 +478,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
 //classTotAttendPer
 router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
-  calc();
+  calc(req.user.id);
   var obj = api.forTeacherClasses(req.user._id)
   obj.then(classes => {
     totClassAttStats = []
@@ -494,7 +494,7 @@ router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
 
 //topAttPerStuPerClass
 router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
-  calc();
+  calc(req.user.id);
   var obj = api.forTeacherClasses(req.user._id)
   obj.then(classes => {
     topAttPerStuPerClass = []
@@ -707,7 +707,7 @@ router.post('/register/:role', check, passport.authenticate('local-register', {
     req.session.oldurl = null;
     res.redirect(oldurl);
   } else {
-    res.redirect('/dashboard/user-dashboard');
+    res.redirect('/user/dashboard');
   }
 
 });
@@ -745,7 +745,7 @@ router.post('/teacher-register/:role', check, passport.authenticate('local-regis
     req.session.oldurl = null;
     res.redirect(oldurl);
   } else {
-    res.redirect('/dashboard/teacher-dashboard');
+    res.redirect('/user/dashboard');
   }
 
 });

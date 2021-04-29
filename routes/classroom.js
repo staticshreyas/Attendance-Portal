@@ -17,8 +17,8 @@ let totalClasses = 0
 let totalStudents = 0
 
 //Function that calculates the total classes and total students in the portal
-function calc() {
-    classModel.count({}, function (err, count) {
+function calc(id) {
+    classModel.count({"owner":id}, function (err, count) {
         totalClasses = count
     })
     userModel.count({ who: "1" }, function (err, count) {
@@ -36,7 +36,7 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
         req.session.errorMsg = undefined
         req.session.successMsg = undefined
     }
-    calc()
+    calc(req.user.id)
     if (req.user.who == "1") {
         var obj = api.forUserClasses(req.user._id)
         obj.then(ob => {
@@ -66,7 +66,7 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
 
 /*Get defaulter classes for a student*/
 router.get('/defaulterClasses', isLoggedIn, function (req, res, next) {
-    calc()
+    calc(req.user.id)
     defaultersList = [];
     if (req.user.who == "1") {
         var obj = api.forUserClasses(req.user._id)
@@ -91,7 +91,7 @@ router.get('/defaulterClasses', isLoggedIn, function (req, res, next) {
 
 //Get classrooms of a teacher
 router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
-    calc();
+    calc(req.user.id);
     var obj = api.forTeacherClasses(req.user._id)
 
     obj.then(classes => {
@@ -128,7 +128,7 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 
 //Get classroom details
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
-    calc()
+    calc(req.user.id)
     var create = api.creatXl(req.params.id)
     create.then(() => {
 
