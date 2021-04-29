@@ -709,7 +709,7 @@ router.post('/register/:role', check, passport.authenticate('local-register', {
     req.session.oldurl = null;
     res.redirect(oldurl);
   } else {
-    res.redirect('/user/dashboard');
+    res.redirect('/dashboard/user-dashboard');
   }
 
 });
@@ -741,12 +741,13 @@ router.post('/teacher-register/:role', check, passport.authenticate('local-regis
 
 }), function (req, res, next) {
   req.session.filledformdata = undefined;
+  req.session.user = req.user
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;
     res.redirect(oldurl);
   } else {
-    res.redirect('/user/dashboard');
+    res.redirect('/dashboard/teacher-dashboard');
   }
 
 });
