@@ -16,6 +16,8 @@ const session = require('express-session');
 let totalClasses = 0
 let totalStudents = 0
 
+var android_path = "empty"
+
 //Function that calculates the total classes and total students in the portal
 function calc() {
     classModel.count({}, function (err, count) {
@@ -148,6 +150,12 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 
 });
 
+router.post('/class-details',function(req,res){
+    android_path = req.body.android_path;
+    // console.log("android path back-end : ", android_path);
+    res.end("yes");
+});
+
 //Take attendance of students in class
 router.get('/take_attendance/:id', function (req, res, next) {
     var source = req.headers['user-agent']
@@ -158,7 +166,11 @@ router.get('/take_attendance/:id', function (req, res, next) {
             console.log(err);
         }
         else {
-            var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob
+             if (android_path){
+                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob+"/"+android_path;
+                android_path = "empty"
+             } 
+             else var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob;
             request(url, function (error, response, body) {
 
                 //console.log(body)
