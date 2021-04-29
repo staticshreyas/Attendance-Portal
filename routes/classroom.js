@@ -6,6 +6,7 @@ var classModel = require('../models/class');
 var recordModel = require('../models/record');
 const clipboardy = require('clipboardy');
 const MailSender = require('../mail')
+var useragent = require('express-useragent');
 
 var api = require('../api/api')
 
@@ -149,12 +150,15 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 
 //Take attendance of students in class
 router.get('/take_attendance/:id', function (req, res, next) {
+    var source = req.headers['user-agent']
+    var ua = useragent.parse(source);
+    var isMob=ua.isMobile
     classModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { totLec: 1 } }, function (err, updatedClass) {
         if (err) {
             console.log(err);
         }
         else {
-            var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()
+            var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob
             request(url, function (error, response, body) {
 
                 //console.log(body)

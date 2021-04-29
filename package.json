@@ -21,6 +21,7 @@
     "express": "~4.16.1",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.17.0",
+    "express-useragent": "^1.0.15",
     "express-validator": "^5.3.1",
     "handlebars": "^4.7.3",
     "hbs": "^4.1.0",
