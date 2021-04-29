@@ -32,13 +32,38 @@
             <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center">
-                        <div class="col-sm-7 offset-sm-2 text-center">
+                        <div class="col-sm-auto text-center">
                             <h3 class="mb-2">Absentees</h3>
                         </div>
-                        <div class="col text-center mb-2">
+                        <div class="col-right mx-auto mr-sm-2 mb-2">
                             <a href="/user/downloadAbsent" class="btn btn-sm btn-primary"> <i
                                     class="ni ni-cloud-download-95"></i>
                                 Download XLS File</a>
+                        </div>
+                        <div class="col-right mr-auto mr-lg-2 mb-2">
+                            <ul class="navbar-nav ml-lg-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="btn btn-sm btn-primary" href="#" id="navbar-default_dropdown_1"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-filter text-white mr-2"></i>
+                                        Filter
+                                    </a>
+                                    {{#if filterActive}}
+                                    <a href="/user/absentees/filter/all" class="btn btn-sm btn-danger">Remove Filter</a>
+                                    {{/if}}
+                                    <div class="dropdown-menu dropdown-menu-down"
+                                        aria-labelledby="navbar-default_dropdown_1">
+                                        {{#each classes}}
+                                        {{#ifCond this.name '==' activeClassname}}
+                                        <div></div>
+                                        {{else}}
+                                        <a class="dropdown-item"
+                                            href="/user/absentees/filter/{{name}}">{{this.name}}</a>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

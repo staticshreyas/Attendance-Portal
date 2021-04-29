@@ -108,25 +108,72 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
     var query = dayName + " " + monthname + " " + date
     //console.log(query)
     req.session.absentQuery = query
+    var classes=[]
     var ob = api.compare(query)
     ob.then(absentees => {
       //console.log(absentees)
       absentees.sort(api.dynamicSort("rollnumber"));
-      res.render('user/absentees', { absent: absentees });
+      for(var absentee of absentees){
+          if(classes.filter(e=>e.name===absentee.class).length==0){
+            classes.push({name:absentee.class})
+          }
+      }
+      console.log("classes list1:",classes)
+      res.render('user/absentees', { absent: absentees,classes:classes });
     })
   }
   if (message)
     res.render('user/absentFilter', { message: message });
 })
 
+router.get('/absentees/filter/:name', isLoggedIn, function (req, res, next) {
+  var query = String(req.session.absentQuery)
+  var ob = api.compare(query)
+  var className=req.params.name
+  req.session.absenteeClassFilter=className
+  var classes=[]
+  ob.then(absentees => {
+    absentees.sort(api.dynamicSort("rollnumber"));
+    for(var absentee of absentees){
+      if(classes.filter(e=>e.name===absentee.class).length==0){
+        classes.push({name:absentee.class})
+      }
+    }
+    if(className=="all"){
+      res.render('user/absentees', {
+        absent: absentees,
+        classes:classes,
+      });  
+    }
+    else{
+      absentees=absentees.filter(function (obj) {
+        return obj.class===className;
+      });
+      res.render('user/absentees', {
+        absent: absentees,
+        classes:classes,
+        filterActive: true,
+        activeClassname: className.toString()
+      });  
+    }
+  }); 
+});
+
 
 router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var query = String(req.session.absentQuery)
-  //console.log(query)
+  var className=req.session.absenteeClassFilter
+  console.log(className)
   var ob = api.compare(query)
   ob.then(absentees => {
     //console.log(absentees)
     absentees.sort(api.dynamicSort("rollnumber"));
+    if(className!="all"){
+      absentees=absentees.filter(function (obj) {
+        return obj.class===className;
+      });
+    }
+    console.log(absentees);
     var t = api.downloadXL(absentees, res)
     t.then(ab => {
       if (ab) {
