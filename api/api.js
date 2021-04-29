@@ -524,7 +524,7 @@ function findDeselectedItem(a1, a2) {
     return absent
 }
 
-async function downloadXL(data, response) {
+async function downloadXL(data, response,counterAb) {
 
     let workbook = new Excel.Workbook()
     let worksheet = workbook.addWorksheet('students_db')
@@ -592,10 +592,13 @@ async function downloadXL(data, response) {
             }
         });
     });
-    var filename = "./XLS_FILES/absent/absent-" + data[0].date + ".xlsx"
+    var filename = "./XLS_FILES/absent/absent-" + data[0].date + "("+counterAb+")" + ".xlsx"
     if (fs.existsSync(filename)) {
+        counterAb=counterAb+1
+        var filename = "./XLS_FILES/absent/absent-" + data[0].date + "("+counterAb+")" + ".xlsx"
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        await workbook.xlsx.writeFile(filename)
         return 1
     }
     else {
