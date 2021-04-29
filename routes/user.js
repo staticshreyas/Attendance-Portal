@@ -158,9 +158,10 @@ router.get('/absentees/filter/:name', isLoggedIn, function (req, res, next) {
   }); 
 });
 
-
+var counterAb=1;
 router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var query = String(req.session.absentQuery)
+  req.session.counterAb=counterAb
   var className=req.session.absenteeClassFilter
   console.log(className)
   var ob = api.compare(query)
@@ -172,19 +173,16 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
       });
     }
     console.log(absentees);
-    var t = api.downloadXL(absentees, res)
+    var t = api.downloadXL(absentees, res,req.session.counterAb)
     t.then(ab => {
       if (ab) {
-        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+        req.session.counterAb=req.session.counterAb+1
+        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + "("+req.session.counterAb+")" + ".xlsx")
         res.download(filePath)
       } else {
-        var t1 = api.downloadXL(absentees, res)
-        t1.then(abc => {
-          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query +"("+req.session.counterAb+")" +  ".xlsx")
           res.download(filePath)
-        })
-
-      }
+        }
       })
   })
 })
