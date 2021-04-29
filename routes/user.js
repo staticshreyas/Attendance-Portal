@@ -18,8 +18,8 @@ let totalClasses = 0
 let totalStudents = 0
 
 //Function that calculates the total classes and total students in the portal
-function calc() {
-  classModel.count({}, function (err, count) {
+function calc(id) {
+  classModel.count({"owner":id}, function (err, count) {
     totalClasses = count
   })
   userModel.count({ who: "1" }, function (err, count) {
@@ -158,9 +158,10 @@ router.get('/absentees/filter/:name', isLoggedIn, function (req, res, next) {
   }); 
 });
 
-
+var counterAb=1;
 router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var query = String(req.session.absentQuery)
+  req.session.counterAb=counterAb
   var className=req.session.absenteeClassFilter
   console.log(className)
   var ob = api.compare(query)
@@ -172,54 +173,50 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
       });
     }
     console.log(absentees);
-    var t = api.downloadXL(absentees, res)
+    var t = api.downloadXL(absentees, res,req.session.counterAb)
     t.then(ab => {
       if (ab) {
-        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+        req.session.counterAb=req.session.counterAb+1
+        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + "("+req.session.counterAb+")" + ".xlsx")
         res.download(filePath)
       } else {
-        var t1 = api.downloadXL(absentees, res)
-        t1.then(abc => {
-          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + ".xlsx")
+          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query +"("+req.session.counterAb+")" +  ".xlsx")
           res.download(filePath)
-        })
-
-      }
-    })
+        }
+      })
   })
 })
 
+var counter=1;
 //Download attendance sheet of their students for a teacher
 router.get('/download-attendance', isLoggedIn, function (req, res, next) {
+  req.session.counter=counter
   var ownOb = api.getOwner(req.user._id)
   ownOb.then((owner) => {
     var obj = api.forTeacherClasses(req.user._id)
     obj.then((classes) => {
-      ob = api.createXlAttSheet(classes, res, owner.name)
+      ob = api.createXlAttSheet(classes, res, owner.name,req.session.counter)
       ob.then(ab => {
         if (ab) {
           console.log("Attendance sheet downloaded");
           let today = new Date().toDateString();
-          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name + ".xlsx";
+          req.session.counter=req.session.counter+1
+          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name +"("+req.session.counter+")" + ".xlsx";
           res.download(filePath, function (error) {
             if (error) {
               console.log("Error : ", error)
             }
           });
         } else {
-          var t1 = api.createXlAttSheet(classes, res, owner.name)
-          t1.then(abc => {
-            console.log("Attendance sheet downloaded");
-            let today = new Date().toDateString();
-            var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name + ".xlsx";
-            res.download(filePath, function (error) {
-              if (error) {
-                console.log("Error : ", error)
-              }
-            });
-          })
+          console.log("Attendance sheet downloaded");
+          let today = new Date().toDateString();
+          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name +"("+req.session.counter+")" + ".xlsx";
+          res.download(filePath, function (error) {
+            if (error) {
+              console.log("Error : ", error)
+            }
+          });
         }
-
       });
     });
   })
@@ -373,14 +370,14 @@ router.get('/sendDefaulterMail/:name', function (req, res, next) {
 router.get('/dashboard', isLoggedIn, function (req, res, next) {
   //console.log(req.user.who)
   if (req.user.who == "1") {
-    calc()
+    calc(req.user.id)
     if (req.user.who == "1") {
       res.redirect('/classroom/userClasses')
     }
   }
   else if (req.user.who == "0") {
 
-    calc();
+    calc(req.user.id);
     var obj = api.forTeacherClasses(req.user._id)
     var all_lectures_conducted = api.allLecTeacher(req.user._id) // array of all lectures taken by this teacher
 
@@ -481,7 +478,7 @@ router.get('/dashboard', isLoggedIn, function (req, res, next) {
 
 //classTotAttendPer
 router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
-  calc();
+  calc(req.user.id);
   var obj = api.forTeacherClasses(req.user._id)
   obj.then(classes => {
     totClassAttStats = []
@@ -497,7 +494,7 @@ router.get('/classTotAttendPer', isLoggedIn, function (req, res, next) {
 
 //topAttPerStuPerClass
 router.get('/topAttPerStuPerClass', isLoggedIn, function (req, res, next) {
-  calc();
+  calc(req.user.id);
   var obj = api.forTeacherClasses(req.user._id)
   obj.then(classes => {
     topAttPerStuPerClass = []
@@ -742,6 +739,7 @@ router.post('/teacher-register/:role', check, passport.authenticate('local-regis
 
 }), function (req, res, next) {
   req.session.filledformdata = undefined;
+  req.session.user = req.user
   if (req.session.oldurl) {
     var oldurl = req.session.oldurl;
     req.session.oldurl = null;

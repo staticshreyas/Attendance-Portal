@@ -154,7 +154,7 @@ async function creatXl(classId) {
 }
 
 //Function that creates a XL file for the attendance 
-async function createXlAttSheet(classes, response, owner) {
+async function createXlAttSheet(classes, response, owner,counter) {
 
     let workbook = new Excel.Workbook()
 
@@ -276,10 +276,14 @@ async function createXlAttSheet(classes, response, owner) {
         });
     }
     let today = new Date().toDateString();
-    var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner + ".xlsx";
+    var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner +"("+counter+")" + ".xlsx";
+    console.log(filename)
     if (fs.existsSync(filename)) {
+        counter=counter+1
+         var filename = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner +"("+counter+")" + ".xlsx";
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        await workbook.xlsx.writeFile(filename);
         return 1
     } else {
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -520,7 +524,7 @@ function findDeselectedItem(a1, a2) {
     return absent
 }
 
-async function downloadXL(data, response) {
+async function downloadXL(data, response,counterAb) {
 
     let workbook = new Excel.Workbook()
     let worksheet = workbook.addWorksheet('students_db')
@@ -588,10 +592,13 @@ async function downloadXL(data, response) {
             }
         });
     });
-    var filename = "./XLS_FILES/absent/absent-" + data[0].date + ".xlsx"
+    var filename = "./XLS_FILES/absent/absent-" + data[0].date + "("+counterAb+")" + ".xlsx"
     if (fs.existsSync(filename)) {
+        counterAb=counterAb+1
+        var filename = "./XLS_FILES/absent/absent-" + data[0].date + "("+counterAb+")" + ".xlsx"
         response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        await workbook.xlsx.writeFile(filename)
         return 1
     }
     else {
