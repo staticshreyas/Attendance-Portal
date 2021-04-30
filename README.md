@@ -464,7 +464,7 @@ Log in to your teacher's account.
       ![product](./images/absentees.png)
 
 #### **Star Us : Footer** 
-![product](./images/footer_open.png)
+![product](./images/footer_open.PNG)
 
 
 <!-- LICENSE -->
