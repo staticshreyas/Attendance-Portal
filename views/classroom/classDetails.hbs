@@ -41,8 +41,11 @@
                         <div style="color: white; font-size:1.5rem;display:inline">
                             <b style="font-size:1.2rem;">Class code :</b> {{this.classroom.classCode}}
                         </div>
-                        <a href="/classroom/{{this.classroom._id}}/copyCode/{{this.classroom.classCode}}" class="btn btn-sm btn-neutral">
-                            <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a>
+                        {{!-- <a href="/classroom/{{this.classroom._id}}/copyCode/{{this.classroom.classCode}}" class="btn btn-sm btn-neutral">
+                            <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code</a> --}}
+                        <div class="btn btn-sm btn-neutral copy-code" data-code="{{this.classroom.classCode}}" data-toggle="tooltip" data-placement="top" title="Copy to clipboard">
+                            <i class="fas fa-clipboard" aria-hidden="true"></i> Copy code
+                        </div>
                     </div>
                     <div class="col-sm-right text-center text-sm-right mr-4">
                         <div style="width:155px;" class="input-group mx-auto mr-sm-1">
