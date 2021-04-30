@@ -45,6 +45,11 @@ const classSchema = new mongoose.Schema({
       }
       return code;
     }
+  },
+  colour: {
+    type: String,
+    required: false,
+    default:""
   }
 });
 
