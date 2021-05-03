@@ -129,11 +129,11 @@
 
     <!-- Page content -->
     <div class="container-fluid">
-        <div class="row">
+        <div class="row ">
             {{#each classrooms as |class i|}}
-            <div class="col-xl-4">
+            <div class="col-xl-4 mt--2">
                 <div class="card">
-                    <div class="card-header border-0">
+                    <div id="cardHead" class="card-header border-0 {{class.colour}}">
                         <div class="row align-items-center">
                             <div class="col">
                                 <h3 class="mb-1">{{class.name}}</h3>
@@ -149,8 +149,6 @@
                                 <button data-toggle="modal" data-target="#editClassModal{{i}}" type="button"
                                     class="btn btn-sm btn-light mb-1 mr-auto"><i
                                         class="ni ni-settings-gear-65"></i></button>
-
-
                             </div>
                         </div>
                     </div>
@@ -197,15 +195,15 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-
-                            <h2 class="" id="exampleModalLabel" style="font-family:'Lobster', cursive;color:#5e72e4;">Change your class details</h2>
+                            <h2 class="" id="exampleModalLabel" style="font-family:'Lobster', cursive;color:#5e72e4;">
+                                Change your class details</h2>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <form method="POST" action="/classroom/teacher-classroom/edit/{{class._id}}">
-                            
+
 
                                 <div class="form-group">
                                     <div class="input-group input-group-merge input-group-alternative mb-3">
@@ -213,8 +211,7 @@
                                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                                         </div>
                                         <input value="{{class.name}}" class="form-control" name="name"
-                                            placeholder="Name" type="text"
-                                            style="{{#if class.name}}{{/if}}">
+                                            placeholder="Name" type="text" style="{{#if class.name}}{{/if}}">
                                     </div>
                                 </div>
 
@@ -229,7 +226,21 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <select name="colour">
+                                        <option value="bg-gradient-red">Red</option>
+                                        <option value="bg-gradient-green">Green</option>
+                                        <option value="bg-gradient-cyan">Cyan</option>
+                                        <option value="bg-gradient-purple">Purple</option>
+                                        <option value="bg-gradient-yellow">Yellow</option>
+                                        <option value="bg-gradient-orange">Orange</option>
+                                        <option value="bg-gradient-gray">Gray</option>
+                                        <option value="bg-gradient-pink">Pink</option>
+                                        <option value="bg-gradient-teal">Teal</option>
+                                        <option value="bg-gradient-white">White</option>
 
+                                    </select>
+                                </div>
 
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
@@ -244,5 +255,4 @@
             {{/each}}
         </div>
     </div>
-
 </div>

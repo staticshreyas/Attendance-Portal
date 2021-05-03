@@ -166,8 +166,8 @@ router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   console.log(className)
   var ob = api.compare(query)
   ob.then(absentees => {
-    absentees.sort(api.dynamicSort("rollnumber"));
-    if(className!="all"){
+    absentees.sort(api.dynamicSort("rollnumber"))
+    if(className!="all" && className!=undefined){
       absentees=absentees.filter(function (obj) {
         return obj.class===className;
       });
