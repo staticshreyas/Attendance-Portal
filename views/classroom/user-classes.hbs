@@ -5,10 +5,10 @@
     <!-- Topnav -->
     <div class="container-fluid py-3 bg-primary top-padding" style="border-bottom:0.0625rem solid #e9ecef33 !important;" >
         <div class="row align-items-center">
-            <div class="col text-center text-sm-left">
+            <div class="col col-lg-auto text-center text-sm-left">
                 <h5 style="font-family:'Lobster', cursive;" class="h2 text-white d-inline-block mb-0 custom-heading">Classrooms</h5>
             </div>
-            <div class="d-inline-block mb-0 ml-6"> 
+            <div class="mx-auto mb-0 text-center"> 
                 {{#if errorMsg}}
                     <div class="alert alert-danger fade show " role="alert">
                     <span class="alert-text mr-2">
@@ -31,7 +31,7 @@
                 <br>
                 {{/if}}
             </div>
-            <div class="col-right mr-3  d-sm-block">
+            <div class="col-right ml-auto mr-3  d-sm-block">
                 <div class="media align-items-center">
                     <span class="avatar avatar-sm rounded-circle">
                         <img alt="" src="/assets/uploads/{{this.user.rollnumber}}.jpg">

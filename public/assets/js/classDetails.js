@@ -15,7 +15,7 @@ function send_android_path(path){
 }
 
 $(document).ready(function () {
-    $('[name="androidAddress"]').on('change',function(){
+    $('[name="androidAddress"]').on('input',function(){
         send_android_path(this.value)
     });
 

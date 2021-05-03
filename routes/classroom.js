@@ -16,7 +16,7 @@ const session = require('express-session');
 let totalClasses = 0
 let totalStudents = 0
 
-var android_path = "empty"
+var android_path
 
 //Function that calculates the total classes and total students in the portal
 function calc(id) {
@@ -130,6 +130,12 @@ router.get('/teacher-classrooms', isLoggedIn, function (req, res, next) {
 
 //Get classroom details
 router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
+    errorMsg = ""
+    if (req.session.errorMsg) {
+        errorMsg = req.session.errorMsg
+        console.log("errormsg :", errorMsg);
+        req.session.errorMsg = undefined
+    }
     calc(req.user.id)
     var create = api.creatXl(req.params.id)
     create.then(() => {
@@ -143,7 +149,8 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
                 students: ob.stuArray,
                 totClass: totalClasses,
                 totStu: ob.stuArray.length,
-                totP: ob.totalPercent
+                totP: ob.totalPercent,
+                errorMsg: errorMsg,
             });
         })
     })
@@ -161,16 +168,34 @@ router.get('/take_attendance/:id', function (req, res, next) {
     var source = req.headers['user-agent']
     var ua = useragent.parse(source);
     var isMob=ua.isMobile
+    let re = /(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]):([0-9]){4}/
+    if(android_path){
+        var result = android_path.match(re);
+        console.log("result : ", result);
+    }
+    if(android_path && !result){   // regex failed condition
+        //redirect with error
+        req.session.errorMsg = "Android IP Invalid";
+        android_path = undefined;
+        result = undefined;
+        res.redirect('/classroom/class-details/' + req.params.id);
+    }
     classModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { totLec: 1 } }, function (err, updatedClass) {
         if (err) {
             console.log(err);
         }
         else {
-             if (android_path){
+             if (android_path && result){      // connect android ip passes regex
                 var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob+"/"+android_path;
-                android_path = "empty"
+                android_path = undefined;
+                result - undefined;
              } 
-             else var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob;
+             else{                       // no input in connect android at all
+                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob;
+                android_path = undefined;
+                result - undefined;
+             } 
+
             request(url, function (error, response, body) {
 
                 //console.log(body)
