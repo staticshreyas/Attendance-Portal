@@ -447,6 +447,19 @@ async function removeStudent(classId, studentId) {
 
 }
 
+async function removeAllStudent(studentId) {
+
+    var students = await userModel.findById(studentId);
+    var student = JSON.parse(JSON.stringify(students))
+    console.log(student)
+    var roll=student.rollnumber
+    var name = student.name;
+    var del = await classModel.update({},{ $pull: { "students": studentId } }, { new: true })
+    var delRecords= await recordModel.update({},{$pull: {"data.Name": name, "data.RollNo":roll}}, { new: true })
+    var delStudent= await userModel.findByIdAndDelete(studentId)
+
+}
+
 //function to check if student is already a part of class or if class with that code exists
 async function forJoinClass(classCode, user) {
     var classroom = await classModel.findOne({ classCode: classCode })
@@ -612,4 +625,4 @@ async function downloadXL(data, response,counterAb) {
 async function updatestudent(editedUser, id) {
     await userModel.updateOne({ '_id': id }, editedUser)
 }
-module.exports = { dynamicSort, forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL, updatestudent }
+module.exports = { dynamicSort, forClassDeatils, forTeacherClasses, creatXl, createXlAttSheet, studentAttendance, forUserClasses, allLecTeacher, removeStudent, forJoinClass, getOwner, compare, downloadXL, updatestudent, removeAllStudent }

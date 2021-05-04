@@ -20,7 +20,7 @@ var android_path
 
 //Function that calculates the total classes and total students in the portal
 function calc(id) {
-    classModel.count({"owner":id}, function (err, count) {
+    classModel.count({ "owner": id }, function (err, count) {
         totalClasses = count
     })
     userModel.count({ who: "1" }, function (err, count) {
@@ -44,12 +44,18 @@ router.get('/userClasses', isLoggedIn, function (req, res, next) {
         obj.then(ob => {
             for (i = 0; i < ob.classes.length; i++) {
                 var classroom = ob.classes[i]
-                for (j = 0; j < classroom.studentDetails.length; j++) {
-                    var student = classroom.studentDetails[j]
-                    if (student.name == req.user.name) {
-                        ob.classes[i].studentDetails = student
-                        break
+                if (classroom.studentDetails) {
+                    for (j = 0; j < classroom.studentDetails.length; j++) {
+                        var student = classroom.studentDetails[j]
+                        if (student.name == req.user.name) {
+                            ob.classes[i].studentDetails = student
+                            break
+                        }
                     }
+                }
+                else{
+                    ob.classes.splice(i,1)
+                    continue
                 }
             }
             res.render('classroom/user-classes', {
@@ -157,7 +163,7 @@ router.get('/class-details/:id', isLoggedIn, function (req, res, next) {
 
 });
 
-router.post('/class-details',function(req,res){
+router.post('/class-details', function (req, res) {
     android_path = req.body.android_path;
     // console.log("android path back-end : ", android_path);
     res.end("yes");
@@ -167,13 +173,13 @@ router.post('/class-details',function(req,res){
 router.get('/take_attendance/:id', function (req, res, next) {
     var source = req.headers['user-agent']
     var ua = useragent.parse(source);
-    var isMob=ua.isMobile
+    var isMob = ua.isMobile
     let re = /(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]):([0-9]){4}/
-    if(android_path){
+    if (android_path) {
         var result = android_path.match(re);
         console.log("result : ", result);
     }
-    if(android_path && !result){   // regex failed condition
+    if (android_path && !result) {   // regex failed condition
         //redirect with error
         req.session.errorMsg = "Android IP Invalid";
         android_path = undefined;
@@ -185,16 +191,16 @@ router.get('/take_attendance/:id', function (req, res, next) {
             console.log(err);
         }
         else {
-             if (android_path && result){      // connect android ip passes regex
-                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob+"/"+android_path;
+            if (android_path && result) {      // connect android ip passes regex
+                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString() + "/" + isMob + "/" + android_path;
                 android_path = undefined;
                 result - undefined;
-             } 
-             else{                       // no input in connect android at all
-                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString()+"/"+isMob;
+            }
+            else {                       // no input in connect android at all
+                var url = 'http://127.0.0.1:5000/camera/' + req.user._id.toString() + "/" + isMob;
                 android_path = undefined;
                 result - undefined;
-             } 
+            }
 
             request(url, function (error, response, body) {
 

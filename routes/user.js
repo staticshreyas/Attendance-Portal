@@ -19,7 +19,7 @@ let totalStudents = 0
 
 //Function that calculates the total classes and total students in the portal
 function calc(id) {
-  classModel.count({"owner":id}, function (err, count) {
+  classModel.count({ "owner": id }, function (err, count) {
     totalClasses = count
   })
   userModel.count({ who: "1" }, function (err, count) {
@@ -78,6 +78,16 @@ router.post('/editUserInfo', function (req, res, next) {
   }
 })
 
+router.get('/deleteUser', function (req, res, next) {
+  var userID = req.user.id
+  req.logout();
+  var obj = api.removeAllStudent(userID)
+  obj.then((ob) => {
+    res.redirect('/');
+  })
+})
+
+
 router.get('/absentFilter', isLoggedIn, function (req, res, next) {
   res.render('user/absentFilter');
 });
@@ -108,17 +118,17 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
     var query = dayName + " " + monthname + " " + date
     //console.log(query)
     req.session.absentQuery = query
-    var classes=[]
+    var classes = []
     var ob = api.compare(query)
     ob.then(absentees => {
       //console.log(absentees)
       absentees.sort(api.dynamicSort("rollnumber"));
-      for(var absentee of absentees){
-          if(classes.filter(e=>e.name===absentee.class).length==0){
-            classes.push({name:absentee.class})
-          }
+      for (var absentee of absentees) {
+        if (classes.filter(e => e.name === absentee.class).length == 0) {
+          classes.push({ name: absentee.class })
+        }
       }
-      res.render('user/absentees', { absent: absentees,classes:classes });
+      res.render('user/absentees', { absent: absentees, classes: classes });
     })
   }
   if (message)
@@ -128,80 +138,80 @@ router.post('/absentFilter', isLoggedIn, function (req, res, next) {
 router.get('/absentees/filter/:name', isLoggedIn, function (req, res, next) {
   var query = String(req.session.absentQuery)
   var ob = api.compare(query)
-  var className=req.params.name
-  req.session.absenteeClassFilter=className
-  var classes=[]
+  var className = req.params.name
+  req.session.absenteeClassFilter = className
+  var classes = []
   ob.then(absentees => {
     absentees.sort(api.dynamicSort("rollnumber"));
-    for(var absentee of absentees){
-      if(classes.filter(e=>e.name===absentee.class).length==0){
-        classes.push({name:absentee.class})
+    for (var absentee of absentees) {
+      if (classes.filter(e => e.name === absentee.class).length == 0) {
+        classes.push({ name: absentee.class })
       }
     }
-    if(className=="all"){
+    if (className == "all") {
       res.render('user/absentees', {
         absent: absentees,
-        classes:classes,
-      });  
+        classes: classes,
+      });
     }
-    else{
-      absentees=absentees.filter(function (obj) {
-        return obj.class===className;
+    else {
+      absentees = absentees.filter(function (obj) {
+        return obj.class === className;
       });
       res.render('user/absentees', {
         absent: absentees,
-        classes:classes,
+        classes: classes,
         filterActive: true,
         activeClassname: className.toString()
-      });  
+      });
     }
-  }); 
+  });
 });
 
-var counterAb=1;
+var counterAb = 1;
 router.get('/downloadAbsent', isLoggedIn, function (req, res, next) {
   var query = String(req.session.absentQuery)
-  req.session.counterAb=counterAb
-  var className=req.session.absenteeClassFilter
+  req.session.counterAb = counterAb
+  var className = req.session.absenteeClassFilter
   console.log(className)
   var ob = api.compare(query)
   ob.then(absentees => {
     absentees.sort(api.dynamicSort("rollnumber"))
-    if(className!="all" && className!=undefined){
-      absentees=absentees.filter(function (obj) {
-        return obj.class===className;
+    if (className != "all" && className != undefined) {
+      absentees = absentees.filter(function (obj) {
+        return obj.class === className;
       });
     }
     console.log(absentees);
-    var t = api.downloadXL(absentees, res,req.session.counterAb)
+    var t = api.downloadXL(absentees, res, req.session.counterAb)
     t.then(ab => {
       if (ab) {
-        req.session.counterAb=req.session.counterAb+1
-        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + "("+req.session.counterAb+")" + ".xlsx")
+        req.session.counterAb = req.session.counterAb + 1
+        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + "(" + req.session.counterAb + ")" + ".xlsx")
         res.download(filePath)
       } else {
-          var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query +"("+req.session.counterAb+")" +  ".xlsx")
-          res.download(filePath)
-        }
-      })
+        var filePath = path.join(__dirname + "../../XLS_FILES/absent/absent-" + query + "(" + req.session.counterAb + ")" + ".xlsx")
+        res.download(filePath)
+      }
+    })
   })
 })
 
-var counter=1;
+var counter = 1;
 //Download attendance sheet of their students for a teacher
 router.get('/download-attendance', isLoggedIn, function (req, res, next) {
-  req.session.counter=counter
+  req.session.counter = counter
   var ownOb = api.getOwner(req.user._id)
   ownOb.then((owner) => {
     var obj = api.forTeacherClasses(req.user._id)
     obj.then((classes) => {
-      ob = api.createXlAttSheet(classes, res, owner.name,req.session.counter)
+      ob = api.createXlAttSheet(classes, res, owner.name, req.session.counter)
       ob.then(ab => {
         if (ab) {
           console.log("Attendance sheet downloaded");
           let today = new Date().toDateString();
-          req.session.counter=req.session.counter+1
-          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name +"("+req.session.counter+")" + ".xlsx";
+          req.session.counter = req.session.counter + 1
+          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name + "(" + req.session.counter + ")" + ".xlsx";
           res.download(filePath, function (error) {
             if (error) {
               console.log("Error : ", error)
@@ -210,7 +220,7 @@ router.get('/download-attendance', isLoggedIn, function (req, res, next) {
         } else {
           console.log("Attendance sheet downloaded");
           let today = new Date().toDateString();
-          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name +"("+req.session.counter+")" + ".xlsx";
+          var filePath = "./XLS_FILES/attendance_sheet/attendance_sheet - " + today + " - " + owner.name + "(" + req.session.counter + ")" + ".xlsx";
           res.download(filePath, function (error) {
             if (error) {
               console.log("Error : ", error)
