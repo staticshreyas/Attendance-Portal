@@ -463,6 +463,22 @@ Log in to your teacher's account.
   
       ![product](./images/absentees.png)
 
+#### **Connect Android Device Camera:**
+
+Setup : <br>
+Step 1 : Install "IP Webcam" APP from playstore <br>
+Step 2 (optional) : Go to Video preferences and select Main Camera as Front camera 
+
+To Run : **(Both Devices should be connected to same Network)** <br>
+Step 1 : Click on Start server <br>
+Step 2 : Get the IPv4 address(shown on android screen). eg- 127.123.0.105:8000 <br>
+Step 3 : Enter the addess in "Connect Android" Input Field.<br>
+Step 4 : Click Take Attendance
+
+![product](./images/connect_android_filled.PNG)
+
+
+
 #### **Star Us : Footer** 
 ![product](./images/footer_open.PNG)
 
