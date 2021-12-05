@@ -57,9 +57,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-We have developed an attendance recorder which records attendance of the students using our face recognition model which has an accuracy of about 97%. 
-
-We have managed to give all possible statistical analysis and hassle free management of attendance of their students.
+We have developed a cutting-edge attendance recorder which records attendance of the students using our face recognition model which has an accuracy of about 97%.  Using face recognition, you can easily record attendance and have access to in-depth analysis and a wide range of functionalities. Because of the covid-19 pandemic, stringent guidelines have been established, and precautions must be made to minimise unnecessary physical encounters. As a result, our method has shown to be effective in eliminating the requirement for any type of physical interaction while collecting and analysing attendance.
 
 Detailed explanation of the project is given below.
 
