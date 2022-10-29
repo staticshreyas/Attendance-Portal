@@ -61,6 +61,7 @@ We have developed a cutting-edge attendance recorder which records attendance o
 
 Detailed explanation of the project is given below.
 
+You can view our research paper - [CaptureIt! - A Web-based Attendance System Using Face Recognition](https://ieeexplore.ieee.org/document/9597350)
 
 
 ### Built With
