@@ -363,14 +363,18 @@ Log in to your teacher's account.
 
 2. Classrooms
    
-      - The classroom page displays all the classrooms the teacher has created and displays various stats as displayed below.
+       - The classroom page displays all the classrooms the teacher has created and displays various stats as displayed below.
 
-    ![product](./images/populatedClassrooms.png)
+        ![product](./images/populatedClassrooms.png)
+    
+      - You can colour code the classes as well.
+      
+        ![product](./images/populatedClassroomsColoured.png)
 
       - The class details page will also display various stats related to the particular classroom
 
-    ![product](./images/classDetailsStats.png)
-
+        ![product](./images/classDetailsStats.png)
+ 
 3. Defaulter
 
    - The teacher can view a list of defaulter students and can also send mail for attendance warning by a click of a single button. (**Note:** You can apply any filter based on the class to sort the students as shown below)
