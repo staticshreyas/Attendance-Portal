@@ -363,7 +363,7 @@ Log in to your teacher's account.
 
 2. Classrooms
    
-       - The classroom page displays all the classrooms the teacher has created and displays various stats as displayed below.
+      - the classroom page displays all the classrooms the teacher has created and displays various stats as displayed below.
 
         ![product](./images/populatedClassrooms.png)
     
