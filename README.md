@@ -34,6 +34,7 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+     
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -97,7 +98,7 @@ Update to the latest version of npm
 3. Install Python packages
    
    ```sh
-   cd ./Py-Scrpits 
+   cd ./Py-Scripts 
    pip install requirements.txt
    ```
 
