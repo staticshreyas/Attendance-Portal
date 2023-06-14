@@ -57,7 +57,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-We have developed a cutting-edge attendance recorder which records attendance of the students using our face recognition model which has an accuracy of about 97%.  Using face recognition, you can easily record attendance and have access to in-depth analysis and a wide range of functionalities. Because of the covid-19 pandemic, stringent guidelines have been established, and precautions must be made to minimise unnecessary physical encounters. As a result, our method has shown to be effective in eliminating the requirement for any type of physical interaction while collecting and analysing attendance.
+We have developed an innovative and state-of-the-art attendance recorder that employs cutting-edge facial recognition technology. This sophisticated system enables effortless attendance recording while offering a comprehensive suite of advanced functionalities and in-depth analytical capabilities. In response to the stringent guidelines and precautions imposed during the COVID-19 pandemic, our solution has proven highly effective in eliminating the need for any form of physical interaction during the attendance collection and analysis process. It ensures a contactless and seamless experience, mitigating the risk of unnecessary physical encounters and adhering to the necessary safety protocols.
+
+Our system not only offers advanced attendance recording capabilities but also incorporates a digital classroom-based approach akin to popular platforms like 'Google Classroom'. This powerful feature enables effective management of teachers, students, and their respective classes within the university or college ecosystem. By leveraging this digital classroom framework, our solution streamlines communication, assignment submission, grading, and overall collaboration between educators and learners.
+
+With our integrated digital classroom functionality, teachers can easily create and manage classes, upload course materials, and interact with students in a centralized online environment. Students, in turn, gain access to a user-friendly platform where they can access course materials, engage in discussions, submit assignments, and receive timely feedback from their instructors. By adopting this modern approach to education management, universities and colleges can enhance the overall learning experience, optimize teaching processes, and empower students with a technologically enriched educational environment.
 
 Detailed explanation of the project is given below.
 
